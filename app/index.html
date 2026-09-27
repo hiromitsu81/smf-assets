@@ -108,8 +108,14 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .quest{background:linear-gradient(180deg,#1B1012,#141414 60%);border:1px solid #3A2226;border-radius:var(--r);padding:16px}
 .q-k{font:500 12px Oswald,sans-serif;letter-spacing:.24em;color:var(--pink)}
 .q-boss{font-size:22px;font-weight:700;margin:4px 0 10px}
-.hp{height:18px;border-radius:9px;background:#2A2A2A;overflow:hidden}
-.hp i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),#FF9FB0);border-radius:9px;transition:width .8s ease}
+.hp{height:18px;border-radius:9px;background:#2A2A2A;overflow:hidden;display:flex}
+.hp b{display:block;height:100%;background:repeating-linear-gradient(135deg,rgba(236,125,143,.6) 0 6px,rgba(236,125,143,.25) 6px 12px)}
+.hplg{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--dim);margin-top:6px}
+.hplg i{display:inline-block;width:18px;height:8px;border-radius:4px;margin-right:5px;vertical-align:1px}
+.live{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
+.live li{display:flex;align-items:center;gap:8px;font-size:13px}
+.live li small{margin-left:auto;color:var(--faint);font-variant-numeric:tabular-nums}
+.hp i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),#FF9FB0);transition:width .8s ease}
 .q-sub{font-size:13px;color:var(--dim);margin-top:6px;font-variant-numeric:tabular-nums}
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
 .tile{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
@@ -437,7 +443,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sanyuikai/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">当日ガイド v1.4</span>
+    <br><span id="ver">当日ガイド v1.5</span>
   </footer>
 </main>
 
@@ -879,22 +885,25 @@ async function loadQuest() {
 }
 function renderQuest(d, sample) {
   const st = d.stage, yen = n => Number(n).toLocaleString('ja-JP');
+  const hpE = st.hpExpect == null ? Math.max(st.hpPct, 1) : st.hpExpect;
   $('#sampleTag').hidden = !sample;
   $('#quest').innerHTML = `
     <div class="q-k">BOSS ${st.clear ? d.bosses.length : st.i + 1} / ${d.bosses.length}</div>
     <div class="q-boss">${st.clear ? '全ボス撃破！' : esc(st.name)}</div>
-    <div class="hp" role="meter" aria-label="ボスの残り体力" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${st.hpPct}"><i style="width:${Math.max(st.hpPct, 1)}%"></i></div>
+    <div class="hp" role="meter" aria-label="ボスに与えたダメージ" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${100 - st.hpPct}"><i style="width:${st.clear ? 100 : 100 - st.hpPct}%"></i><b style="width:${Math.max(st.hpPct - hpE, 0)}%"></b></div>
+    ${d.expect ? `<div class="hplg"><span><i style="background:var(--pink)"></i>削った（確認済み）</span><span><i style="background:repeating-linear-gradient(135deg,rgba(236,125,143,.6) 0 4px,rgba(236,125,143,.25) 4px 8px)"></i>削れそう（確認中 ＋${yen(d.expect)}円）</span><span><i style="background:#2A2A2A;border:1px solid var(--line)"></i>残り体力</span></div>` : ''}
     <div class="q-sub">${st.clear ? 'ありがとうございました' : `ボスの残り体力 ${yen(st.left)}円（${st.hpPct}%）`}</div>
     <div class="tiles"><div class="tile"><small>みんなの合計</small><b>${yen(d.total)}<span style="font-size:13px">円</span></b></div>
       <div class="tile"><small>応援した人</small><b>${yen(d.people)}<span style="font-size:13px">人</span></b></div></div>
     <ol class="steps">${d.bosses.map((b, i) => { const done = st.clear || i < st.i, cur = !st.clear && i === st.i;
       return `<li class="${done ? 'done' : cur ? 'cur' : ''}"><span>${done ? '✔' : cur ? '▶' : '・'}</span><span>${esc(b.name)}</span><span>${yen(b.goal)}円</span></li>`; }).join('')}</ol>
-    <p class="note">合計がボスの体力に届くと撃破。次のボスが現れます。</p>`;
+    <p class="note">合計がボスの体力に届くと撃破。次のボスが現れます。ゲージは運営が入金を確かめた分で削れ、確認中の分は斜線（見込み）で出ます。</p>
+    ${(d.recent || []).length ? `<div class="q-k" style="margin-top:14px">LIVE ・ いま投げた人</div><ul class="live">${d.recent.map(x => `<li><span>${x.name ? esc(x.name) + (x.title ? '（' + esc(x.title) + '）' : '') : 'だれか'}が投げた！</span><span class="st ${x.ok ? 'ok' : 'wait'}">${x.ok ? '確認済み' : '確認中'}</span><small>${esc(x.at)}</small></li>`).join('')}</ul>` : ''}`;
   const cls = t => t === '男気' ? 'm' : t === '女気' ? 'f' : 'i';
   $('#rank').innerHTML = d.ranking.length ? d.ranking.map(x => `<li><span class="no">${x.lantern ? `<img src="${esc(x.lantern)}" alt="${x.rank}位" onerror="this.replaceWith(document.createTextNode('${x.rank}'))">` : x.rank}</span><span class="nm">${esc(x.name)}</span><span class="tt ${cls(x.title)}">${esc(x.title)}</span></li>`).join('')
     : '<li><span class="nm" style="font-weight:500">まだ誰も載っていません。最初の男気・女気に。</span></li>';
   const t = new Date(d.updated);
-  $('#upd').textContent = sample ? 'サンプルの数字です（本番の数字ではありません）' : `更新 ${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}（1分ごと）`;
+  $('#upd').textContent = sample ? 'サンプルの数字です（本番の数字ではありません）' : `更新 ${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}（30秒ごと）`;
   renderDonate();
 }
 const SAMPLE_OUEN = { sample: true, title: 'SMF おひねりクエスト', total: 0, people: 0, stage: { i: 0, name: '三茶の門番', goal: 100000, left: 100000, hpPct: 100, clear: false }, bosses: [{ name: '三茶の門番', goal: 100000 }], ranking: [], updated: new Date().toISOString() };
@@ -919,7 +928,7 @@ async function boot() {
   const first = qs.get('tab') || (st ? new URLSearchParams(st.replace(/^[^?]*\?/, '')).get('tab') : '') || (location.hash || '').replace('#', '');
   if (['home', 'time', 'loop', 'ennichi', 'quest'].indexOf(first) >= 0) showTab(first); else if (first === 'map') showTab('time');
   setInterval(() => { renderStatus(); renderTimetable(); renderLoop(); }, 60000);
-  setInterval(() => { if ($('#tab-quest').classList.contains('on')) loadQuest(); }, 60000);
+  setInterval(() => { if ($('#tab-quest').classList.contains('on')) loadQuest(); }, 30000);
   bindWallet(); bindVoice();
 }
 boot();
