@@ -1,0 +1,88 @@
+{
+ "sample": true,
+ "title": "SMF おひねりクエスト",
+ "total": 186500,
+ "people": 74,
+ "oaId": "",
+ "stage": {
+  "i": 1,
+  "name": "路地裏の大提灯",
+  "goal": 300000,
+  "left": 113500,
+  "hpPct": 57,
+  "clear": false
+ },
+ "bosses": [
+  {
+   "name": "三茶の門番",
+   "goal": 100000
+  },
+  {
+   "name": "路地裏の大提灯",
+   "goal": 300000
+  },
+  {
+   "name": "世田谷線の車掌王",
+   "goal": 600000
+  },
+  {
+   "name": "キャロットタワーの主",
+   "goal": 1200000
+  },
+  {
+   "name": "三軒茶屋の大魔王",
+   "goal": 2400000
+  }
+ ],
+ "ranking": [
+  {
+   "rank": 1,
+   "name": "さんちゃ",
+   "title": "粋",
+   "lantern": ""
+  },
+  {
+   "rank": 2,
+   "name": "ねこ店長",
+   "title": "男気",
+   "lantern": ""
+  },
+  {
+   "rank": 3,
+   "name": "ゆず",
+   "title": "女気",
+   "lantern": ""
+  },
+  {
+   "rank": 4,
+   "name": "たいしどう",
+   "title": "男気",
+   "lantern": ""
+  },
+  {
+   "rank": 5,
+   "name": "キャロット",
+   "title": "粋",
+   "lantern": ""
+  },
+  {
+   "rank": 6,
+   "name": "みなみ",
+   "title": "女気",
+   "lantern": ""
+  },
+  {
+   "rank": 7,
+   "name": "夜ふかし",
+   "title": "男気",
+   "lantern": ""
+  },
+  {
+   "rank": 8,
+   "name": "三茶ハイ好き",
+   "title": "粋",
+   "lantern": ""
+  }
+ ],
+ "updated": "2026-11-07T20:15:00+09:00"
+}

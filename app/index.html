@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SMF 2026 当日ガイド</title>
+<meta name="description" content="SANGENJAYA ART MUSIC FESTIVAL 2026 の来場者向けガイド。タイムテーブル・会場・おひねりクエスト。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap">
+<style>
+/* ---- SMFのトンマナ：黒地にロゴの3色（ピンク・グリーン・ブルー）。1つの見た目に決めている ---- */
+:root{
+  color-scheme:dark;
+  --bg:#0A0A0A; --panel:#151515; --panel2:#1C1C1C; --line:#2A2A2A;
+  --text:#F5F5F5; --dim:#A3A3A3; --faint:#6F6F6F;
+  --pink:#EC7D8F; --green:#8DC21F; --blue:#379BD7; --white:#FFFFFF;
+  --day:var(--green); --cross:var(--pink); --night:var(--blue); --special:var(--white);
+  --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font-family:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",sans-serif;font-size:15px;line-height:1.6;
+  padding-bottom:calc(76px + env(safe-area-inset-bottom,0px));-webkit-text-size-adjust:100%}
+a{color:inherit}
+.en{font-family:Oswald,"Zen Kaku Gothic New",sans-serif;letter-spacing:.08em}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px}
+
+/* 見出し */
+header{position:sticky;top:0;z-index:5;background:rgba(10,10,10,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;gap:12px;padding-block:10px}
+.logo{display:flex;gap:4px}
+.logo i{width:10px;height:10px;border-radius:50%;display:block}
+.logo i:nth-child(1){background:var(--pink)} .logo i:nth-child(2){background:var(--green)} .logo i:nth-child(3){background:var(--blue)}
+.brand{font-size:19px;font-weight:700;line-height:1}
+.brand small{display:block;font-size:10px;color:var(--dim);letter-spacing:.12em;margin-top:3px;font-weight:500}
+.date{margin-left:auto;text-align:right;font-size:13px;line-height:1.15}
+.date b{font-size:20px;display:block}
+
+.status{margin:14px 0 4px;padding:12px 14px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);display:flex;gap:10px;align-items:center}
+.status .dot{width:9px;height:9px;border-radius:50%;background:var(--pink);flex:0 0 auto;box-shadow:0 0 0 4px rgba(236,125,143,.18)}
+.status .dot.off{background:var(--faint);box-shadow:none}
+.status b{font-weight:700}
+
+section.tab{display:none;padding-bottom:24px}
+section.tab.on{display:block}
+h2{font-size:13px;color:var(--dim);font-weight:500;letter-spacing:.14em;margin:22px 0 10px}
+h2 .en{color:var(--text);font-size:15px;margin-right:8px}
+
+/* 絞り込み */
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text);font-weight:700}
+.chip .sw{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
+
+/* 時間の帯 */
+.gantt{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px 12px 8px;position:relative}
+.g-axis,.g-row{display:grid;grid-template-columns:112px 1fr;align-items:center}
+.g-axis .ticks{position:relative;height:36px}
+.g-axis .ticks span{position:absolute;bottom:2px;transform:translateX(-50%);font-size:11px;color:var(--dim);font-family:Oswald,sans-serif}
+.g-row{min-height:34px;border-top:1px solid var(--line);cursor:pointer}
+.g-row:first-of-type{border-top:0}
+.g-name{font-size:11.5px;white-space:nowrap;text-overflow:ellipsis;line-height:1.25;padding-right:8px;overflow:hidden}
+.g-name b{font-family:Oswald,sans-serif;font-weight:500;color:var(--dim);margin-right:4px}
+.g-track{position:relative;height:34px}
+.g-track .grid{position:absolute;top:0;bottom:0;width:1px;background:#222}
+.g-bar{position:absolute;top:9px;height:16px;border-radius:8px}
+.g-tbd{position:absolute;left:0;top:8px;font-size:11px;color:var(--dim)}
+.now{position:absolute;top:0;bottom:0;width:2px;background:var(--pink);z-index:2}
+.nowtag{position:absolute;top:0;transform:translateX(-50%);font:500 10px Oswald,sans-serif;color:#1A0A0D;background:var(--pink);border-radius:4px;padding:1px 5px;white-space:nowrap;letter-spacing:.06em;z-index:3}
+.g-row.dim .g-bar{opacity:.18}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:11px;color:var(--dim);margin-top:8px}
+.legend span::before{content:"";display:inline-block;width:14px;height:8px;border-radius:4px;margin-right:5px;background:var(--c)}
+
+/* 会場のカード */
+.cards{display:grid;gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px;scroll-margin-top:90px}
+.card.flash{outline:2px solid var(--pink)}
+.c-head{display:flex;gap:10px;align-items:flex-start}
+.code{flex:0 0 auto;min-width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font:700 16px Oswald,sans-serif;color:#0A0A0A;background:var(--c)}
+.c-title{flex:1;min-width:0}
+.c-title h3{margin:0;font-size:17px;line-height:1.3}
+.c-title p{margin:2px 0 0;font-size:12px;color:var(--dim)}
+.open{flex:0 0 auto;font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--dim)}
+.open.live{border-color:var(--pink);color:var(--pink)}
+.c-meta{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:12px 0 0;font-size:13px}
+.c-meta dt{color:var(--dim)} .c-meta dd{margin:0}
+.badge{display:inline-block;font:500 11px Oswald,sans-serif;letter-spacing:.1em;padding:2px 8px;border-radius:999px;border:1px solid var(--pink);color:var(--pink);margin-left:6px;vertical-align:2px}
+.lineup{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.lineup span{font-size:12px;padding:4px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line)}
+.sets{margin-top:12px;border-top:1px dashed var(--line);padding-top:8px;font-size:13px}
+.sets div{display:flex;gap:10px} .sets time{font-family:Oswald,sans-serif;color:var(--dim);min-width:48px}
+.c-foot{display:flex;gap:8px;margin-top:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px;padding:9px 14px;font:inherit;font-size:13px;font-weight:700;text-decoration:none;border:1px solid var(--line);background:var(--panel2);color:var(--text);cursor:pointer}
+.btn.primary{background:var(--pink);border-color:var(--pink);color:#1A0A0D}
+.btn.wide{width:100%;padding:14px;font-size:15px}
+.note{font-size:12px;color:var(--dim);margin:10px 0 0}
+
+/* 会場MAP */
+.mapimg{width:100%;max-width:100%;border-radius:var(--r);border:1px solid var(--line);display:block}
+.empty{background:var(--panel);border:1px dashed var(--line);border-radius:var(--r);padding:18px;color:var(--dim);font-size:13px}
+.plist{display:grid;gap:8px;margin-top:12px}
+.prow{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.prow .code{min-width:34px;height:34px;font-size:14px;border-radius:8px}
+.prow .t{flex:1;min-width:0;font-size:13px;line-height:1.35}
+.prow .t small{display:block;color:var(--dim);font-size:11px}
+
+/* おひねりクエスト */
+.quest{background:linear-gradient(180deg,#1B1012,#141414 60%);border:1px solid #3A2226;border-radius:var(--r);padding:16px}
+.q-k{font:500 12px Oswald,sans-serif;letter-spacing:.24em;color:var(--pink)}
+.q-boss{font-size:22px;font-weight:700;margin:4px 0 10px}
+.hp{height:18px;border-radius:9px;background:#2A2A2A;overflow:hidden}
+.hp i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),#FF9FB0);border-radius:9px;transition:width .8s ease}
+.q-sub{font-size:13px;color:var(--dim);margin-top:6px;font-variant-numeric:tabular-nums}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.tile{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.tile small{display:block;color:var(--dim);font-size:11px}
+.tile b{font:700 22px Oswald,sans-serif;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.steps{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:4px;font-size:13px}
+.steps li{display:flex;gap:8px;color:var(--faint)}
+.steps li.done{color:var(--green)} .steps li.cur{color:var(--pink);font-weight:700}
+.steps li span:last-child{margin-left:auto;font-family:Oswald,sans-serif;font-variant-numeric:tabular-nums}
+.rank{list-style:none;margin:0;padding:0;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.rank li{display:flex;align-items:center;gap:12px;padding:10px 14px;border-top:1px solid var(--line)}
+.rank li:first-child{border-top:0}
+.rank .no{width:30px;height:40px;display:grid;place-items:center;font:700 16px Oswald,sans-serif;color:var(--dim)}
+.rank li:nth-child(-n+3) .no{color:var(--pink);font-size:20px}
+.rank .no img{width:30px;height:40px;object-fit:contain}
+.rank .nm{flex:1;min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rank .tt{font-size:12px;padding:2px 10px;border-radius:999px;border:1px solid currentColor}
+.tt.m{color:var(--blue)} .tt.f{color:var(--pink)} .tt.i{color:var(--green)}
+.sample{display:inline-block;font-size:11px;color:#1A0A0D;background:#F3C969;border-radius:6px;padding:2px 8px;margin-left:8px;vertical-align:2px}
+.upd{font-size:11px;color:var(--faint);text-align:right;margin-top:6px}
+
+/* 下のタブ */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:rgba(14,14,14,.96);border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom,0px);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+nav.tabs .wrap{display:grid;grid-template-columns:repeat(3,1fr)}
+nav.tabs button{background:none;border:0;color:var(--dim);font:inherit;font-size:11px;padding:8px 0 10px;display:grid;justify-items:center;gap:3px;cursor:pointer}
+nav.tabs button svg{width:24px;height:24px}
+nav.tabs button[aria-selected="true"]{color:var(--text)}
+nav.tabs button[aria-selected="true"] svg{color:var(--pink)}
+footer{color:var(--faint);font-size:11px;padding:8px 0 20px}
+footer a{color:var(--dim)}
+@media (min-width:600px){ .cards{grid-template-columns:1fr 1fr} .g-axis,.g-row{grid-template-columns:150px 1fr} }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="logo" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="brand en">SMF 2026<small>SANGENJAYA ART MUSIC FESTIVAL</small></div>
+    <div class="date en"><b>11.7</b>SAT</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="status" id="status"><span class="dot off"></span><span>読み込み中…</span></div>
+
+  <!-- タイムテーブル -->
+  <section class="tab on" id="tab-time" aria-labelledby="t-time">
+    <h2><span class="en">TIMETABLE</span>時間と会場</h2>
+    <div class="chips" id="filters" role="group" aria-label="絞り込み"></div>
+    <div class="gantt" id="gantt"></div>
+    <div class="legend">
+      <span style="--c:var(--day)">DAY</span><span style="--c:var(--cross)">CROSSOVER</span><span style="--c:var(--night)">NIGHT</span><span style="--c:var(--special)">SPECIAL LIVE</span>
+    </div>
+    <h2><span class="en">VENUES</span>会場</h2>
+    <div class="cards" id="cards"></div>
+    <p class="note" id="src"></p>
+  </section>
+
+  <!-- 会場MAP -->
+  <section class="tab" id="tab-map" aria-labelledby="t-map">
+    <h2><span class="en">MAP</span>会場MAP</h2>
+    <div id="map"></div>
+    <div class="plist" id="plist"></div>
+  </section>
+
+  <!-- おひねりクエスト -->
+  <section class="tab" id="tab-quest" aria-labelledby="t-quest">
+    <h2><span class="en">QUEST</span>おひねりクエスト<span class="sample" id="sampleTag" hidden>サンプル表示</span></h2>
+    <div class="quest" id="quest"></div>
+    <h2><span class="en">RANKING</span>男気女気ランキング</h2>
+    <ol class="rank" id="rank"></ol>
+    <p class="note">順位は、運営が入金を確かめた応援の合計で決まります。金額は表示しません。ランキングに載せないことも選べます。</p>
+    <div class="upd" id="upd"></div>
+    <div style="margin-top:14px"><a class="btn primary wide" id="ouenBtn" href="#" target="_blank" rel="noopener">LINEでおひねりを投げる</a></div>
+  </section>
+
+  <footer>
+    最新のお知らせは <a href="https://www.instagram.com/smf_sanyuikai/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
+  </footer>
+</main>
+
+<nav class="tabs" aria-label="画面の切り替え">
+  <div class="wrap" role="tablist">
+    <button role="tab" id="t-time" aria-selected="true" data-tab="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>タイムテーブル</button>
+    <button role="tab" id="t-map" aria-selected="false" data-tab="map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>会場MAP</button>
+    <button role="tab" id="t-quest" aria-selected="false" data-tab="quest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M8 4h8l-1 3H9z"/><path d="M7 7h10a4 4 0 0 1 0 8H7a4 4 0 0 1 0-8z"/><path d="M9 15l-1 5h8l-1-5"/></svg>おひねり</button>
+  </div>
+</nav>
+
+<script>
+/* ============================================================================
+ *  設定（ここだけ書き換える）
+ *   LIFF_ID  … LINE Developers のミニアプリのチャネルで発行される ID（空なら普通のWebページとして動く）
+ *   GAS_URL  … SMF BOT のウェブアプリのURL（/exec まで）。空ならおひねりはサンプル表示
+ *   OA_ID    … SMF の公式アカウントのID（@から）。GASから届けばそちらを使う
+ *   MAP_IMAGE… 会場MAPの画像（data/map.png など）。空なら「準備中」と会場の一覧
+ * ========================================================================== */
+const CONFIG = { LIFF_ID: '', GAS_URL: 'https://script.google.com/macros/s/AKfycbwNu0dmIaRvZva1bhMtjrEJ-8yXBjInQIC6ULOT0zPoR6GgO6ZYrXHAYzOhX-6uz69v/exec', OA_ID: '@995akvig', MAP_IMAGE: '' };
+const EVENT_DAY = '2026-11-07';
+const BAND = { DAY: ['DAY', '--day'], CROSSOVER: ['CROSSOVER', '--cross'], NIGHT: ['NIGHT', '--night'], SPECIAL: ['SPECIAL LIVE', '--special'] };
+const T0 = 11 * 60, T1 = 29 * 60;           // 11:00〜翌5:00（分）
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const min = hm => { if (!hm) return null; const [h, m] = hm.split(':').map(Number); return h * 60 + m; };
+const hm = m => { const h = Math.floor(m / 60), mm = m % 60; return (h >= 24 ? '翌' + (h - 24) : h) + ':' + String(mm).padStart(2, '0'); };
+let VENUES = [], FILTER = 'ALL';
+
+/* いまの時刻（日本時間）。?now=2026-11-07T21:30 で試せる */
+function nowJst() {
+  const q = new URLSearchParams(location.search).get('now');
+  const d = q ? new Date(q + (/[+Z]/.test(q.slice(10)) ? '' : '+09:00')) : new Date();
+  return d;
+}
+/** 開催日の0時からの分（前日なら負、翌朝は24:00以降） */
+function eventMinutes() {
+  const start = new Date(EVENT_DAY + 'T00:00:00+09:00');
+  return Math.floor((nowJst() - start) / 60000);
+}
+function isOpen(v, m) { const s = min(v.start), e = min(v.end); return s != null && e != null && m >= s && m < e; }
+
+/* ---------- 外へのリンク（LINEの中ならブラウザで開く） ---------- */
+function openExternal(url) {
+  if (window.liff && liff.isInClient && liff.isInClient()) { try { liff.openWindow({ url: url, external: true }); return; } catch (e) { /* 下へ */ } }
+  window.open(url, '_blank', 'noopener');
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[target="_blank"]');
+  if (a && window.liff && liff.isInClient && liff.isInClient()) { e.preventDefault(); openExternal(a.href); }
+});
+const mapUrl = v => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(v.address + ' ' + v.name);
+
+/* ---------- 上の知らせ ---------- */
+function renderStatus() {
+  const m = eventMinutes();
+  const el = $('#status');
+  if (m < T0) {
+    const days = Math.ceil(-m / 1440);
+    el.innerHTML = m < 0
+      ? `<span class="dot off"></span><span>開催まで <b class="en" style="font-size:18px">あと${days}日</b>　11月7日（土）11:00スタート</span>`
+      : `<span class="dot"></span><span>今日は本番！ <b>11:00</b> から始まります</span>`;
+  } else if (m < T1) {
+    const open = VENUES.filter(v => isOpen(v, m));
+    el.innerHTML = `<span class="dot"></span><span>いま <b>${hm(m)}</b>　開いている会場 <b>${open.length}</b></span>`;
+  } else {
+    el.innerHTML = `<span class="dot off"></span><span>SMF 2026 は終了しました。来てくれて、ありがとうございました。</span>`;
+  }
+}
+
+/* ---------- タイムテーブル ---------- */
+function renderFilters() {
+  const items = [['ALL', 'すべて', '']].concat(Object.keys(BAND).map(k => [k, BAND[k][0], BAND[k][1]])).concat([['LOOP', 'NIGHT LOOP', '--pink']]);
+  $('#filters').innerHTML = items.map(([k, label, c]) =>
+    `<button class="chip" data-f="${k}" aria-pressed="${FILTER === k}">${c ? `<span class="sw" style="background:var(${c})"></span>` : ''}${esc(label)}</button>`).join('');
+  $('#filters').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; FILTER = b.dataset.f; renderFilters(); renderTimetable(); };
+}
+const match = v => FILTER === 'ALL' || (FILTER === 'LOOP' ? v.loop : v.band === FILTER);
+
+function renderTimetable() {
+  const m = eventMinutes();
+  const pct = x => ((x - T0) / (T1 - T0) * 100).toFixed(2) + '%';
+  const ticks = [11, 14, 17, 20, 23, 26, 29];
+  const grid = ticks.map(h => `<i class="grid" style="left:${pct(h * 60)}"></i>`).join('');
+  const nowLine = m >= T0 && m <= T1 ? `<i class="now" style="left:${pct(m)}"></i>` : '';
+  const nowTag = m >= T0 && m <= T1 ? `<b class="nowtag" style="left:${pct(m)}">NOW ${hm(m)}</b>` : '';
+  let html = `<div class="g-axis"><div></div><div class="ticks">${ticks.map(h => `<span style="left:${pct(h * 60)}">${h >= 24 ? h - 24 : h}</span>`).join('')}${nowTag}</div></div>`;
+  VENUES.forEach((v, i) => {
+    const s = min(v.start), e = min(v.end), c = BAND[v.band][1];
+    const bar = s != null ? `<i class="g-bar" style="left:${pct(s)};width:calc(${pct(e)} - ${pct(s)});background:var(${c})"></i>` : `<span class="g-tbd">時間は調整中</span>`;
+    html += `<div class="g-row${match(v) ? '' : ' dim'}" data-i="${i}" title="${esc(v.name)}"><div class="g-name"><b>${esc(v.code)}</b>${esc(v.short || v.name)}</div><div class="g-track">${grid}${bar}${nowLine}</div></div>`;
+  });
+  $('#gantt').innerHTML = html;
+  $('#gantt').onclick = e => { const r = e.target.closest('.g-row'); if (!r) return; const c = document.getElementById('v' + r.dataset.i); if (c) { c.scrollIntoView({ behavior: 'smooth', block: 'start' }); c.classList.add('flash'); setTimeout(() => c.classList.remove('flash'), 1400); } };
+
+  $('#cards').innerHTML = VENUES.map((v, i) => match(v) ? card(v, i, m) : '').join('');
+}
+function card(v, i, m) {
+  const c = BAND[v.band][1];
+  const time = v.start ? `${v.start}〜${hm(min(v.end))}` : (v.note || '調整中');
+  const live = isOpen(v, m);
+  const sets = (v.sets || []).length ? `<div class="sets">${v.sets.map(s => `<div><time>${esc(s.time)}</time><span>${esc(s.artist)}</span></div>`).join('')}</div>` : '';
+  return `<article class="card" id="v${i}" style="--c:var(${c})">
+    <div class="c-head"><div class="code">${esc(v.code)}</div>
+      <div class="c-title"><h3>${esc(v.name)}${v.loop ? '<span class="badge">NIGHT LOOP</span>' : ''}</h3><p>${esc(v.sub)}・${esc(BAND[v.band][0])}</p></div>
+      <span class="open${live ? ' live' : ''}">${live ? '開催中' : esc(time)}</span></div>
+    <dl class="c-meta"><dt>時間</dt><dd>${esc(time)}</dd><dt>内容</dt><dd>${esc(v.genre)}</dd>${v.entry ? `<dt>入場</dt><dd>${esc(v.entry)}</dd>` : ''}<dt>場所</dt><dd>${esc(v.address)}</dd></dl>
+    ${v.lineup.length ? `<div class="lineup">${v.lineup.map(a => `<span>${esc(a)}</span>`).join('')}</div>` : `<p class="note">${esc(v.note || '出演者は発表をお待ちください')}</p>`}
+    ${sets || (v.lineup.length ? '<p class="note">出演時刻は発表後にここに出ます。</p>' : '')}
+    <div class="c-foot"><a class="btn" href="${mapUrl(v)}" target="_blank" rel="noopener">地図で開く ↗</a></div>
+  </article>`;
+}
+
+/* ---------- 会場MAP ---------- */
+function renderMap() {
+  $('#map').innerHTML = CONFIG.MAP_IMAGE
+    ? `<img class="mapimg" src="${esc(CONFIG.MAP_IMAGE)}" alt="SMF 2026 会場MAP">`
+    : `<div class="empty">会場MAPは準備中です。いまは、下の一覧から地図アプリで開けます。</div>`;
+  const seen = {};
+  $('#plist').innerHTML = VENUES.filter(v => !seen[v.address] && (seen[v.address] = 1)).map(v =>
+    `<a class="prow" href="${mapUrl(v)}" target="_blank" rel="noopener" style="--c:var(${BAND[v.band][1]});text-decoration:none">
+      <span class="code">${esc(v.code)}</span><span class="t">${esc(v.name)}<small>${esc(v.address)}</small></span><span aria-hidden="true">↗</span></a>`).join('');
+}
+
+/* ---------- おひねりクエスト ---------- */
+let OA = CONFIG.OA_ID;
+async function loadQuest() {
+  let d = null, sample = false;
+  if (CONFIG.GAS_URL) {
+    try { const r = await fetch(CONFIG.GAS_URL + '?api=ouen', { cache: 'no-store' }); d = await r.json(); if (d.error) d = null; } catch (e) { d = null; }
+  }
+  if (!d && CONFIG.GAS_URL) { // 本番でGASが読めないときは、サンプルの数字を出さずに知らせる
+    $('#sampleTag').hidden = true;
+    $('#quest').innerHTML = '<p class="note" style="margin:0">いま数字を読み込めません。少し待って開き直してください。</p>';
+    $('#upd').textContent = '';
+    return;
+  }
+  if (!d) { try { d = await (await fetch('data/ouen-sample.json')).json(); } catch (e) { d = SAMPLE_OUEN; } sample = true; }
+  if (d.oaId) OA = d.oaId;
+  renderQuest(d, sample || d.sample);
+}
+function renderQuest(d, sample) {
+  const st = d.stage, yen = n => Number(n).toLocaleString('ja-JP');
+  $('#sampleTag').hidden = !sample;
+  $('#quest').innerHTML = `
+    <div class="q-k">BOSS ${st.clear ? d.bosses.length : st.i + 1} / ${d.bosses.length}</div>
+    <div class="q-boss">${st.clear ? '全ボス撃破！' : esc(st.name)}</div>
+    <div class="hp" role="meter" aria-label="ボスの残り体力" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${st.hpPct}"><i style="width:${Math.max(st.hpPct, 1)}%"></i></div>
+    <div class="q-sub">${st.clear ? 'ありがとうございました' : `ボスの残り体力 ${yen(st.left)}円（${st.hpPct}%）`}</div>
+    <div class="tiles"><div class="tile"><small>みんなの合計</small><b>${yen(d.total)}<span style="font-size:13px">円</span></b></div>
+      <div class="tile"><small>応援した人</small><b>${yen(d.people)}<span style="font-size:13px">人</span></b></div></div>
+    <ol class="steps">${d.bosses.map((b, i) => { const done = st.clear || i < st.i, cur = !st.clear && i === st.i;
+      return `<li class="${done ? 'done' : cur ? 'cur' : ''}"><span>${done ? '✔' : cur ? '▶' : '・'}</span><span>${esc(b.name)}</span><span>${yen(b.goal)}円</span></li>`; }).join('')}</ol>
+    <p class="note">合計がボスの体力に届くと撃破。次のボスが現れます。</p>`;
+  const cls = t => t === '男気' ? 'm' : t === '女気' ? 'f' : 'i';
+  $('#rank').innerHTML = d.ranking.length ? d.ranking.map(x => `<li><span class="no">${x.lantern ? `<img src="${esc(x.lantern)}" alt="${x.rank}位" onerror="this.replaceWith(document.createTextNode('${x.rank}'))">` : x.rank}</span><span class="nm">${esc(x.name)}</span><span class="tt ${cls(x.title)}">${esc(x.title)}</span></li>`).join('')
+    : '<li><span class="nm" style="font-weight:500">まだ誰も載っていません。最初の男気・女気に。</span></li>';
+  const t = new Date(d.updated);
+  $('#upd').textContent = sample ? 'サンプルの数字です（本番の数字ではありません）' : `更新 ${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}（1分ごと）`;
+  const btn = $('#ouenBtn');
+  if (OA) { btn.href = `https://line.me/R/oaMessage/${encodeURIComponent(OA)}/?${encodeURIComponent('#おひねり')}`; btn.removeAttribute('aria-disabled'); }
+  else { btn.removeAttribute('href'); btn.setAttribute('aria-disabled', 'true'); btn.textContent = 'LINEで「#おひねり」と送ってください'; }
+}
+const SAMPLE_OUEN = { sample: true, title: 'SMF おひねりクエスト', total: 0, people: 0, stage: { i: 0, name: '三茶の門番', goal: 100000, left: 100000, hpPct: 100, clear: false }, bosses: [{ name: '三茶の門番', goal: 100000 }], ranking: [], updated: new Date().toISOString() };
+
+/* ---------- タブ ---------- */
+function showTab(name) {
+  document.querySelectorAll('section.tab').forEach(s => s.classList.toggle('on', s.id === 'tab-' + name));
+  document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+  window.scrollTo(0, 0);
+  if (name === 'quest') loadQuest();
+  try { history.replaceState(null, '', '#' + name); } catch (e) { /* 表示は変わる */ }
+}
+document.querySelector('nav.tabs').onclick = e => { const b = e.target.closest('button'); if (b) showTab(b.dataset.tab); };
+
+/* ---------- はじめ ---------- */
+async function boot() {
+  try { VENUES = (await (await fetch('data/venues.json', { cache: 'no-store' })).json()).venues; } catch (e) { VENUES = window.VENUES_INLINE || []; }
+  try { $('#src').textContent = '出どころ：公式サイト sangenjaya-mf.com（2026-09-27時点）。変更があればこの画面を更新します。'; } catch (e) { }
+  renderFilters(); renderTimetable(); renderMap(); renderStatus();
+  const first = (location.hash || '').replace('#', '');
+  if (['time', 'map', 'quest'].indexOf(first) >= 0) showTab(first);
+  setInterval(() => { renderStatus(); renderTimetable(); }, 60000);
+  setInterval(() => { if ($('#tab-quest').classList.contains('on')) loadQuest(); }, 60000);
+  if (CONFIG.LIFF_ID) {
+    const s = document.createElement('script');
+    s.src = 'https://static.line-scdn.net/liff/edge/2/sdk.js';
+    s.onload = () => { try { liff.init({ liffId: CONFIG.LIFF_ID }).catch(() => { }); } catch (e) { } };
+    document.head.appendChild(s);
+  }
+}
+boot();
+</script>
+</body>
+</html>
