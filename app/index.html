@@ -197,7 +197,7 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .hero h1{margin:0;font-size:20px;line-height:1.3;text-wrap:balance}
 .hero p{margin:4px 0 0;font-size:12.5px;color:var(--dim)}
 .host{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:11px;color:var(--dim)}
-.host .plate{display:inline-flex;align-items:center;min-height:32px}
+.host .plate{display:inline-flex;align-items:center;gap:6px;min-height:32px}
 .host .plate img{height:32px;width:auto;max-width:150px;display:block}
 .host .plate b{color:var(--text);font-size:14px}
 .feats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -279,7 +279,7 @@ footer a{color:var(--dim)}
         <h1>SMF 2026 当日ガイド</h1>
         <p>SANGENJAYA ART MUSIC FESTIVAL 2026｜11月7日（土）11:00〜翌朝</p>
         <div class="host">主催
-          <span class="plate"><img src="img/sanketsukai.svg" alt="三結會" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://sangenjaya-mf.com/2026/sponsor-sanketsukai.svg'}else{this.replaceWith(Object.assign(document.createElement('b'),{textContent:'三結會'}))}"></span>
+          <span class="plate"><img src="img/sanketsukai.png" alt="" onerror="this.remove()"><b>三結會</b></span>
           三軒茶屋の商店会
         </div>
       </div>
@@ -414,6 +414,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sanyuikai/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
+    <br><span id="ver">当日ガイド v1.2</span>
   </footer>
 </main>
 
