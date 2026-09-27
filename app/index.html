@@ -307,6 +307,11 @@ footer a{color:var(--dim)}
     <div class="feats" id="feats"></div>
     <p class="howline">押すと SMF の LINE のトークが開き、文字が入った状態になります。<b>そのまま送信</b>すると、カードが届きます。友だち追加がまだの方は <a href="#" id="addFriend">こちら</a> から。</p>
 
+    <h2><span class="en">OPEN CHAT</span>オープンチャット</h2>
+    <a class="artists" style="margin-top:0;border-left-color:var(--green)" href="https://line.me/ti/g2/lRKR0aHfsNUc7gQEdGyDQA8EBjC8boY8_I3HCQ" data-line="https://line.me/ti/g2/lRKR0aHfsNUc7gQEdGyDQA8EBjC8boY8_I3HCQ"><span><b>一緒にまわろう・ハシゴ仲間</b><small>当日一緒にまわる人・待ち合わせの部屋。夜の会場は20歳以上</small></span><span class="en" style="color:var(--green)">↗</span></a>
+    <a class="artists" style="border-left-color:var(--green)" href="https://line.me/ti/g2/w4a-G0_TXiAly6lLUN7XHOMrzyh-6T-6yR6fQg" data-line="https://line.me/ti/g2/w4a-G0_TXiAly6lLUN7XHOMrzyh-6T-6yR6fQg"><span><b>SMF オープンチャット</b><small>来場者・ボランティア・協力店・運営、だれでも参加できるみんなの場所</small></span><span class="en" style="color:var(--green)">↗</span></a>
+    <p class="note">ニックネームで参加できます。本名や連絡先は書かないでください。</p>
+
     <div id="crewBox"></div>
 
     <div class="daishi" id="voice">
@@ -369,6 +374,7 @@ footer a{color:var(--dim)}
     </ol>
     <div style="margin-top:12px"><a class="btn primary wide" id="loopBtn" href="#">LINEで台紙を開く</a></div>
     <button class="share" type="button" data-share="loop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>一緒にまわる人を誘う</button>
+    <a class="artists" style="border-left-color:var(--green)" href="https://line.me/ti/g2/lRKR0aHfsNUc7gQEdGyDQA8EBjC8boY8_I3HCQ" data-line="https://line.me/ti/g2/lRKR0aHfsNUc7gQEdGyDQA8EBjC8boY8_I3HCQ"><span><b>一緒にまわろう・ハシゴ仲間</b><small>オープンチャット。当日の待ち合わせや「今からまわる人」探しに</small></span><span class="en" style="color:var(--green)">OPEN CHAT ↗</span></a>
 
     <h2><span class="en">STORES</span>協力店</h2>
     <div class="stores" id="stores"></div>
@@ -431,7 +437,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sanyuikai/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">当日ガイド v1.3</span>
+    <br><span id="ver">当日ガイド v1.4</span>
   </footer>
 </main>
 
@@ -505,7 +511,7 @@ const FEATS = [
   { c: '--green', t: '縁日のご縁', d: '会場で会った人とQRを読み合って、ご縁を集める図鑑。名前や連絡先は出ません', cmd: '#ご縁', go: 'ご縁を開く' },
   { c: '--pink', t: 'おひねりクエスト', d: 'SMFへの応援（おひねり）。みんなの合計でボスを倒していきます', cmd: '#おひねり', go: 'おひねりを投げる' },
   { c: '--blue', t: 'SMF選手権', d: 'SMFと三茶のクイズ。何問答えられるか挑戦', cmd: '#SMF選手権', go: 'クイズを始める' },
-  { c: '--green', t: '参加グループ', d: 'だれでも入れるSMFのオープンチャット。ニックネームで参加できます', url: 'OPENCHAT', go: 'オープンチャットへ' },
+  { c: '--green', t: '参加グループ', d: 'オープンチャット（SMF全体・一緒にまわろう）と、入っているグループ', cmd: '#参加グループ', go: 'LINEで見る' },
   { c: '--blue', t: '友だちをSMFに招待', d: 'あなた専用の紹介リンクを出します。LINEで友だちに送れます', cmd: '#友だちをSMFに招待', go: '招待リンクを出す' },
   { c: '--white', t: '使い方（来場者）', d: 'LINEでできることを、カードでまとめて見られます', cmd: '#使い方', go: '使い方を見る' },
   { c: '--white', t: '公式サイト', d: '出演者・会場・チケットのくわしい情報', url: 'https://sangenjaya-mf.com/', go: 'サイトを開く' }
