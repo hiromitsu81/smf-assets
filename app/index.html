@@ -180,6 +180,22 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .seg button{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:999px;padding:7px 12px;font:inherit;font-size:13px;cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#10160A;font-weight:700}
 
+/* おひねりの受付 */
+.dnrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.dnrow:first-child{border-top:0}
+.dnrow b{font:700 18px Oswald,sans-serif;color:var(--pink);min-width:54px}
+.dnrow .t{flex:1;min-width:0;font-size:13px;line-height:1.35}
+.dnrow .t small{display:block;color:var(--dim);font-size:11.5px}
+.st{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.st.wait{color:#F3C969} .st.ok{color:var(--green)}
+.ticket{background:#fff;color:#111;border-radius:14px;padding:14px;display:grid;gap:8px;justify-items:center;text-align:center;margin-top:10px}
+.ticket .id{font:700 40px Oswald,sans-serif;color:#D94F68;letter-spacing:.04em;line-height:1}
+.ticket p{margin:0;font-size:13px}
+.ticket .btn{background:#f4f4f4;border-color:#ddd;color:#111}
+.ticket .btn.primary{background:var(--pink);border-color:var(--pink);color:#1A0A0D}
+.amt{display:flex;gap:8px;align-items:center;margin-top:8px}
+.amt input,.nick input{flex:1;min-width:0;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font:inherit;font-size:15px;padding:10px}
+
 /* 協賛 */
 .spons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .spons a{background:#fff;border-radius:10px;height:64px;display:grid;place-items:center;padding:8px;text-decoration:none}
@@ -404,17 +420,18 @@ footer a{color:var(--dim)}
   <section class="tab" id="tab-quest" aria-labelledby="t-quest">
     <h2><span class="en">QUEST</span>おひねりクエスト<span class="sample" id="sampleTag" hidden>サンプル表示</span></h2>
     <div class="quest" id="quest"></div>
+    <h2><span class="en">THROW</span>おひねりを投げる</h2>
+    <div id="dnBox"></div>
     <h2><span class="en">RANKING</span>男気女気ランキング</h2>
     <ol class="rank" id="rank"></ol>
     <p class="note">おひねりの受付は 11月8日（日）まで。順位は、運営が入金を確かめた応援の合計で決まります。金額は表示しません。ランキングに載せないことも選べます。</p>
     <div class="upd" id="upd"></div>
-    <div style="margin-top:14px"><a class="btn primary wide" id="ouenBtn" href="#" target="_blank" rel="noopener">LINEでおひねりを投げる</a></div>
     <button class="share" type="button" data-share="quest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>ボス戦に仲間を呼ぶ</button>
   </section>
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sanyuikai/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">当日ガイド v1.2</span>
+    <br><span id="ver">当日ガイド v1.3</span>
   </footer>
 </main>
 
@@ -520,10 +537,10 @@ function loadLiff() {
 }
 const inLine = () => !!(window.liff && liff.isInClient && liff.isInClient());
 function qrSvg(text) { const q = qrcode(0, 'M'); q.addData(text); q.make(); return q.createSvgTag({ cellSize: 6, margin: 3, scalable: true }); }
-function wallet(html) { $('#wcard').innerHTML = html; renderDaishi(); renderCrew(); }
+function wallet(html) { $('#wcard').innerHTML = html; renderDaishi(); renderCrew(); renderDonate(); }
 function renderMe() {
   const d = ME;
-  renderDaishi(); renderCrew();
+  renderDaishi(); renderCrew(); renderDonate();
   const t0 = d.from ? new Date(d.from) : null, now = nowJst();
   const before = t0 && now < t0;
   const dots = (d.spots || []).map(x => `<i class="${x.on ? 'on' : ''}" title="${esc(x.name)}"></i>`).join('');
@@ -540,6 +557,62 @@ async function renderSponsors() {
   if (!d || !d.sponsors || !d.sponsors.length) { el.previousElementSibling.hidden = true; el.nextElementSibling.hidden = true; el.hidden = true; return; }
   el.innerHTML = d.sponsors.map(x => `<a href="${esc(x.url || d.link)}" target="_blank" rel="noopener" title="${esc(x.name)}"><img src="${esc(x.logo)}" alt="${esc(x.name)}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:this.alt}))"></a>`).join('');
 }
+
+/* ---------- おひねりを投げる（受付番号をミニアプリで。支払いはPayPay） ---------- */
+let DN_PICK = { amt: 0, title: '' }, DN_LAST = '';
+function renderDonate() {
+  const el = $('#dnBox'); if (!el) return;
+  const dn = ME && !ME.sample ? ME.donate : null;
+  if (!dn) {
+    const u = oaMsg('#おひねり');
+    el.innerHTML = `<div class="daishi"><p class="note" style="margin:0 0 10px">LINEで開くと、ここから金額を選んで受付番号をもらえます。</p><a class="btn primary wide" href="${esc(u)}" data-line="${esc(u)}">LINEでおひねりを投げる</a></div>`;
+    return;
+  }
+  const closed = dn.to && nowJst() > new Date(dn.to);
+  const stLabel = x => x.state === '確認済み' ? '<span class="st ok">確認済み</span>' : x.state === '確認待ち' ? '<span class="st wait">確認待ち</span>' : `<span class="st">${esc(x.state)}</span>`;
+  const last = dn.tickets.find(x => x.id === DN_LAST && x.state === '確認待ち') || null;
+  const ticket = x => `<div class="ticket"><div style="font-size:12px;color:#555">受付番号</div><div class="id">${esc(x.id)}</div>
+    <p><b>${Number(x.amt).toLocaleString()}円</b>・${x.title === '載せない' ? 'ランキングに載せない' : esc(x.name) + '（' + esc(x.title) + '）'}</p>
+    <p>PayPayで送るとき、メッセージ欄に<b>「${esc(x.id)}」</b>と入れてください。運営が入金を確かめると、ゲージとランキングに入ります。</p>
+    ${dn.payUrl ? `<a class="btn primary wide" href="${esc(dn.payUrl)}" target="_blank" rel="noopener">PayPayで送る</a>` : '<p>PayPayのリンクは準備中です。会場の本部でお支払いください。</p>'}
+    <details style="width:100%"><summary style="cursor:pointer;font-size:12.5px;color:#555">会場の本部で払うとき（スタッフに見せるQR）</summary><div class="qr" style="width:min(48vw,190px);margin:8px auto 0">${qrSvg(x.confirm)}</div></details></div>`;
+  const list = dn.tickets.length ? `<div style="margin-top:12px">${dn.tickets.map(x => `<div class="dnrow"><b>${esc(x.id)}</b><span class="t">${Number(x.amt).toLocaleString()}円<small>${x.title === '載せない' ? '載せない' : esc(x.name) + '（' + esc(x.title) + '）'}</small></span>${stLabel(x)}${x.state === '確認待ち' ? `<button class="btn" type="button" data-dn-open="${esc(x.id)}">払い方</button>` : ''}</div>`).join('')}</div>` : '';
+  if (closed) { el.innerHTML = `<div class="daishi"><p style="margin:0">おひねりの受付は終わりました。たくさんの応援、ありがとうございました。</p>${list}</div>`; return; }
+  const chip = (k, v, label) => `<button type="button" data-dn="${k}" value="${esc(v)}" aria-pressed="${String(DN_PICK[k] == v)}">${esc(label)}</button>`;
+  el.innerHTML = `<div class="daishi">
+    ${last ? ticket(last) : ''}
+    <form class="vform" id="dnForm" style="margin-top:${last ? 14 : 0}px">
+      <div class="lab">金額<div class="seg">${dn.amounts.map(a => chip('amt', a, a.toLocaleString() + '円')).join('')}</div>
+        <div class="amt"><input type="number" inputmode="numeric" id="dnAmt" min="${dn.min}" max="${dn.max}" placeholder="ほかの金額（${dn.min.toLocaleString()}円〜）" value="${DN_PICK.amt && dn.amounts.indexOf(Number(DN_PICK.amt)) < 0 ? esc(DN_PICK.amt) : ''}"><span>円</span></div></div>
+      <div class="lab">ランキングでの称号<small>金額は表に出ません</small><div class="seg">${dn.titles.map(t => chip('title', t, t)).join('')}${chip('title', '載せない', '載せない')}</div></div>
+      <label class="nick" id="dnNickWrap" ${DN_PICK.title === '載せない' ? 'hidden' : ''}>ニックネーム<small>12文字まで。本名は使わないでください</small><input id="dnNick" maxlength="12" value="${esc(dn.nick)}" placeholder="例：さんちゃ"></label>
+      <button class="btn primary wide" type="submit" id="dnSend">受付番号をもらう</button>
+      <p class="note" style="margin:0">受付番号をもらったあと、PayPayで送ります。自分で「払った」と言っただけでは数えず、運営が入金を確かめてからゲージに入ります。</p>
+    </form>${list ? `<h3 style="margin:16px 0 0;font-size:14px">あなたの受付</h3>${list}` : ''}</div>`;
+}
+document.addEventListener('click', e => {
+  const c = e.target.closest('[data-dn]');
+  if (c) { DN_PICK[c.dataset.dn] = c.value; if (c.dataset.dn === 'amt') { const i = $('#dnAmt'); if (i) i.value = ''; } const keep = $('#dnNick') ? $('#dnNick').value : ''; renderDonate(); if ($('#dnNick') && keep) $('#dnNick').value = keep; return; }
+  const o = e.target.closest('[data-dn-open]');
+  if (o) { DN_LAST = o.dataset.dnOpen; renderDonate(); $('#dnBox').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+});
+document.addEventListener('input', e => { if (e.target.id === 'dnAmt' && e.target.value) { DN_PICK.amt = e.target.value; document.querySelectorAll('[data-dn="amt"]').forEach(b => b.setAttribute('aria-pressed', 'false')); } });
+document.addEventListener('submit', async e => {
+  if (e.target.id !== 'dnForm') return;
+  e.preventDefault();
+  const amt = Number(($('#dnAmt') && $('#dnAmt').value) || DN_PICK.amt);
+  const dn = ME.donate;
+  if (!(amt >= dn.min && amt <= dn.max)) return toast(`金額は ${dn.min.toLocaleString()}円〜${dn.max.toLocaleString()}円で`);
+  if (!DN_PICK.title) return toast('称号か「載せない」を選んでください');
+  const name = DN_PICK.title === '載せない' ? '' : ($('#dnNick').value || '').trim();
+  if (DN_PICK.title !== '載せない' && !name) return toast('ニックネームを入れてください');
+  const b = $('#dnSend'); b.disabled = true; b.textContent = '受付しています…';
+  let d = null;
+  try { const r = await fetch(CONFIG.GAS_URL, { method: 'POST', body: JSON.stringify({ kind: 'miniapp', api: 'donate', idToken: liff.getIDToken(), amt: amt, title: DN_PICK.title, name: name }) }); d = await r.json(); } catch (err) { d = null; }
+  if (d && d.ok) { ME.donate = Object.assign({}, dn, d); DN_LAST = (d.tickets[0] || {}).id || ''; DN_PICK = { amt: 0, title: '' }; renderDonate(); toast('受付番号を出しました'); $('#dnBox').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+  b.disabled = false; b.textContent = '受付番号をもらう';
+  toast(d && d.msg ? d.msg : d && d.error === 'closed' ? '受付は終わりました' : d && d.error === 'too many' ? '少し時間をおいてから' : d && d.error === 'login' ? 'LINEのログインを確かめられませんでした' : '受け付けられませんでした。もう一度お試しください');
+});
 
 /* ---------- 来場者アンケート（GASの「来場者の声」シートへ。匿名） ---------- */
 function bindVoice() {
@@ -816,9 +889,7 @@ function renderQuest(d, sample) {
     : '<li><span class="nm" style="font-weight:500">まだ誰も載っていません。最初の男気・女気に。</span></li>';
   const t = new Date(d.updated);
   $('#upd').textContent = sample ? 'サンプルの数字です（本番の数字ではありません）' : `更新 ${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}（1分ごと）`;
-  const btn = $('#ouenBtn');
-  if (OA) { btn.href = oaMsg('#おひねり'); btn.dataset.line = btn.href; btn.removeAttribute('aria-disabled'); }
-  else { btn.removeAttribute('href'); btn.setAttribute('aria-disabled', 'true'); btn.textContent = 'LINEで「#おひねり」と送ってください'; }
+  renderDonate();
 }
 const SAMPLE_OUEN = { sample: true, title: 'SMF おひねりクエスト', total: 0, people: 0, stage: { i: 0, name: '三茶の門番', goal: 100000, left: 100000, hpPct: 100, clear: false }, bosses: [{ name: '三茶の門番', goal: 100000 }], ranking: [], updated: new Date().toISOString() };
 
@@ -828,7 +899,7 @@ function showTab(name) {
   document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
   window.scrollTo(0, 0);
   if (name === 'quest') loadQuest();
-  if (name === 'loop' || name === 'home') loadMe();
+  if (name === 'loop' || name === 'home' || name === 'quest') loadMe();
   try { history.replaceState(null, '', '#' + name); } catch (e) { /* 表示は変わる */ }
 }
 document.querySelector('nav.tabs').onclick = e => { const b = e.target.closest('button'); if (b) showTab(b.dataset.tab); };
