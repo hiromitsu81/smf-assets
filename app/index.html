@@ -152,15 +152,33 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .wact svg{width:30px;height:30px}
 .wact a:nth-child(1) svg{color:var(--pink)} .wact a:nth-child(2) svg{color:var(--green)} .wact a:nth-child(3) svg{color:var(--blue)} .wact a:nth-child(4) svg{color:var(--pink)}
 
+/* わたしの台紙（NIGHT LOOP） */
+.daishi{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.daishi .hd{display:flex;align-items:baseline;gap:8px}
+.daishi .hd b{font:700 30px Oswald,sans-serif;font-variant-numeric:tabular-nums}
+.daishi .hd span{color:var(--dim);font-size:13px}
+.daishi .hd em{margin-left:auto;font-style:normal;font-weight:700;font-size:13px;color:var(--green)}
+.daishi .hd em.done{color:var(--pink)}
+.cells{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
+.cell{display:grid;gap:4px;justify-items:center;font-size:10.5px;color:var(--dim);text-align:center;line-height:1.2}
+.cell img{width:100%;aspect-ratio:1;object-fit:contain;border-radius:10px;display:block;background:var(--panel2)}
+.cell{min-width:0;overflow-wrap:anywhere}
+.cell.on{color:var(--text);font-weight:700}
+
+/* 友だちを誘う（シェアターゲットピッカー） */
+.share{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:10px;padding:12px;border-radius:999px;border:1px dashed var(--line);background:transparent;color:var(--text);font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.share svg{width:18px;height:18px;color:var(--green)}
+.toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:13px;font-weight:700;z-index:9;white-space:nowrap}
+
 /* ホーム */
 .hero{display:flex;align-items:center;gap:16px;margin-top:16px;padding:16px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line)}
 .hero img.big{width:84px;height:84px;flex:0 0 auto}
 .hero h1{margin:0;font-size:20px;line-height:1.3;text-wrap:balance}
 .hero p{margin:4px 0 0;font-size:12.5px;color:var(--dim)}
 .host{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:11px;color:var(--dim)}
-.host .plate{background:#fff;border-radius:8px;padding:5px 10px;display:inline-flex;align-items:center;min-height:30px}
-.host .plate img{height:22px;width:auto;display:block}
-.host .plate b{color:#111;font-size:13px}
+.host .plate{display:inline-flex;align-items:center;min-height:30px}
+.host .plate img{height:30px;width:auto;max-width:140px;display:block}
+.host .plate b{color:var(--text);font-size:14px}
 .feats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .feat{display:flex;flex-direction:column;gap:6px;text-align:left;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:12px;padding:12px;color:var(--text);font:inherit;text-decoration:none;cursor:pointer}
 .feat b{font-size:14.5px;line-height:1.3}
@@ -232,13 +250,15 @@ footer a{color:var(--dim)}
       </nav>
     </div>
 
+    <button class="share" type="button" data-share="invite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>友だちをSMFに誘う</button>
+
     <div class="hero">
       <img class="big" src="img/smf-logo.png" alt="">
       <div>
         <h1>SMF 2026 当日ガイド</h1>
         <p>SANGENJAYA ART MUSIC FESTIVAL 2026｜11月7日（土）11:00〜翌朝</p>
         <div class="host">主催
-          <span class="plate"><img src="https://sangenjaya-mf.com/2026/sponsor-sanketsukai.svg" alt="三結會" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'三結會'}))"></span>
+          <span class="plate"><img src="img/sanketsukai.svg" alt="三結會" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://sangenjaya-mf.com/2026/sponsor-sanketsukai.svg'}else{this.replaceWith(Object.assign(document.createElement('b'),{textContent:'三結會'}))}"></span>
           三軒茶屋の商店会
         </div>
       </div>
@@ -248,20 +268,7 @@ footer a{color:var(--dim)}
     <div class="feats" id="feats"></div>
     <p class="howline">押すと SMF の LINE のトークが開き、文字が入った状態になります。<b>そのまま送信</b>すると、カードが届きます。友だち追加がまだの方は <a href="#" id="addFriend">こちら</a> から。</p>
 
-    <details class="crew" id="crew">
-      <summary>ボランティア・協力店の方へ</summary>
-      <div class="in">
-        <div>
-          <h3>ボランティア（登録済みの方）</h3>
-          <div class="row" id="crewStaff"></div>
-        </div>
-        <div>
-          <h3>協力店のスタッフ（SANCHA NIGHT LOOP）</h3>
-          <div class="row" id="crewPartner"></div>
-        </div>
-        <p>中身が出るのは、運営に登録された方だけです。ほかの方が押すと、来場者の使い方が届きます。トーク画面の下のメニューも、役割ごとに切り替わっています。</p>
-      </div>
-    </details>
+    <div id="crewBox"></div>
   </section>
 
   <!-- タイムテーブル -->
@@ -284,6 +291,7 @@ footer a{color:var(--dim)}
   <!-- SANCHA NIGHT LOOP（スタンプラリー） -->
   <section class="tab" id="tab-loop" aria-labelledby="t-loop">
     <img class="loophead" src="img/loop-header.jpg" alt="SANCHA NIGHT LOOP" onerror="this.hidden=true">
+    <div class="daishi" id="daishi"><p class="note" style="margin:0">あなたの台紙を読み込んでいます…</p></div>
     <h2><span class="en">NIGHT LOOP</span>夜の協力店をめぐるスタンプラリー</h2>
     <div class="facts">
       <div><small>パス</small><b>¥3,000</b></div>
@@ -300,6 +308,7 @@ footer a{color:var(--dim)}
       <li><span>達成の特典は、オリジナルTシャツ<small>当日ではなく後日、FRIENDS bar &amp; lounge でお渡しします。受け取りの期間は決まり次第お知らせします</small></span></li>
     </ol>
     <div style="margin-top:12px"><a class="btn primary wide" id="loopBtn" href="#">LINEで台紙を開く</a></div>
+    <button class="share" type="button" data-share="loop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>一緒にまわる人を誘う</button>
 
     <h2><span class="en">STORES</span>協力店</h2>
     <div class="stores" id="stores"></div>
@@ -356,6 +365,7 @@ footer a{color:var(--dim)}
     <p class="note">おひねりの受付は 11月8日（日）まで。順位は、運営が入金を確かめた応援の合計で決まります。金額は表示しません。ランキングに載せないことも選べます。</p>
     <div class="upd" id="upd"></div>
     <div style="margin-top:14px"><a class="btn primary wide" id="ouenBtn" href="#" target="_blank" rel="noopener">LINEでおひねりを投げる</a></div>
+    <button class="share" type="button" data-share="quest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>ボス戦に仲間を呼ぶ</button>
   </section>
 
   <footer>
@@ -382,6 +392,7 @@ footer a{color:var(--dim)}
  *   OA_ID    … SMF の公式アカウントのID（@から）。GASから届けばそちらを使う
  *   MAP_IMAGE… 会場MAPの画像（data/map.png など）。空なら「準備中」と会場の一覧
  * ========================================================================== */
+const RECRUIT = true; // ボランティアスタッフ募集のカードを出す（募集を締めたら false）
 const CONFIG = { LIFF_ID: '2011757428-QGPFSEDi', GAS_URL: 'https://script.google.com/macros/s/AKfycbwNu0dmIaRvZva1bhMtjrEJ-8yXBjInQIC6ULOT0zPoR6GgO6ZYrXHAYzOhX-6uz69v/exec', OA_ID: '@995akvig', MAP_IMAGE: '' };
 const EVENT_DAY = '2026-11-07';
 const BAND = { DAY: ['DAY', '--day'], CROSSOVER: ['CROSSOVER', '--cross'], NIGHT: ['NIGHT', '--night'], SPECIAL: ['SPECIAL LIVE', '--special'] };
@@ -445,8 +456,6 @@ function renderHome() {
     return `<a class="feat" style="--c:var(${f.c})" href="${esc(f.cmd ? oaMsg(f.cmd) : url)}" ${attr}><b>${esc(f.t)}</b><span>${esc(f.d)}</span><em>${esc(f.go)} →</em></a>`;
   }).join('');
   const btn = (label, url, primary) => `<a class="btn${primary ? ' primary' : ''}" href="${esc(url)}" data-line="${esc(url)}">${esc(label)}</a>`;
-  $('#crewStaff').innerHTML = btn('自分のシフト', oaMsg('#シフト'), 1) + btn('アンケート', oaMsg('#アンケート')) + btn('目安箱', oaMsg('#目安箱 ')) + btn('使い方', oaMsg('#使い方'));
-  $('#crewPartner').innerHTML = btn('QRを読む', 'https://line.me/R/nv/QRCodeReader', 1) + btn('使い方', oaMsg('#使い方')) + btn('はじめての登録', oaMsg('#協力店 '));
   const af = $('#addFriend'); af.href = `https://line.me/R/ti/p/${encodeURIComponent(oaId())}`; af.dataset.line = af.href;
 }
 
@@ -466,9 +475,10 @@ function loadLiff() {
 }
 const inLine = () => !!(window.liff && liff.isInClient && liff.isInClient());
 function qrSvg(text) { const q = qrcode(0, 'M'); q.addData(text); q.make(); return q.createSvgTag({ cellSize: 6, margin: 3, scalable: true }); }
-function wallet(html) { $('#wcard').innerHTML = html; }
+function wallet(html) { $('#wcard').innerHTML = html; renderDaishi(); renderCrew(); }
 function renderMe() {
   const d = ME;
+  renderDaishi(); renderCrew();
   const t0 = d.from ? new Date(d.from) : null, now = nowJst();
   const before = t0 && now < t0;
   const dots = (d.spots || []).map(x => `<i class="${x.on ? 'on' : ''}" title="${esc(x.name)}"></i>`).join('');
@@ -478,11 +488,45 @@ function renderMe() {
     <div class="prog">${d.done ? '<b>達成！</b> Tシャツの受け取りは［台紙］から' : `スタンプ <b>${d.got} / ${d.goal}</b>店 ${dots}`}</div>
     <div class="lbl">${before ? 'ご縁はいまから、スタンプは 11/7（土）13:00 から。' : ''}QRは開いているあいだ自動で新しくなります（${esc(fmtClock(new Date()))} 更新）</div>`);
 }
+/* ---------- 役割ごとの枠：ボランティア・協力店には自分のボタン、ほかの人には募集の案内 ---------- */
+function renderCrew() {
+  const el = $('#crewBox'); if (!el) return;
+  const role = ME && !ME.sample ? ME.role : '';
+  const btn = (label, url, primary) => `<a class="btn${primary ? ' primary' : ''}" href="${esc(url)}" data-line="${esc(url)}">${esc(label)}</a>`;
+  const box = (title, inner) => `<div class="daishi"><h3 style="margin:0 0 8px;font-size:15px">${title}</h3>${inner}</div>`;
+  const staff = box('ボランティアの方へ', `<div class="c-foot" style="flex-wrap:wrap;margin:0">${btn('自分のシフト', oaMsg('#シフト'), 1)}${btn('アンケート', oaMsg('#アンケート'))}${btn('目安箱', oaMsg('#目安箱 '))}${btn('使い方', oaMsg('#使い方'))}</div>`);
+  const partner = box('協力店のスタッフの方へ', `<div class="c-foot" style="flex-wrap:wrap;margin:0">${btn('QRを読む', 'https://line.me/R/nv/QRCodeReader', 1)}${btn('使い方', oaMsg('#使い方'))}</div>`);
+  if (role === 'staff') return el.innerHTML = staff;
+  if (role === 'partner') return el.innerHTML = partner;
+  if (role === 'admin') return el.innerHTML = staff + partner;
+  if (role === 'member') return el.innerHTML = '';
+  if (role === 'pending') return el.innerHTML = box('登録を申請中です', '<p class="note" style="margin:0">運営が承認すると、LINEのメニューがボランティア用に切り替わり、ここにシフトのボタンが出ます。</p>');
+  if (!RECRUIT) return el.innerHTML = '';
+  el.innerHTML = box('<span class="en" style="color:var(--green);font-size:12px;letter-spacing:.2em;display:block">VOLUNTEER</span>ボランティアスタッフ募集',
+    `<p style="margin:0;font-size:13.5px">当日のSMFを一緒につくってくれる方を募集しています。持ち場と時間は、登録のあとLINEでご案内します。</p>
+     <ol class="howto" style="margin-top:10px">
+       <li><span>下のボタンでLINEを開き、「#登録」のあとにお名前を入れて送る<small>例：#登録 三茶 太郎</small></span></li>
+       <li><span>「どちらで参加しますか？」に［スタッフ・ボランティア］と答える</span></li>
+       <li><span>運営が承認すると、メニューが切り替わり、シフトが見られるようになります</span></li>
+     </ol>
+     <div style="margin-top:10px">${btn('LINEで応募する', oaMsg('#登録 '), 1).replace('class="btn primary"', 'class="btn primary wide"')}</div>`);
+}
+function renderDaishi() {
+  const el = $('#daishi'); if (!el) return;
+  const d = ME;
+  if (!d) { el.innerHTML = `<p class="note" style="margin:0">LINEで開くと、ここにあなたの台紙が出ます。</p>`; return; }
+  const img = f => d.img ? d.img + f : '';
+  const cells = (d.spots || []).map(x => `<div class="cell${x.on ? ' on' : ''}">${img(x.id + (x.on ? '.png' : '_off.png')) && x.id ? `<img src="${esc(img(x.id + (x.on ? '.png' : '_off.png')))}" alt="${esc(x.name)}${x.on ? '（押した）' : ''}" loading="lazy">` : `<span class="code" style="--c:var(${x.on ? '--pink' : '--line'})">${x.on ? '✓' : ''}</span>`}${esc(x.name)}</div>`).join('')
+    + (d.others ? `<div class="cell on"><img src="${esc(img('smf.png'))}" alt="その他のお店" onerror="this.onerror=null;this.src='img/smf-logo.png'">その他 ${d.others}店</div>` : '');
+  el.innerHTML = `<div class="hd"><b>${d.got}</b><span>/ ${d.goal}店</span>${d.done ? '<em class="done">達成！</em>' : `<em>あと${Math.max(d.goal - d.got, 0)}店</em>`}</div>
+    <div class="cells">${cells}</div>
+    <p class="note">${d.done ? 'Tシャツの受け取りは、LINEの台紙（「#ラリー」）のQRをFRIENDSで見せてください。' : 'スタンプは、お店のスタッフがあなたのQR（ホームのいちばん上）を読んで押します。押したあとは、開き直すと新しくなります。'}${d.sample ? '（サンプル表示）' : ''}</p>`;
+}
 const fmtClock = d => d.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Tokyo' });
 async function loadMe(force) {
   if (!force && ME && Date.now() - ME_AT < 4 * 60000) return; // ご縁のQRは10分で切れるので、4分ごとに作り直す
   if (!CONFIG.LIFF_ID && !CONFIG.GAS_URL) { // 見本（LINEにつながっていないとき）：サンプルのQR
-    ME = { sample: true, code: 'SAMPLE', qr: 'https://sangenjaya-mf.com/', goal: 4, got: 2, done: false, spots: [{ on: true }, { on: true }, { on: false }, { on: false }, { on: false }], from: '2026-11-07T13:00:00+09:00' };
+    ME = { sample: true, code: 'SAMPLE', qr: 'https://sangenjaya-mf.com/', goal: 4, got: 2, done: false, spots: [{ id: 'borrachos', name: 'BORRACHOS', on: true }, { id: 'friends', name: 'FRIENDS', on: true }, { id: 'niwars', name: "Niwar's", on: false }, { id: 'umechan', name: '梅ちゃん', on: false }, { id: 'tengu', name: '天狗食堂', on: false }], img: 'https://hiromitsu81.github.io/smf-assets/rally/', from: '2026-11-07T13:00:00+09:00' };
     return renderMe();
   }
   const ok = await loadLiff();
@@ -517,13 +561,58 @@ async function scanQr() {
 function bindWallet() {
   const on = (id, fn) => { const a = $(id); a.onclick = e => { e.preventDefault(); fn(); }; };
   on('#actScan', scanQr);
-  on('#actCard', () => openLine(oaMsg('#ラリー')));
+  on('#actCard', () => { showTab('loop'); loadMe(true); });
   on('#actBook', () => openLine(oaMsg('#図鑑')));
   on('#actQuest', () => showTab('quest'));
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') loadMe(); });
   setInterval(() => { if (document.visibilityState === 'visible' && $('#tab-home').classList.contains('on')) loadMe(); }, 60000);
   loadMe(true);
 }
+
+/* ---------- 友だちを誘う：LINEの友だち・グループを選んでカードを送る（送るのは本人。通数は使わない） ---------- */
+const APP_URL = () => `https://miniapp.line.me/${CONFIG.LIFF_ID || '2011757428-QGPFSEDi'}`;
+const absUrl = f => new URL(f, location.href).href;
+function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2600); }
+function flexCard(alt, o) {
+  const T = (text, x) => Object.assign({ type: 'text', text: text, wrap: true, color: '#F5F5F5', size: 'sm' }, x || {});
+  return { type: 'flex', altText: alt, contents: { type: 'bubble', size: 'kilo',
+    styles: { hero: { backgroundColor: '#0A0A0A' }, body: { backgroundColor: '#151515' }, footer: { backgroundColor: '#151515' } },
+    hero: { type: 'image', url: o.img, size: 'full', aspectRatio: o.ratio || '2:1', aspectMode: o.fit || 'cover' },
+    body: { type: 'box', layout: 'vertical', spacing: 'sm', contents: [
+      T(o.kicker, { size: 'xxs', color: o.color || '#EC7D8F', weight: 'bold' }),
+      T(o.title, { size: 'lg', weight: 'bold' })].concat(o.lines.map(l => T(l, { color: '#C8C8C8' }))) },
+    footer: { type: 'box', layout: 'vertical', contents: [{ type: 'button', style: 'primary', color: o.color || '#EC7D8F', height: 'sm',
+      action: { type: 'uri', label: o.btn, uri: o.url } }] } } };
+}
+function shareMsg(kind) {
+  if (kind === 'loop') return { text: 'SMF 2026 の夜、SANCHA NIGHT LOOP 一緒にまわろう！', msg: flexCard('SANCHA NIGHT LOOP 一緒にまわろう', {
+    img: absUrl('img/loop-header.jpg'), kicker: 'SANCHA NIGHT LOOP', title: '夜の協力店を一緒にまわろう',
+    lines: ['11/7（土）13:00〜翌5:00', 'パス ¥3,000・5店のうち4店で達成', '夜の会場は20歳以上'], btn: 'めぐり方と協力店を見る', url: APP_URL() + '?tab=loop' }) };
+  if (kind === 'quest') {
+    const q = QUEST, st = q && q.stage;
+    const lines = st ? [st.clear ? 'ボスを全部たおしました！' : `いまのボス：${st.name}（のこり ${Math.round(st.hpPct)}%）`, `応援した人 ${q.people}人`] : ['みんなのおひねりで、ボスを順にたおしていきます'];
+    return { text: 'SMF 2026 おひねりクエスト、ボス戦に力を貸して！', msg: flexCard('SMF おひねりクエスト', {
+      img: absUrl('img/smf-share.jpg'), ratio: '20:13', kicker: 'OHINERI QUEST', title: 'ボス戦に力を貸して！', color: '#379BD7',
+      lines: lines.concat(['受付は 11/8（日）まで']), btn: 'ゲージを見る', url: APP_URL() + '?tab=quest' }) };
+  }
+  return { text: 'SMF 2026（11/7 三軒茶屋）一緒に行こう！', msg: flexCard('SMF 2026 一緒に行こう', {
+    img: 'https://sangenjaya-mf.com/ogp_smf2026.png', ratio: '120:63', kicker: 'SANGENJAYA ART MUSIC FESTIVAL 2026', title: '11/7（土）三茶で一緒に遊ぼう', color: '#8DC21F',
+    lines: ['街じゅうの会場で、昼から翌朝まで', 'タイムテーブル・スタンプラリー・縁日のご縁'], btn: '当日ガイドを開く', url: APP_URL() }) };
+}
+async function share(kind) {
+  const m = shareMsg(kind);
+  const ok = await loadLiff();
+  if (ok && liff.isApiAvailable && liff.isApiAvailable('shareTargetPicker')) {
+    try {
+      if (!liff.isLoggedIn()) { liff.login({ redirectUri: location.href }); return; }
+      const r = await liff.shareTargetPicker([m.msg], { isMultiple: true });
+      if (r) toast('送りました');
+      return;
+    } catch (e) { /* 下の方法で */ }
+  }
+  openLine('https://line.me/R/share?text=' + encodeURIComponent(m.text + '\n' + APP_URL())); // LINEの外：文とURLで送る
+}
+document.addEventListener('click', e => { const b = e.target.closest('[data-share]'); if (b) { e.preventDefault(); share(b.dataset.share); } });
 
 /* ---------- SANCHA NIGHT LOOP：協力店（venues.json の loop が true の会場） ---------- */
 function renderLoop() {
@@ -613,7 +702,7 @@ function renderMap() {
 }
 
 /* ---------- おひねりクエスト ---------- */
-let OA = CONFIG.OA_ID;
+let OA = CONFIG.OA_ID, QUEST = null;
 async function loadQuest() {
   let d = null, sample = false;
   if (CONFIG.GAS_URL) {
@@ -627,6 +716,7 @@ async function loadQuest() {
   }
   if (!d) { try { d = await (await fetch('data/ouen-sample.json')).json(); } catch (e) { d = SAMPLE_OUEN; } sample = true; }
   if (d.oaId) OA = d.oaId;
+  QUEST = sample || d.sample ? null : d;
   renderQuest(d, sample || d.sample);
 }
 function renderQuest(d, sample) {
@@ -659,6 +749,7 @@ function showTab(name) {
   document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
   window.scrollTo(0, 0);
   if (name === 'quest') loadQuest();
+  if (name === 'loop' || name === 'home') loadMe();
   try { history.replaceState(null, '', '#' + name); } catch (e) { /* 表示は変わる */ }
 }
 document.querySelector('nav.tabs').onclick = e => { const b = e.target.closest('button'); if (b) showTab(b.dataset.tab); };
@@ -668,7 +759,8 @@ async function boot() {
   try { VENUES = (await (await fetch('data/venues.json', { cache: 'no-store' })).json()).venues; } catch (e) { VENUES = window.VENUES_INLINE || []; }
   try { $('#src').textContent = '出どころ：公式サイト sangenjaya-mf.com（2026-09-27時点）。変更があればこの画面を更新します。'; } catch (e) { }
   renderHome(); renderLoop(); renderFilters(); renderTimetable(); renderMap(); renderStatus();
-  const first = (location.hash || '').replace('#', '');
+  const qs = new URLSearchParams(location.search), st = qs.get('liff.state');
+  const first = qs.get('tab') || (st ? new URLSearchParams(st.replace(/^[^?]*\?/, '')).get('tab') : '') || (location.hash || '').replace('#', '');
   if (['home', 'time', 'loop', 'ennichi', 'quest'].indexOf(first) >= 0) showTab(first); else if (first === 'map') showTab('time');
   setInterval(() => { renderStatus(); renderTimetable(); renderLoop(); }, 60000);
   setInterval(() => { if ($('#tab-quest').classList.contains('on')) loadQuest(); }, 60000);
