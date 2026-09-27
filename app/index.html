@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SMF 2026 当日ガイド</title>
-<meta name="description" content="SANGENJAYA ART MUSIC FESTIVAL 2026 の来場者向けガイド。タイムテーブル・会場・おひねりクエスト。">
+<meta name="description" content="SANGENJAYA ART MUSIC FESTIVAL 2026 の当日ガイド。LINEでできることの入口・タイムテーブル・会場・おひねりクエスト。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap">
@@ -29,9 +29,7 @@ a{color:inherit}
 /* 見出し */
 header{position:sticky;top:0;z-index:5;background:rgba(10,10,10,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 header .wrap{display:flex;align-items:center;gap:12px;padding-block:10px}
-.logo{display:flex;gap:4px}
-.logo i{width:10px;height:10px;border-radius:50%;display:block}
-.logo i:nth-child(1){background:var(--pink)} .logo i:nth-child(2){background:var(--green)} .logo i:nth-child(3){background:var(--blue)}
+.logo{width:36px;height:36px;flex:0 0 auto;display:block}
 .brand{font-size:19px;font-weight:700;line-height:1}
 .brand small{display:block;font-size:10px;color:var(--dim);letter-spacing:.12em;margin-top:3px;font-weight:500}
 .date{margin-left:auto;text-align:right;font-size:13px;line-height:1.15}
@@ -133,23 +131,50 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .sample{display:inline-block;font-size:11px;color:#1A0A0D;background:#F3C969;border-radius:6px;padding:2px 8px;margin-left:8px;vertical-align:2px}
 .upd{font-size:11px;color:var(--faint);text-align:right;margin-top:6px}
 
+/* ホーム */
+.hero{display:flex;align-items:center;gap:16px;margin-top:16px;padding:16px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line)}
+.hero img.big{width:84px;height:84px;flex:0 0 auto}
+.hero h1{margin:0;font-size:20px;line-height:1.3;text-wrap:balance}
+.hero p{margin:4px 0 0;font-size:12.5px;color:var(--dim)}
+.host{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:11px;color:var(--dim)}
+.host .plate{background:#fff;border-radius:8px;padding:5px 10px;display:inline-flex;align-items:center;min-height:30px}
+.host .plate img{height:22px;width:auto;display:block}
+.host .plate b{color:#111;font-size:13px}
+.feats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.feat{display:flex;flex-direction:column;gap:6px;text-align:left;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:12px;padding:12px;color:var(--text);font:inherit;text-decoration:none;cursor:pointer}
+.feat b{font-size:14.5px;line-height:1.3}
+.feat span{font-size:12px;color:var(--dim);line-height:1.5;flex:1}
+.feat em{font-style:normal;font-size:11.5px;font-weight:700;color:var(--c)}
+.feat:active{transform:scale(.98)}
+.howline{font-size:12px;color:var(--dim);background:var(--panel2);border:1px dashed var(--line);border-radius:12px;padding:10px 12px;margin-top:10px}
+details.crew{margin-top:10px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+details.crew summary{cursor:pointer;padding:14px;font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details.crew summary::-webkit-details-marker{display:none}
+details.crew summary::after{content:"＋";margin-left:auto;color:var(--dim)}
+details.crew[open] summary::after{content:"－"}
+details.crew .in{padding:0 14px 14px;display:grid;gap:12px}
+.crew h3{margin:0;font-size:13px;color:var(--dim);font-weight:500}
+.crew .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.crew p{margin:0;font-size:12px;color:var(--dim)}
+
 /* 下のタブ */
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:rgba(14,14,14,.96);border-top:1px solid var(--line);
   padding-bottom:env(safe-area-inset-bottom,0px);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-nav.tabs .wrap{display:grid;grid-template-columns:repeat(3,1fr)}
+nav.tabs .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
 nav.tabs button{background:none;border:0;color:var(--dim);font:inherit;font-size:11px;padding:8px 0 10px;display:grid;justify-items:center;gap:3px;cursor:pointer}
 nav.tabs button svg{width:24px;height:24px}
 nav.tabs button[aria-selected="true"]{color:var(--text)}
 nav.tabs button[aria-selected="true"] svg{color:var(--pink)}
 footer{color:var(--faint);font-size:11px;padding:8px 0 20px}
 footer a{color:var(--dim)}
-@media (min-width:600px){ .cards{grid-template-columns:1fr 1fr} .g-axis,.g-row{grid-template-columns:150px 1fr} }
+@media (max-width:360px){ .feats{grid-template-columns:1fr} }
+@media (min-width:600px){ .feats{grid-template-columns:1fr 1fr 1fr} .cards{grid-template-columns:1fr 1fr} .g-axis,.g-row{grid-template-columns:150px 1fr} }
 </style>
 </head>
 <body>
 <header>
   <div class="wrap">
-    <div class="logo" aria-hidden="true"><i></i><i></i><i></i></div>
+    <img class="logo" src="img/smf-logo.png" alt="SMF 2026 ロゴ">
     <div class="brand en">SMF 2026<small>SANGENJAYA ART MUSIC FESTIVAL</small></div>
     <div class="date en"><b>11.7</b>SAT</div>
   </div>
@@ -158,8 +183,42 @@ footer a{color:var(--dim)}
 <main class="wrap">
   <div class="status" id="status"><span class="dot off"></span><span>読み込み中…</span></div>
 
+  <!-- ホーム：LINEでできることの入口（押すと公式アカウントのトークが開き、いまのカードが出る） -->
+  <section class="tab on" id="tab-home" aria-labelledby="t-home">
+    <div class="hero">
+      <img class="big" src="img/smf-logo.png" alt="">
+      <div>
+        <h1>SMF 2026 当日ガイド</h1>
+        <p>SANGENJAYA ART MUSIC FESTIVAL 2026｜11月7日（土）11:00〜翌朝</p>
+        <div class="host">主催
+          <span class="plate"><img src="https://sangenjaya-mf.com/2026/sponsor-sanketsukai.svg" alt="三結會" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'三結會'}))"></span>
+          三軒茶屋の商店会
+        </div>
+      </div>
+    </div>
+
+    <h2><span class="en">PLAY</span>LINEであそぶ・参加する</h2>
+    <div class="feats" id="feats"></div>
+    <p class="howline">押すと SMF の LINE のトークが開き、文字が入った状態になります。<b>そのまま送信</b>すると、カードが届きます。友だち追加がまだの方は <a href="#" id="addFriend">こちら</a> から。</p>
+
+    <details class="crew" id="crew">
+      <summary>ボランティア・協力店の方へ</summary>
+      <div class="in">
+        <div>
+          <h3>ボランティア（登録済みの方）</h3>
+          <div class="row" id="crewStaff"></div>
+        </div>
+        <div>
+          <h3>協力店のスタッフ（SANCHA NIGHT LOOP）</h3>
+          <div class="row" id="crewPartner"></div>
+        </div>
+        <p>中身が出るのは、運営に登録された方だけです。ほかの方が押すと、来場者の使い方が届きます。トーク画面の下のメニューも、役割ごとに切り替わっています。</p>
+      </div>
+    </details>
+  </section>
+
   <!-- タイムテーブル -->
-  <section class="tab on" id="tab-time" aria-labelledby="t-time">
+  <section class="tab" id="tab-time" aria-labelledby="t-time">
     <h2><span class="en">TIMETABLE</span>時間と会場</h2>
     <div class="chips" id="filters" role="group" aria-label="絞り込み"></div>
     <div class="gantt" id="gantt"></div>
@@ -196,7 +255,8 @@ footer a{color:var(--dim)}
 
 <nav class="tabs" aria-label="画面の切り替え">
   <div class="wrap" role="tablist">
-    <button role="tab" id="t-time" aria-selected="true" data-tab="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>タイムテーブル</button>
+    <button role="tab" id="t-home" aria-selected="true" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 11l8-6.5 8 6.5"/><path d="M6.5 9.5V19h11V9.5"/><path d="M10 19v-5h4v5"/></svg>ホーム</button>
+    <button role="tab" id="t-time" aria-selected="false" data-tab="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>タイムテーブル</button>
     <button role="tab" id="t-map" aria-selected="false" data-tab="map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>会場MAP</button>
     <button role="tab" id="t-quest" aria-selected="false" data-tab="quest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M8 4h8l-1 3H9z"/><path d="M7 7h10a4 4 0 0 1 0 8H7a4 4 0 0 1 0-8z"/><path d="M9 15l-1 5h8l-1-5"/></svg>おひねり</button>
   </div>
@@ -242,6 +302,42 @@ document.addEventListener('click', e => {
   const a = e.target.closest('a[target="_blank"]');
   if (a && window.liff && liff.isInClient && liff.isInClient()) { e.preventDefault(); openExternal(a.href); }
 });
+/* ---------- 公式アカウントへ（LINEの中なら、そのままトークが開く） ---------- */
+const oaId = () => OA || CONFIG.OA_ID;
+const oaMsg = text => `https://line.me/R/oaMessage/${encodeURIComponent(oaId())}/?${encodeURIComponent(text)}`;
+function openLine(url) {
+  if (window.liff && liff.isInClient && liff.isInClient()) { location.href = url; return; } // LINEの中：line.me/R はLINEが受け取る
+  window.open(url, '_blank', 'noopener');
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-line]'); if (!b) return;
+  e.preventDefault(); e.stopPropagation(); openLine(b.dataset.line);
+}, true);
+
+/* v3.3 の来場者メニュー（8つ）と同じ入口。送る文字は BOT の決まった言葉 */
+const FEATS = [
+  { c: '--pink', t: 'SANCHA NIGHT LOOP', d: '夜の協力店をめぐるスタンプラリー。台紙と「わたしのQR」を出します', cmd: '#ラリー', go: '台紙を開く' },
+  { c: '--green', t: '縁日のご縁', d: '会場で会った人とQRを読み合って、ご縁を集める図鑑。名前や連絡先は出ません', cmd: '#ご縁', go: 'ご縁を開く' },
+  { c: '--pink', t: 'おひねりクエスト', d: 'SMFへの応援（おひねり）。みんなの合計でボスを倒していきます', cmd: '#おひねり', go: 'おひねりを投げる' },
+  { c: '--blue', t: 'SMF選手権', d: 'SMFと三茶のクイズ。何問答えられるか挑戦', cmd: '#SMF選手権', go: 'クイズを始める' },
+  { c: '--green', t: '参加グループ', d: 'だれでも入れるSMFのオープンチャット。ニックネームで参加できます', url: 'OPENCHAT', go: 'オープンチャットへ' },
+  { c: '--blue', t: '友だちをSMFに招待', d: 'あなた専用の紹介リンクを出します。LINEで友だちに送れます', cmd: '#友だちをSMFに招待', go: '招待リンクを出す' },
+  { c: '--white', t: '使い方（来場者）', d: 'LINEでできることを、カードでまとめて見られます', cmd: '#使い方', go: '使い方を見る' },
+  { c: '--white', t: '公式サイト', d: '出演者・会場・チケットのくわしい情報', url: 'https://sangenjaya-mf.com/', go: 'サイトを開く' }
+];
+const OPENCHAT_URL = 'https://line.me/ti/g2/w4a-G0_TXiAly6lLUN7XHOMrzyh-6T-6yR6fQg';
+function renderHome() {
+  $('#feats').innerHTML = FEATS.map(f => {
+    const url = f.url === 'OPENCHAT' ? OPENCHAT_URL : f.url;
+    const attr = f.cmd ? `data-line="${esc(oaMsg(f.cmd))}"` : url.indexOf('line.me') >= 0 ? `data-line="${esc(url)}"` : `target="_blank" rel="noopener"`;
+    return `<a class="feat" style="--c:var(${f.c})" href="${esc(f.cmd ? oaMsg(f.cmd) : url)}" ${attr}><b>${esc(f.t)}</b><span>${esc(f.d)}</span><em>${esc(f.go)} →</em></a>`;
+  }).join('');
+  const btn = (label, url, primary) => `<a class="btn${primary ? ' primary' : ''}" href="${esc(url)}" data-line="${esc(url)}">${esc(label)}</a>`;
+  $('#crewStaff').innerHTML = btn('自分のシフト', oaMsg('#シフト'), 1) + btn('アンケート', oaMsg('#アンケート')) + btn('目安箱', oaMsg('#目安箱 ')) + btn('使い方', oaMsg('#使い方'));
+  $('#crewPartner').innerHTML = btn('QRを読む', 'https://line.me/R/nv/QRCodeReader', 1) + btn('使い方', oaMsg('#使い方')) + btn('はじめての登録', oaMsg('#協力店 '));
+  const af = $('#addFriend'); af.href = `https://line.me/R/ti/p/${encodeURIComponent(oaId())}`; af.dataset.line = af.href;
+}
+
 const mapUrl = v => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(v.address + ' ' + v.name);
 
 /* ---------- 上の知らせ ---------- */
@@ -351,7 +447,7 @@ function renderQuest(d, sample) {
   const t = new Date(d.updated);
   $('#upd').textContent = sample ? 'サンプルの数字です（本番の数字ではありません）' : `更新 ${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}（1分ごと）`;
   const btn = $('#ouenBtn');
-  if (OA) { btn.href = `https://line.me/R/oaMessage/${encodeURIComponent(OA)}/?${encodeURIComponent('#おひねり')}`; btn.removeAttribute('aria-disabled'); }
+  if (OA) { btn.href = oaMsg('#おひねり'); btn.dataset.line = btn.href; btn.removeAttribute('aria-disabled'); }
   else { btn.removeAttribute('href'); btn.setAttribute('aria-disabled', 'true'); btn.textContent = 'LINEで「#おひねり」と送ってください'; }
 }
 const SAMPLE_OUEN = { sample: true, title: 'SMF おひねりクエスト', total: 0, people: 0, stage: { i: 0, name: '三茶の門番', goal: 100000, left: 100000, hpPct: 100, clear: false }, bosses: [{ name: '三茶の門番', goal: 100000 }], ranking: [], updated: new Date().toISOString() };
@@ -370,9 +466,9 @@ document.querySelector('nav.tabs').onclick = e => { const b = e.target.closest('
 async function boot() {
   try { VENUES = (await (await fetch('data/venues.json', { cache: 'no-store' })).json()).venues; } catch (e) { VENUES = window.VENUES_INLINE || []; }
   try { $('#src').textContent = '出どころ：公式サイト sangenjaya-mf.com（2026-09-27時点）。変更があればこの画面を更新します。'; } catch (e) { }
-  renderFilters(); renderTimetable(); renderMap(); renderStatus();
+  renderHome(); renderFilters(); renderTimetable(); renderMap(); renderStatus();
   const first = (location.hash || '').replace('#', '');
-  if (['time', 'map', 'quest'].indexOf(first) >= 0) showTab(first);
+  if (['home', 'time', 'map', 'quest'].indexOf(first) >= 0) showTab(first);
   setInterval(() => { renderStatus(); renderTimetable(); }, 60000);
   setInterval(() => { if ($('#tab-quest').classList.contains('on')) loadQuest(); }, 60000);
   if (CONFIG.LIFF_ID) {
