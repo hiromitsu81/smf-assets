@@ -108,6 +108,28 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .quest{background:linear-gradient(180deg,#1B1012,#141414 60%);border:1px solid #3A2226;border-radius:var(--r);padding:16px}
 .q-k{font:500 12px Oswald,sans-serif;letter-spacing:.24em;color:var(--pink)}
 .q-boss{font-size:22px;font-weight:700;margin:4px 0 10px}
+/* ボスの絵（v1.7）。img/boss/1.png〜5.png を置くと出る。なければ影絵 */
+.bossart{position:relative;display:grid;place-items:center;height:200px;margin:4px 0 12px;border-radius:14px;background:radial-gradient(60% 70% at 50% 60%,rgba(236,125,143,.28),transparent 70%),#140C0E;overflow:hidden}
+.bossart img{max-height:190px;max-width:90%;object-fit:contain;animation:bossbob 2.4s ease-in-out infinite;filter:drop-shadow(0 10px 18px rgba(0,0,0,.6))}
+.bossart .sil{font:700 110px/1 "Hiragino Mincho ProN","Yu Mincho",serif;color:#2A1A1E;text-shadow:0 0 30px rgba(236,125,143,.35);animation:bossbob 2.4s ease-in-out infinite}
+.bossart small{position:absolute;right:10px;bottom:8px;font-size:10px;color:var(--faint)}
+.bossart.hit img,.bossart.hit .sil{animation:bosshit .5s ease}
+.bossart.down img{filter:grayscale(1) brightness(.5);animation:none;transform:rotate(-8deg) translateY(10px)}
+@keyframes bossbob{50%{transform:translateY(-6px)}}
+@keyframes bosshit{20%{transform:translateX(-8px) rotate(-3deg);filter:brightness(2)}40%{transform:translateX(8px) rotate(3deg)}60%{transform:translateX(-4px)}}
+@media (prefers-reduced-motion:reduce){.bossart img,.bossart .sil{animation:none}}
+.steps li .bth{width:22px;height:22px;object-fit:contain;border-radius:4px;vertical-align:-6px}
+/* QRを読んだ結果（v1.7） */
+.rs{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.72);display:flex;align-items:flex-end;justify-content:center;padding:16px}
+.rs .in{width:100%;max-width:440px;max-height:86vh;overflow:auto;background:#151515;border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:12px;animation:rsup .3s ease}
+@keyframes rsup{from{transform:translateY(24px);opacity:0}}
+.rs .rc{background:#0E0E0E;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.rs .rc img{display:block;width:100%;max-height:260px;object-fit:contain;background:#fff}
+.rs .rc .b{padding:12px 14px;display:grid;gap:4px}
+.rs .rc .k{font:500 11px Oswald,sans-serif;letter-spacing:.2em;color:var(--pink)}
+.rs .rc h3{margin:0;font-size:18px}
+.rs .rc p{margin:0;font-size:13px;color:#C8C8C8;white-space:pre-wrap}
+.rs .busy{text-align:center;color:var(--dim);font-size:14px;padding:20px 0}
 .hp{height:18px;border-radius:9px;background:#2A2A2A;overflow:hidden;display:flex}
 .hp b{display:block;height:100%;background:repeating-linear-gradient(135deg,rgba(236,125,143,.6) 0 6px,rgba(236,125,143,.25) 6px 12px)}
 .hplg{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--dim);margin-top:6px}
@@ -405,14 +427,14 @@ footer a{color:var(--dim)}
     </div>
     <h2><span class="en">HOW TO</span>遊び方</h2>
     <ol class="howto">
-      <li><span>LINEで「#ご縁」を送って、カードと「わたしのQR」を出す</span></li>
-      <li><span>話した相手とおたがいOKなら、どちらか1人が相手のQRを読んで送る<small>LINEのQRリーダーで読むと、送る文字が入った状態になります</small></span></li>
-      <li><span>「ご縁あり」ならガチャを1回。はずれでも「出会いの印」がたまります</span></li>
+      <li><span>見せる人は、当日ガイドのホームのいちばん上の「わたしのQR」を出す</span></li>
+      <li><span>話した相手とおたがいOKなら、どちらか1人が下の［相手のQRを読む］で読む<small>結果はこの画面にその場で出ます。LINEのトークに送る必要はありません</small></span></li>
+      <li><span>「ご縁あり」なら2人ともガチャを1回。読まれた側は、ホームの［ガチャを引く］で引けます。はずれでも「出会いの印」がたまります</span></li>
       <li><span>出たキャラは「#図鑑」で見られる<small>ノーマル8・レア6・激レア4・大当たり1。スタッフや協力店の人とのご縁は、レアが出やすくなります</small></span></li>
     </ol>
     <div class="c-foot" style="flex-wrap:wrap">
-      <a class="btn primary" id="enOpen" href="#">ご縁を開く</a>
-      <a class="btn" id="enScan" href="#">相手のQRを読む</a>
+      <a class="btn primary" id="enScan" href="#">相手のQRを読む</a>
+      <a class="btn" id="enOpen" href="#">LINEでご縁を開く</a>
       <a class="btn" id="enBook" href="#">図鑑を見る</a>
     </div>
     <h2><span class="en">SAFE</span>安心のための決まり</h2>
@@ -443,7 +465,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sanyuikai/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">当日ガイド v1.5</span>
+    <br><span id="ver">当日ガイド v1.7</span>
   </footer>
 </main>
 
@@ -557,6 +579,7 @@ function renderMe() {
   const before = t0 && now < t0;
   const dots = (d.spots || []).map(x => `<i class="${x.on ? 'on' : ''}" title="${esc(x.name)}"></i>`).join('');
   wallet(`<div class="lbl"><b>わたしのQR</b>${d.sample ? '<span class="sample">サンプル表示</span>' : ''}　お店のスタッフにも、ご縁の相手にも</div>
+    ${d.caps ? `<button class="btn primary wide" type="button" onclick="pullGacha()" style="margin:0 0 10px">ご縁のガチャを引く（${d.caps}）</button>` : ''}
     <div class="qr" role="img" aria-label="わたしのQR">${qrSvg(d.qr)}</div>
     <div class="cd">${esc(d.code)}</div>
     <div class="prog">${d.done ? '<b>達成！</b> Tシャツの受け取りは［台紙］から' : `スタンプ <b>${d.got} / ${d.goal}</b>店 ${dots}`}</div>
@@ -710,17 +733,44 @@ async function loadMe(force) {
   if (d && d.error === 'closed') return wallet(`<p class="msg">スタンプラリーと縁日のご縁は、いまは行っていません。</p>`);
   wallet(`<p class="msg">いまQRを読み込めません。少し待ってから開き直すか、LINEのトークで「#ラリー」を送ってください。</p><button class="btn" type="button" onclick="loadMe(true)">もう一度</button>`);
 }
+/* QRを読んだ結果を、ミニアプリの中に出す（v1.7。GAS の api=scan。トークに「#押す」を送ったときと同じ処理） */
+function sheet(html) { let el = $('#rs'); if (!el) { el = document.createElement('div'); el.id = 'rs'; el.className = 'rs'; el.onclick = e => { if (e.target === el) el.remove(); }; document.body.appendChild(el); } el.innerHTML = `<div class="in" role="dialog" aria-modal="true">${html}</div>`; return el; }
+function closeSheet() { const el = $('#rs'); if (el) el.remove(); }
+function cardsHtml(cards) {
+  return (cards || []).map(c => {
+    let t = (c.texts || []).map(x => String(x).replace('相手の方も、次に「#ラリー」を開くと引けます。', '相手の方も、当日ガイドのホームの［ガチャを引く］か「#ラリー」で引けます。'));
+    const k = t.length > 1 && /^[A-Z0-9 &\-!]+$/.test(t[0]) ? t.shift() : '';
+    let h = t.length > 1 ? t.shift() : '';
+    if (k === 'GACHA' && h === 'ガチャ' && t.length >= 2) { const rare = t.shift(); h = `${t.shift()}（${rare}）`; }
+    return `<div class="rc">${c.img ? `<img src="${esc(c.img)}" alt="" onerror="this.remove()">` : ''}<div class="b">${k ? `<div class="k">${esc(k)}</div>` : ''}${h ? `<h3>${esc(h)}</h3>` : ''}${t.map(x => `<p>${esc(x)}</p>`).join('')}</div></div>`;
+  }).join('');
+}
+async function postApi(api, extra) {
+  try { const r = await fetch(CONFIG.GAS_URL, { method: 'POST', body: JSON.stringify(Object.assign({ kind: 'miniapp', api: api, idToken: liff.getIDToken() }, extra || {})) }); return await r.json(); } catch (e) { return null; }
+}
 async function scanQr() {
   const ok = await loadLiff();
   if (ok && inLine() && liff.isApiAvailable && liff.isApiAvailable('scanCodeV2')) {
-    try {
-      const r = await liff.scanCodeV2(); const v = String(r && r.value || '');
-      if (/^https:\/\/line\.me\/R\/oaMessage\//.test(v)) return openLine(v); // SMFのQR：送る文字が入ったトークが開く
-      if (v) { wallet(`<p class="msg">SMFのQRではないようです。<br>相手の「わたしのQR」を読んでください。</p><button class="btn" type="button" onclick="loadMe(true)">わたしのQRに戻る</button>`); }
-      return;
-    } catch (e) { /* 下へ */ }
+    let v = '';
+    try { const r = await liff.scanCodeV2(); v = String(r && r.value || ''); } catch (e) { return openLine('https://line.me/R/nv/QRCodeReader'); }
+    if (!v) return;
+    if (!/^https:\/\/line\.me\/R\/oaMessage\//.test(v)) return sheet(`<p class="msg" style="margin:0">SMFのQRではないようです。相手の「わたしのQR」を読んでください。</p><button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
+    let text = ''; try { text = decodeURIComponent(v.split('?').slice(1).join('?')); } catch (e) { text = ''; }
+    if (!/^[#＃♯]押す/.test(text.trim()) || !CONFIG.GAS_URL || !liff.isLoggedIn()) return openLine(v); // SMFのほかのQR：送る文字が入ったトークが開く
+    sheet('<div class="busy">読みとりました。確かめています…</div>');
+    const d = await postApi('scan', { v: v });
+    if (d && d.ok) { sheet(cardsHtml(d.cards) + `<button class="btn primary wide" type="button" onclick="closeSheet()">閉じる</button><button class="btn wide" type="button" onclick="scanQr()">続けて読む</button>`); loadMe(true); return; }
+    const why = d && d.error === 'too many' ? '続けて読みすぎています。少し時間をおいてください。' : d && d.error === 'closed' ? 'いまはスタンプラリーと縁日のご縁を行っていません。' : 'いまはここで確かめられませんでした。LINEのトークに送って確かめます。';
+    return sheet(`<p class="msg" style="margin:0">${why}</p>${d && (d.error === 'too many' || d.error === 'closed') ? '' : `<a class="btn primary wide" href="${esc(v)}" data-line="${esc(v)}">LINEのトークで送る</a>`}<button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
   }
-  openLine('https://line.me/R/nv/QRCodeReader'); // LINEのQRリーダー
+  openLine('https://line.me/R/nv/QRCodeReader'); // LINEの外：LINEのQRリーダー
+}
+async function pullGacha() {
+  if (!(await loadLiff()) || !liff.isLoggedIn()) return openLine(oaMsg('#ラリー'));
+  sheet('<div class="busy">カプセルを開けています…</div>');
+  const d = await postApi('pull');
+  if (d && d.ok) { if (ME) ME.caps = d.caps || 0; sheet(cardsHtml(d.cards) + `<button class="btn primary wide" type="button" onclick="closeSheet();loadMe(true)">閉じる</button>`); return; }
+  sheet(`<p class="msg" style="margin:0">${d && d.error === 'none' ? '未開封のカプセルはありません。ご縁があると引けます。' : 'いまは開けられませんでした。LINEのトークで「#ラリー」を開くと引けます。'}</p><button class="btn wide" type="button" onclick="closeSheet();loadMe(true)">閉じる</button>`);
 }
 function bindWallet() {
   const on = (id, fn) => { const a = $(id); a.onclick = e => { e.preventDefault(); fn(); }; };
@@ -789,7 +839,8 @@ function renderLoop() {
       ${live ? `<span class="open${open ? ' live' : ''}">${open ? '営業中' : '時間外'}</span>` : '<span aria-hidden="true">↗</span>'}</a>`;
   }).join('') || '<div class="empty">協力店の情報は準備中です。</div>';
   const lb = $('#loopBtn'); lb.href = oaMsg('#ラリー'); lb.dataset.line = lb.href;
-  [['#enOpen', oaMsg('#ご縁')], ['#enScan', 'https://line.me/R/nv/QRCodeReader'], ['#enBook', oaMsg('#図鑑')]].forEach(([id, u]) => { const a = $(id); a.href = u; a.dataset.line = u; });
+  [['#enOpen', oaMsg('#ご縁')], ['#enBook', oaMsg('#図鑑')]].forEach(([id, u]) => { const a = $(id); a.href = u; a.dataset.line = u; });
+  { const a = $('#enScan'); a.href = '#'; a.onclick = e => { e.preventDefault(); scanQr(); }; }
 }
 
 const mapUrl = v => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(v.address + ' ' + v.name);
@@ -883,6 +934,13 @@ async function loadQuest() {
   QUEST = sample || d.sample ? null : d;
   renderQuest(d, sample || d.sample);
 }
+const BOSS_IMG = 'img/boss/';
+let BOSS_SEEN = null; // 前に見た合計（増えたらボスが揺れる）
+function bossArt(st, d) {
+  const i = st.clear ? d.bosses.length - 1 : st.i, name = (d.bosses[i] || {}).name || st.name || '';
+  const hit = BOSS_SEEN != null && d.total > BOSS_SEEN; BOSS_SEEN = d.total;
+  return `<div class="bossart${st.clear ? ' down' : hit ? ' hit' : ''}"><img src="${BOSS_IMG}${i + 1}.png" alt="${esc(name)}" onerror="this.outerHTML='<span class=&quot;sil&quot; aria-hidden=&quot;true&quot;>${esc(name.slice(-1))}</span><small>イラスト準備中</small>'"></div>`;
+}
 function renderQuest(d, sample) {
   const st = d.stage, yen = n => Number(n).toLocaleString('ja-JP');
   const hpE = st.hpExpect == null ? Math.max(st.hpPct, 1) : st.hpExpect;
@@ -890,13 +948,14 @@ function renderQuest(d, sample) {
   $('#quest').innerHTML = `
     <div class="q-k">BOSS ${st.clear ? d.bosses.length : st.i + 1} / ${d.bosses.length}</div>
     <div class="q-boss">${st.clear ? '全ボス撃破！' : esc(st.name)}</div>
+    ${bossArt(st, d)}
     <div class="hp" role="meter" aria-label="ボスに与えたダメージ" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${100 - st.hpPct}"><i style="width:${st.clear ? 100 : 100 - st.hpPct}%"></i><b style="width:${Math.max(st.hpPct - hpE, 0)}%"></b></div>
     ${d.expect ? `<div class="hplg"><span><i style="background:var(--pink)"></i>削った（確認済み）</span><span><i style="background:repeating-linear-gradient(135deg,rgba(236,125,143,.6) 0 4px,rgba(236,125,143,.25) 4px 8px)"></i>削れそう（確認中 ＋${yen(d.expect)}円）</span><span><i style="background:#2A2A2A;border:1px solid var(--line)"></i>残り体力</span></div>` : ''}
     <div class="q-sub">${st.clear ? 'ありがとうございました' : `ボスの残り体力 ${yen(st.left)}円（${st.hpPct}%）`}</div>
     <div class="tiles"><div class="tile"><small>みんなの合計</small><b>${yen(d.total)}<span style="font-size:13px">円</span></b></div>
       <div class="tile"><small>応援した人</small><b>${yen(d.people)}<span style="font-size:13px">人</span></b></div></div>
     <ol class="steps">${d.bosses.map((b, i) => { const done = st.clear || i < st.i, cur = !st.clear && i === st.i;
-      return `<li class="${done ? 'done' : cur ? 'cur' : ''}"><span>${done ? '✔' : cur ? '▶' : '・'}</span><span>${esc(b.name)}</span><span>${yen(b.goal)}円</span></li>`; }).join('')}</ol>
+      return `<li class="${done ? 'done' : cur ? 'cur' : ''}"><span>${done ? '✔' : cur ? '▶' : '・'}</span><span><img class="bth" src="${BOSS_IMG}${i + 1}.png" alt="" onerror="this.remove()"> ${esc(b.name)}</span><span>${yen(b.goal)}円</span></li>`; }).join('')}</ol>
     <p class="note">合計がボスの体力に届くと撃破。次のボスが現れます。ゲージは運営が入金を確かめた分で削れ、確認中の分は斜線（見込み）で出ます。</p>
     ${(d.recent || []).length ? `<div class="q-k" style="margin-top:14px">LIVE ・ いま投げた人</div><ul class="live">${d.recent.map(x => `<li><span>${x.name ? esc(x.name) + (x.title ? '（' + esc(x.title) + '）' : '') : 'だれか'}が投げた！</span><span class="st ${x.ok ? 'ok' : 'wait'}">${x.ok ? '確認済み' : '確認中'}</span><small>${esc(x.at)}</small></li>`).join('')}</ul>` : ''}`;
   const cls = t => t === '男気' ? 'm' : t === '女気' ? 'f' : 'i';
