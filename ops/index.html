@@ -127,7 +127,7 @@ const CONFIG = {
   // LINE Developers で作る「運営用」ミニアプリの LIFF ID（来場者向けとは別のチャネル）
   LIFF_ID: '2011781779-Jc5eAPna',
   // SMF BOT v3.3 のウェブアプリURL（/exec まで）。来場者向けミニアプリと同じものです
-  GAS_URL: 'https://script.google.com/macros/s/AKf.../exec'
+  GAS_URL: 'https://script.google.com/macros/s/AKfycbwNu0dmIaRvZva1bhMtjrEJ-8yXBjInQIC6ULOT0zPoR6GgO6ZYrXHAYzOhX-6uz69v/exec'
 };
 
 const $ = (id) => document.getElementById(id);
@@ -185,14 +185,45 @@ function showErr(text){
 /* ---------------------------------------------------------------- 通信 */
 
 async function api(payload){
+  // ヘッダーは付けません。来場者向けミニアプリで動いている書き方と同じにしています
+  // （文字列を渡すと text/plain になり、事前確認（preflight）が起きません）
   const res = await fetch(CONFIG.GAS_URL, {
     method: 'POST',
-    // GASのウェブアプリは、この形だと事前確認なしで受け取れます
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(Object.assign({ kind: 'ops', idToken: idToken }, payload))
   });
   if (!res.ok) throw new Error('つながりませんでした（' + res.status + '）');
   return await res.json();
+}
+
+/**
+ * つながらなかったとき、どこで落ちているかを確かめる。
+ * GAS が読めるか（GET）→ 書けるか（POST）の順に見て、原因を文にします。
+ */
+async function diagnose(){
+  const lines = [];
+  // ① GAS そのものに届くか（来場者向けの読み取り口。誰でも読めます）
+  try {
+    const r = await fetch(CONFIG.GAS_URL + '?api=ouen');
+    const t = await r.text();
+    if (r.ok && t.indexOf('{') === 0) lines.push('GASは読めています（' + r.status + '）');
+    else lines.push('GASの応答が想定外（' + r.status + '）：' + t.slice(0, 60));
+  } catch (err) {
+    lines.push('GASに届きません：' + String(err.message || err).slice(0, 60));
+    lines.push('→ デプロイの「アクセスできるユーザー」が「全員」か確かめてください');
+    return lines.join('\n');
+  }
+  // ② 書き込みの入口が生きているか（鍵なしなので login で弾かれるのが正解）
+  try {
+    const r = await fetch(CONFIG.GAS_URL, { method: 'POST', body: JSON.stringify({ kind: 'ops', api: 'me', idToken: 'x' }) });
+    const t = await r.text();
+    if (t.indexOf('login') >= 0) lines.push('運営の入口も生きています（本人確認で弾かれました＝正しい動き）');
+    else if (t.indexOf('unknown api') >= 0) lines.push('doPost に ops の1行が入っていません（コード.gs）');
+    else lines.push('POSTの応答：' + t.slice(0, 80));
+  } catch (err) {
+    lines.push('POSTだけ通りません：' + String(err.message || err).slice(0, 60));
+    lines.push('→ 新バージョンでデプロイし直されているか確かめてください');
+  }
+  return lines.join('\n');
 }
 
 const ERR = {
@@ -359,7 +390,12 @@ function gate(msg){
     $('who').textContent = me.name || '';
     $('foot').style.display = 'flex';
   } catch (err) {
-    gate('つなげませんでした。<br>時間をおいて開き直してください。<br><small>' + String(err.message || err).slice(0, 80) + '</small>');
+    gate('つなげませんでした。<br><small>' + String(err.message || err).slice(0, 80) + '</small><br><small id="dg">調べています…</small>');
+    try {
+      const d = await diagnose();
+      const el = document.getElementById('dg');
+      if (el) el.innerHTML = String(d).replace(/\n/g, '<br>');
+    } catch (e) { /* 診断できなくてもよい */ }
   }
 })();
 </script>
