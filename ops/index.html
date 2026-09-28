@@ -2,7 +2,7 @@
 <html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>SMF 運営</title>
+<title>Harmonizer</title>
 <link rel="icon" href="https://hiromitsu81.github.io/smf-assets/app/img/smf-logo.png">
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <style>
@@ -14,6 +14,7 @@
     --green:#8cc63f;
     --blue:#5b9bd5;
     --red:#ff5b5b;
+    --amber:#f3c14b;   /* 5つめ「調べる」。提灯の灯りの色 */
     --pad:18px;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -85,6 +86,9 @@
   @keyframes blink{50%{opacity:0}}
   .skip{text-align:center;color:var(--dim);font-size:11.5px;padding:2px 0}
 
+  .bub.zoom{font-size:18px;line-height:1.85}
+  .digmenu{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+
   .meta{font-size:11px;color:var(--dim);padding:0 5px}
   .me .meta{text-align:right}
 
@@ -130,6 +134,49 @@
   }
   .send.on{background:var(--blue);color:#fff;border-color:transparent}
 
+  /* 読む・書く・聞く・話す。言語の4つの技能そのものなので、説明が要りません。
+     こちらから出すのが「書く・話す」、返ってくるのが「読む・聞く」です。 */
+  .pads{display:flex;justify-content:center;align-items:flex-end;gap:9px}
+  .pad{display:flex;flex-direction:column;align-items:center;gap:7px;flex:0 0 auto}
+  .pad .cap{font-size:11.5px;font-weight:600;letter-spacing:.04em;color:var(--tx)}
+  .pad.off .cap{color:#4b5366}
+
+  .ring{
+    position:relative;width:56px;height:56px;border-radius:50%;padding:3px;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    box-shadow:0 8px 22px rgba(0,0,0,.4);
+  }
+  .ring.tri{
+    width:70px;height:70px;padding:4px;
+    background:conic-gradient(var(--pink) 0deg 120deg, var(--green) 120deg 240deg, var(--blue) 240deg 360deg);
+  }
+  .ring.blue{background:var(--blue)}
+  .ring.green{background:var(--green)}
+  .ring.pink{background:var(--pink)}
+  .ring.amber{background:var(--amber)}
+  .ring.amber > button svg{fill:var(--amber)}
+  .ring > button{
+    width:100%;height:100%;border-radius:50%;border:0;cursor:pointer;background:#0f1218;
+    display:flex;align-items:center;justify-content:center;transition:transform .12s ease;padding:0;
+  }
+  .ring.tri > button{background:#fff}
+  .ring > button:active{transform:scale(.93)}
+  .ring > button svg{width:23px;height:23px}
+  .ring.tri > button svg{width:29px;height:29px;fill:#111}
+  .ring.blue > button svg{fill:var(--blue)}
+  .ring.green > button svg{fill:var(--green)}
+  .ring.pink > button svg{fill:var(--pink)}
+
+  .pad.off .ring{background:var(--line);box-shadow:none}
+  .pad.off .ring > button{background:#14171f}
+  .pad.off .ring > button svg{fill:#464e61}
+
+  .ring.busy::after{
+    content:'';position:absolute;inset:-4px;border-radius:50%;pointer-events:none;
+    border:2px solid rgba(255,255,255,.35);animation:ring 1.5s infinite ease-out;
+  }
+  .pad.on .ring{box-shadow:0 8px 26px rgba(140,198,63,.35)}
+
   .micwrap{display:flex;flex-direction:column;align-items:center;gap:10px}
   /* ロゴの「丸のなかに3色」を、そのままボタンにしています */
   .micring{
@@ -147,10 +194,14 @@
   .micring.rec{background:var(--red);animation:spinoff 0s}
   .micring.rec .mic{background:#111}
   .micring.rec .mic svg{fill:#fff}
+  /* 広がる輪は見せるだけ。タップを吸わないように pointer-events を切ります
+     （これが無いと、録音中の2回目の押下がボタンに届きません） */
   .micring.rec::before,.micring.rec::after{
     content:'';position:absolute;inset:-4px;border-radius:50%;
     border:2px solid rgba(255,91,91,.6);animation:ring 1.7s infinite ease-out;
+    pointer-events:none;
   }
+  .micring{cursor:pointer}
   .micring.rec::after{animation-delay:.85s}
   @keyframes ring{0%{transform:scale(.94);opacity:.9}100%{transform:scale(1.42);opacity:0}}
   .mic[disabled]{background:#d8dce6;cursor:default}
@@ -170,7 +221,7 @@
 <header>
   <img class="logo" id="lg" src="https://hiromitsu81.github.io/smf-assets/app/img/smf-logo.png" alt="SMF">
   <span class="logo-fb" id="lgfb">SMF</span>
-  <span class="t">運営</span>
+  <span class="t">Harmonizer</span>
   <span class="who" id="who">つないでいます…</span>
 </header>
 
@@ -178,32 +229,57 @@
   <div class="lead" id="hint">
     <img class="hero" src="https://hiromitsu81.github.io/smf-assets/app/img/smf-logo.png" alt="" onerror="this.style.display='none'">
     <div class="big">押して、話すだけ。</div>
-    <div class="sub">台帳から、根拠つきで答えます</div>
+    <div class="sub">ONE HUB から、根拠つきで答えます</div>
   </div>
 </main>
 
 <footer id="foot" style="display:none">
-  <div class="typebar">
-    <textarea id="q" rows="1" placeholder="打ち込む" enterkeyhint="send"></textarea>
+  <div class="typebar" id="typebar" style="display:none">
+    <textarea id="q" rows="1" placeholder="質問を書く" enterkeyhint="send"></textarea>
     <button class="send" id="send" aria-label="送る">↑</button>
   </div>
-  <div class="micwrap">
-    <div class="micring" id="micring">
-      <button class="mic" id="mic" aria-label="声で聞く">
-        <svg viewBox="0 0 24 24"><path d="M12 15a3.5 3.5 0 0 0 3.5-3.5V6a3.5 3.5 0 1 0-7 0v5.5A3.5 3.5 0 0 0 12 15Zm6-3.5a6 6 0 0 1-5 5.92V21h-2v-3.58a6 6 0 0 1-5-5.92h2a4 4 0 0 0 8 0h2Z"/></svg>
-      </button>
+  <div class="pads">
+    <div class="pad off" id="padRead">
+      <div class="ring pink"><button id="bRead" aria-label="読む">
+        <svg viewBox="0 0 24 24"><path d="M12 5.5C10.5 4.2 8.3 3.5 6 3.5c-1 0-2 .13-3 .4v15c1-.27 2-.4 3-.4 2.3 0 4.5.7 6 2 1.5-1.3 3.7-2 6-2 1 0 2 .13 3 .4v-15c-1-.27-2-.4-3-.4-2.3 0-4.5.7-6 2Zm.9 2.6c1.1-.62 2.5-.95 3.9-.95.4 0 .8.02 1.2.07v10.9c-.4-.04-.8-.06-1.2-.06-1.5 0-2.9.3-4 .9V8.1Z"/></svg>
+      </button></div>
+      <div class="cap">読む</div>
     </div>
-    <div class="miclabel" id="miclabel">押して話す</div>
+    <div class="pad" id="padWrite">
+      <div class="ring blue"><button id="bWrite" aria-label="書く">
+        <svg viewBox="0 0 24 24"><path d="M3 17.25 14.06 6.19l3.75 3.75L6.75 21H3v-3.75Zm17.71-9.96a1 1 0 0 0 0-1.41l-2.59-2.59a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 2.08-1.58Z"/></svg>
+      </button></div>
+      <div class="cap">書く</div>
+    </div>
+    <div class="pad" id="padTalk">
+      <div class="ring tri" id="micring"><button id="mic" aria-label="話す">
+        <svg viewBox="0 0 24 24"><path d="M12 15a3.5 3.5 0 0 0 3.5-3.5V6a3.5 3.5 0 1 0-7 0v5.5A3.5 3.5 0 0 0 12 15Zm6-3.5a6 6 0 0 1-5 5.92V21h-2v-3.58a6 6 0 0 1-5-5.92h2a4 4 0 0 0 8 0h2Z"/></svg>
+      </button></div>
+      <div class="cap">話す</div>
+    </div>
+    <div class="pad off" id="padListen">
+      <div class="ring green" id="listenring"><button id="bListen" aria-label="聞く">
+        <svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2-3.74v7.48A4.5 4.5 0 0 0 16.5 12Zm-2-8.4v2.06A6.5 6.5 0 0 1 14.5 18.3v2.06A8.5 8.5 0 0 0 14.5 3.6Z"/></svg>
+      </button></div>
+      <div class="cap">聞く</div>
+    </div>
+    <div class="pad" id="padDig">
+      <div class="ring amber"><button id="bDig" aria-label="調べる">
+        <svg viewBox="0 0 24 24"><path d="M10 2a8 8 0 1 0 4.9 14.32l5.39 5.39 1.42-1.42-5.39-5.39A8 8 0 0 0 10 2Zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z"/></svg>
+      </button></div>
+      <div class="cap">調べる</div>
+    </div>
   </div>
+  <div class="miclabel" id="miclabel" style="margin-top:12px">話すか、書くか。押すだけです</div>
 </footer>
-<div class="ver" id="ver">運営ミニアプリ v0.8　2026-09-29</div>
+<div class="ver" id="ver">Harmonizer v1.6　2026-09-29</div>
 
 <script>
 /* ============================================================================
  *  SMF2026 運営向けミニアプリ  v0.6  2026-09-29
  *
  *  ■ この画面のねらい
- *    入力やデータ管理が苦手な人が、押して話すだけで台帳を引けること。
+ *    入力やデータ管理が苦手な人が、押して話すだけで ONE HUB を引けること。
  *    だからマイクを主役にし、打ち込み欄を控えにしています。
  *    ボタンはSMFのロゴと同じ「丸のなかに桃・緑・青」です。
  *
@@ -329,16 +405,24 @@ function typeIn(el, text, ms){
 
 const GUIDE_FULL = (name) =>
   (name ? name + 'さん、' : '') + 'おはようございます。\n' +
-  'SMFの台帳を、声でも文字でも引けます。\n\n' +
+  'ハーモナイザーです。SMFの ONE HUB を、声でも文字でも引けます。\n\n' +
   '① 下の大きなボタンを押して、話す\n' +
   '② もう一度押すと送られます\n' +
   '③ 聞き取った内容と、答えが返ります\n\n' +
-  '答えは台帳にある記録だけから作ります。\n' +
+  '答えは ONE HUB にある記録だけから作ります。\n' +
   '書いていないことは「見つかりませんでした」と正直に言います。\n' +
   '協賛の金額と、権利の可否（掲載してよいか等）はお答えできません。人が確かめるところです。';
 
 const GUIDE_SHORT = (name) =>
   (name ? name + 'さん、' : '') + 'どうぞ。下のボタンを押して話すか、打ち込んでください。';
+
+/* 読み上げ用。読まない人はここから始められます。
+   記号や箇条書きは声に向かないので、骨だけの短い文にしています（240字まで）。 */
+const GUIDE_SPOKEN =
+  'ハーモナイザーです。SMFのワンハブを、声でも文字でも引けます。' +
+  '下の大きなボタンを押して話し、もう一度押すと送られます。' +
+  '答えはワンハブの記録だけから作ります。書いていないことは、見つかりませんでした、と正直にお答えします。' +
+  '協賛の金額と、掲載してよいかどうかは、お答えできません。';
 
 /** 開いたときの案内。初めての人には長く、2回目からは短く */
 async function intro(name){
@@ -351,10 +435,13 @@ async function intro(name){
   await typeIn(b, first ? GUIDE_FULL(name) : GUIDE_SHORT(name), CONFIG.TYPE_MS);
   try { localStorage.setItem('ops:seen', '1'); } catch (e) { /* 使えなくても続ける */ }
 
+  // 案内そのものを声で聞けるようにします。読まない人はここから始められます。
+  speak(GUIDE_SPOKEN, row, '使い方を聞く');
+
   if (first) {
     const tip = document.createElement('div');
     tip.className = 'meta';
-    tip.textContent = '試しに、下のどれかを押してみてください';
+    tip.textContent = '声で聞くこともできます。試しに、下のどれかを押してみてください';
     row.appendChild(tip);
   }
   const chips = document.createElement('div');
@@ -371,6 +458,7 @@ async function intro(name){
 async function guideAgain(){
   const row = bubble('bot', '');
   await typeIn(row.querySelector('.bub'), GUIDE_FULL(''), CONFIG.TYPE_MS);
+  speak(GUIDE_SPOKEN, row, '使い方を聞く');
 }
 
 function micLabel(html){ const l = $('miclabel'); if (l) l.innerHTML = html; }
@@ -450,8 +538,8 @@ async function ask(payload, shownText){
 
   // 返事は1回で返ってくるので、途中の表示は時間で進めます。
   const steps = payload.audio
-    ? [[0, '聞き取っています…'], [9, '台帳を見ています…'], [20, 'もう少しお待ちください…']]
-    : [[0, '台帳を見ています…'], [9, 'もう少しお待ちください…']];
+    ? [[0, '聞き取っています…'], [9, 'ONE HUB を見ています…'], [20, 'もう少しお待ちください…']]
+    : [[0, 'ONE HUB を見ています…'], [9, 'もう少しお待ちください…']];
   let si = 0;
   state(steps[0][1]);
   const timer = setInterval(() => {
@@ -474,6 +562,7 @@ async function ask(payload, shownText){
     if (text.length > CONFIG.ANSWER_MAX) row.querySelector('.bub').textContent = text;
     else await typeIn(row.querySelector('.bub'), text, CONFIG.ANSWER_MS);
     meta(row, sec);
+    readReady(row);
 
     // 声は、文字を出し終えてから追いかけます（できるまで3〜50秒かかることがあります）
     if (d.speakable) speak(d.speakable, row);
@@ -490,7 +579,21 @@ async function ask(payload, shownText){
 
 /* ---------------------------------------------------------------- 声で返す */
 
-async function speak(text, row){
+/* いちばん新しい声と答えを覚えておきます（「聞く」「読む」で使います） */
+let lastAudio = null, lastRow = null;
+
+function listenReady(a){
+  lastAudio = a;
+  $('padListen').classList.remove('off');
+  $('padListen').classList.add('on');
+}
+function readReady(row){
+  lastRow = row;
+  $('padRead').classList.remove('off');
+}
+
+async function speak(text, row, label){
+  const name = label || '聞く';
   const btn = document.createElement('button');
   btn.className = 'play';
   btn.textContent = '♪ 声を用意しています…';
@@ -503,11 +606,12 @@ async function speak(text, row){
     if (d.error || !d.audio) { btn.remove(); return; }
     // ブラウザは WAV をそのまま鳴らせます（ここが LINE との違いです）
     const audio = new Audio('data:' + (d.mime || 'audio/wav') + ';base64,' + d.audio);
-    btn.textContent = '▶ 聞く';
+    listenReady(audio);   // 「聞く」で鳴らせるようにする
+    btn.textContent = '▶ ' + name;
     btn.disabled = false;
     btn.onclick = () => {
       if (audio.paused) { audio.play(); btn.textContent = '■ 止める'; }
-      else { audio.pause(); audio.currentTime = 0; btn.textContent = '▶ 聞く'; }
+      else { audio.pause(); audio.currentTime = 0; btn.textContent = '▶ ' + name; }
     };
     audio.onended = () => { btn.textContent = '▶ もう一度'; };
     audio.play().then(() => { btn.textContent = '■ 止める'; })
@@ -545,15 +649,18 @@ async function recStart(){
     rec.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
     rec.onerror = (e) => { showErr('録音でエラーが出ました：' + String((e && e.error && e.error.name) || e).slice(0, 80)); };
     rec.onstop = async () => {
+      // どの道を通っても、最後にラベルは「押して話す」に戻します
+      const back = () => micLabel('押して話す');
       try {
         stream.getTracks().forEach(t => t.stop());
         const blob = new Blob(chunks, { type: usedMime });
-        if (!chunks.length) { showErr('音が取れませんでした（' + usedMime + '）。打ち込みで聞いてください。'); return; }
-        if (blob.size < 1200) { showErr('短すぎました（' + blob.size + 'バイト）。押してから1秒以上話してください。'); return; }
+        if (!chunks.length) { back(); showErr('音が取れませんでした（' + usedMime + '）。打ち込みで聞いてください。'); return; }
+        if (blob.size < 1200) { back(); showErr('短すぎました（' + blob.size + 'バイト）。押してから、1秒以上話してください。'); return; }
         const b64 = await toBase64(blob);
-        if (!b64) { showErr('音声を変換できませんでした。打ち込みで聞いてください。'); return; }
-        ask({ audio: b64, mime: usedMime.split(';')[0] });
+        if (!b64) { back(); showErr('音声を変換できませんでした。打ち込みで聞いてください。'); return; }
+        ask({ audio: b64, mime: usedMime.split(';')[0] });   // ここから先は ask が面倒を見ます
       } catch (err) {
+        back();
         showErr('送るところで止まりました：' + String(err.message || err).slice(0, 110));
       }
     };
@@ -575,9 +682,12 @@ async function recStart(){
 function recStop(){
   if (recTimer) { clearInterval(recTimer); recTimer = null; }
   $('micring').classList.remove('rec');
+  if (!rec) { micLabel('押して話す'); return; }
+  if (rec.state === 'inactive') { micLabel('押して話す'); showErr('録音が始まっていませんでした。もう一度押してください。'); rec = null; return; }
   micLabel('送っています…');
-  if (!rec || rec.state === 'inactive') { micLabel('押して話す'); return; }
-  rec.stop(); rec = null;
+  const r = rec; rec = null;
+  try { r.stop(); }
+  catch (err) { micLabel('押して話す'); showErr('止めるところで失敗しました：' + String(err.message || err).slice(0, 90)); }
 }
 
 function toBase64(blob){
@@ -591,7 +701,68 @@ function toBase64(blob){
 
 /* ---------------------------------------------------------------- 立ち上げ */
 
-$('mic').onclick = () => { (rec && rec.state === 'recording') ? recStop() : recStart(); };
+/* ---------------------------------------------------------------- 5つの動詞 */
+
+/* 話す：押して録音、もう一度押して送る。
+   押す場所は輪の外側まで含めます（録音中に輪が広がっても取りこぼしません） */
+function micTap(){
+  if (rec && rec.state === 'recording') recStop();
+  else if (!$('mic').disabled) recStart();
+}
+$('micring').addEventListener('click', micTap);
+
+/* 書く：打ち込み欄を出す／隠す。最初は隠してあります */
+$('bWrite').onclick = () => {
+  const t = $('typebar');
+  const show = t.style.display === 'none';
+  t.style.display = show ? 'flex' : 'none';
+  $('padWrite').classList.toggle('on', show);
+  if (show) { $('q').focus(); micLabel('書いて ↑ で送ります'); }
+  else micLabel('話すか、書くか。押すだけです');
+};
+
+/* 聞く：いちばん新しい答えを声で鳴らす。まだ無ければ使い方を読み上げる */
+$('bListen').onclick = async () => {
+  if ($('padListen').classList.contains('off')) return;
+  if (!lastAudio) return;
+  const ring = $('listenring');
+  if (!lastAudio.paused) { lastAudio.pause(); lastAudio.currentTime = 0; ring.classList.remove('busy'); return; }
+  ring.classList.add('busy');
+  lastAudio.onended = () => ring.classList.remove('busy');
+  try { await lastAudio.play(); } catch (e) { ring.classList.remove('busy'); }
+};
+
+/* 読む：いちばん新しい答えを大きな字にして、画面に持ってくる */
+$('bRead').onclick = () => {
+  if (!lastRow) return;
+  const b = lastRow.querySelector('.bub');
+  b.classList.toggle('zoom');
+  $('padRead').classList.toggle('on', b.classList.contains('zoom'));
+  lastRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  micLabel(b.classList.contains('zoom') ? '大きい字にしました。もう一度押すと戻ります' : '話すか、書くか。押すだけです');
+};
+
+/* 調べる：ひとつの答えではなく、いま気にすべきことを横断で拾う。
+   単発の質問と役割を分けています（「何件？」ではなく「何が引っかかっているか」） */
+const DIG = [
+  ['返答待ちの協賛は？',            '打診したのに返事が来ていないところ'],
+  ['ロゴが届いていない協賛は？',    'サイトに出せていないところ'],
+  ['アー写が来ていない出演者は？',  '発表に間に合わないおそれ'],
+  ['期限を過ぎているタスクは？',    '遅れているもの'],
+  ['会場でまだ取得できていないのは？', '押さえられていない会場'],
+  ['調子はどう？',                  'ONE HUB に足りないところ']
+];
+$('bDig').onclick = async () => {
+  const row = bubble('bot', '');
+  await typeIn(row.querySelector('.bub'),
+    '何を調べますか。\nひとつ押すと、ONE HUB を横断して拾います。', CONFIG.TYPE_MS);
+  const m = document.createElement('div');
+  m.className = 'digmenu';
+  m.innerHTML = DIG.map(x =>
+    '<button class="chip" title="' + x[1] + '">' + x[0] + '</button>').join('');
+  row.appendChild(m);
+  toBottom();
+};
 
 function send(t){
   if (!t) { showErr('入力欄に質問を打つか、マイクを押して話してください。'); return; }
@@ -601,6 +772,7 @@ function send(t){
 $('send').onclick = () => {
   const t = $('q').value.trim();
   $('q').value = ''; $('q').style.height = 'auto'; $('send').classList.remove('on');
+  if (t) { $('typebar').style.display = 'none'; $('padWrite').classList.remove('on'); }
   send(t);
 };
 $('q').addEventListener('input', function(){
@@ -655,7 +827,7 @@ function gate(msg){
       return;
     }
 
-    say('台帳につないでいます…');
+    say('ONE HUB につないでいます…');
     const me = await api({ api: 'me' });
     if (me.error) {
       gate(me.error === 'login'
