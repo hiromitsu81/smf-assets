@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Harmonizer</title>
 <link rel="icon" href="https://hiromitsu81.github.io/smf-assets/app/img/smf-logo.png">
-<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js" ></script>
 <style>
   /* SMFのロゴの3色（桃・緑・青）を、そのまま画面の色に使っています */
   :root{
@@ -282,6 +282,7 @@
   .sp-name{font-weight:700;letter-spacing:.16em;font-size:15px;margin-top:4px}
   .sp-msg{color:var(--dim);font-size:13px;min-height:20px;text-align:center}
   .sp-steps{display:flex;gap:6px}
+  .sp-ver{position:absolute;bottom:calc(18px + env(safe-area-inset-bottom, 0px));left:0;right:0;text-align:center;color:var(--dim);font-size:11px;letter-spacing:.08em;font-variant-numeric:tabular-nums;opacity:.8}
   .sp-steps i{width:22px;height:3px;border-radius:2px;background:var(--line);transition:background .35s}
   .sp-steps i.on:nth-child(1){background:var(--pink)}
   .sp-steps i.on:nth-child(2){background:var(--green)}
@@ -348,6 +349,7 @@
   <div class="sp-name">Harmonizer</div>
   <div class="sp-msg" id="spMsg">ひらいています…</div>
   <div class="sp-steps" id="spSteps"><i></i><i></i><i></i><i></i></div>
+  <div class="sp-ver">v2.14　2026-09-29</div>
 </div>
 
 <header>
@@ -435,7 +437,7 @@
 </div>
 <div class="modebar"><span id="modebar"></span></div>
 <div class="recbar" id="recbar"><span id="recbarText">録音しています</span></div>
-<div class="ver" id="ver">Harmonizer v2.13　2026-09-29</div>
+<div class="ver" id="ver">Harmonizer v2.14　2026-09-29</div>
 
 <script>
 /* ============================================================================
