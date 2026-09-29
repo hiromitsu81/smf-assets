@@ -168,6 +168,8 @@
   }
   .ring.tri > button{background:#fff}
   .ring > button:active{transform:scale(.93)}
+  #micring{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+  #micring.hold{box-shadow:0 0 0 7px rgba(230,70,70,.45)!important;transition:box-shadow .7s}
   .ring > button svg{width:23px;height:23px}
   .ring.tri > button svg{width:29px;height:29px;fill:#111}
   .ring.blue > button svg{fill:var(--blue)}
@@ -350,7 +352,7 @@
   <div class="sp-name">Harmonizer</div>
   <div class="sp-msg" id="spMsg">ひらいています…</div>
   <div class="sp-steps" id="spSteps"><i></i><i></i><i></i><i></i></div>
-  <div class="sp-ver">v2.23　2026-09-29</div>
+  <div class="sp-ver">v2.24　2026-09-29</div>
 </div>
 
 <header>
@@ -438,7 +440,7 @@
 </div>
 <div class="modebar"><span id="modebar"></span></div>
 <div class="recbar" id="recbar"><span id="recbarText">録音しています</span></div>
-<div class="ver" id="ver">Harmonizer v2.23　2026-09-29</div>
+<div class="ver" id="ver">Harmonizer v2.24　2026-09-29</div>
 
 <script>
 /* ============================================================================
@@ -487,7 +489,9 @@ const CONFIG = {
 const $ = (id) => document.getElementById(id);
 let idToken = '';
 let busy = false;
-let rec = null, chunks = [], recMime = '', recT0 = 0, recTimer = null;
+let rec = null, chunks = [], recMime = '', recT0 = 0, recTimer = null, recStream = null;
+let holdTimer = null, holdCancelled = false;   // 長押しで取り消し（v2.24）
+const HOLD_MS = 700;
 
 /* ---------------------------------------------------------------- 画面 */
 
@@ -590,7 +594,7 @@ const GUIDE_FULL = (name) =>
   (name ? name + 'さん、' : '') + 'おはようございます。\n' +
   'ハーモナイザーです。SMFの ONE HUB を、声でも文字でも引けます。\n\n' +
   '① 下の大きなボタンを押して、話す\n' +
-  '② もう一度押すと送られます\n' +
+  '② もう一度押すと送られます（長押しすると、送らずに取り消せます）\n' +
   '③ 聞き取った内容と、答えが返ります\n\n' +
   '答えは ONE HUB にある記録だけから作ります。\n' +
   '書いていないことは「見つかりませんでした」と正直に言います。\n' +
@@ -1319,6 +1323,7 @@ async function recStart(){
   try {
     micLabel('マイクの許可を確かめています…');
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    recStream = stream;
     recMime = pickMime();
     rec = new MediaRecorder(stream, recMime ? { mimeType: recMime } : undefined);
     chunks = [];
@@ -1352,7 +1357,7 @@ async function recStart(){
       const el = (Date.now() - recT0) / 1000;
       if (el >= CONFIG.REC_MAX_SEC) { recStop(); return; }   // 押し忘れても、ここで送ります
       recLook(true, el);
-      micLabel('<b>' + el.toFixed(1) + '秒</b>　もう一度押すと送ります' + (CONFIG.REC_MAX_SEC - el < 10 ? '（あと' + Math.ceil(CONFIG.REC_MAX_SEC - el) + '秒で自動で送ります）' : ''));
+      micLabel('<b>' + el.toFixed(1) + '秒</b>　押すと送る／長押しで取り消し' + (CONFIG.REC_MAX_SEC - el < 10 ? '（あと' + Math.ceil(CONFIG.REC_MAX_SEC - el) + '秒で自動で送ります）' : ''));
     }, 100);
   } catch (err) {
     micLabel('押して話す');
@@ -1391,10 +1396,38 @@ function toBase64(blob){
 /* 話す：押して録音、もう一度押して送る。
    押す場所は輪の外側まで含めます（録音中に輪が広がっても取りこぼしません） */
 function micTap(){
+  if (holdCancelled) { holdCancelled = false; return; }   // 長押しで取り消した直後の click は無視
   if (rec && rec.state === 'recording') recStop();
   else if (!$('mic').disabled) recStart();
 }
 $('micring').addEventListener('click', micTap);
+
+/* 録音中に長押し（0.7秒）→ 送らずに取り消し。録音していないときの長押しは何もしません */
+function recCancel(){
+  if (recTimer) { clearInterval(recTimer); recTimer = null; }
+  const r = rec; rec = null;
+  $('micring').classList.remove('rec', 'hold');
+  recLook(false); sendingLook(false);
+  if (r) {
+    r.ondataavailable = null;
+    r.onstop = () => { try { (recStream || r.stream).getTracks().forEach(t => t.stop()); } catch (e) { } recStream = null; };
+    try { if (r.state !== 'inactive') r.stop(); else r.onstop(); } catch (e) { r.onstop(); }
+  }
+  chunks = [];
+  try { if (navigator.vibrate) navigator.vibrate([60, 60, 60]); } catch (e) { }
+  micLabel('<b>取り消しました</b>（送っていません）');
+  setTimeout(() => { if (!rec) micLabel('押して話す'); }, 2500);
+}
+function holdEnd(){ if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; } $('micring').classList.remove('hold'); }
+$('micring').addEventListener('pointerdown', () => {
+  holdEnd();
+  holdCancelled = false;
+  if (!(rec && rec.state === 'recording')) return;
+  $('micring').classList.add('hold');
+  holdTimer = setTimeout(() => { holdTimer = null; holdCancelled = true; recCancel(); }, HOLD_MS);
+});
+['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => $('micring').addEventListener(ev, holdEnd));
+$('micring').addEventListener('contextmenu', e => e.preventDefault());   // 長押しのメニューを出さない
 
 /* 書く：打ち込み欄を出す／隠す。最初は隠してあります */
 $('bWrite').onclick = () => {
@@ -1709,7 +1742,7 @@ function recLook(on, sec){
   $('recbar').classList.toggle('on', !!on);
   $('padTalk').classList.toggle('rec', !!on);
   $('capTalk').textContent = on ? '押して送る' : '話す';
-  if (on) $('recbarText').textContent = '録音中 ' + (sec || 0).toFixed(0) + '秒 ─ もう一度押すと送ります';
+  if (on) $('recbarText').textContent = '録音中 ' + (sec || 0).toFixed(0) + '秒 ─ 押すと送る／長押しで取り消し';
 }
 function sendingLook(on){ $('micring').classList.toggle('sending', !!on); if (on) $('capTalk').textContent = '送っています'; else if (!$('micring').classList.contains('rec')) $('capTalk').textContent = '話す'; }
 
