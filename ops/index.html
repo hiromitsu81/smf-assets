@@ -143,8 +143,7 @@
   }
   .send.on{background:var(--blue);color:#fff;border-color:transparent}
 
-  /* 大きく・書く・話す・聞き直す・熟議。押す前に何が起きるか分かる名前にしています
-     （「読む」は「読み上げ」と取り違えやすかったので「大きく」に：9/29） */
+  /* 読む・書く・話す・聞き直す・熟議（「読む」は、いちばん新しい答えを大きな字で流し直す：9/29 名前を「読む」に統一） */
   .pads{display:flex;justify-content:center;align-items:flex-end;gap:9px}
   .pad{display:flex;flex-direction:column;align-items:center;gap:7px;flex:0 0 auto}
   .pad .cap{font-size:11.5px;font-weight:600;letter-spacing:.04em;color:var(--tx)}
@@ -292,7 +291,8 @@
   @keyframes breathe{50%{transform:scale(.95)}}
   @media (prefers-reduced-motion: reduce){ .sp-ring,.sp-logo img{animation:none} }
   /* ---------- オープンモード（会議に同席） ---------- */
-  .lbtn{border-color:rgba(243,193,75,.55);color:var(--amber)}
+  .lbtn{color:var(--amber)}
+  .lbtn.on{background:var(--amber);color:#1a1405;border-color:var(--amber)}
   .live{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;
         background:radial-gradient(120% 60% at 50% 25%, #1b1f2b 0%, transparent 65%), var(--bg);
         padding:calc(env(safe-area-inset-top) + 14px) 18px calc(env(safe-area-inset-bottom) + 14px)}
@@ -374,10 +374,10 @@
   </div>
   <div class="pads">
     <div class="pad off" id="padRead">
-      <div class="ring pink"><button id="bRead" aria-label="大きく">
+      <div class="ring pink"><button id="bRead" aria-label="読む（大きな字で流し直す）">
         <svg viewBox="0 0 24 24"><text x="12" y="17.5" text-anchor="middle" font-size="14.5" font-weight="800" font-family="-apple-system,Helvetica,Arial,sans-serif">Aa</text></svg>
       </button></div>
-      <div class="cap">大きく</div>
+      <div class="cap">読む</div>
     </div>
     <div class="pad" id="padWrite">
       <div class="ring blue"><button id="bWrite" aria-label="書く">
@@ -435,7 +435,7 @@
 </div>
 <div class="modebar"><span id="modebar"></span></div>
 <div class="recbar" id="recbar"><span id="recbarText">録音しています</span></div>
-<div class="ver" id="ver">Harmonizer v2.8　2026-09-29</div>
+<div class="ver" id="ver">Harmonizer v2.13　2026-09-29</div>
 
 <script>
 /* ============================================================================
@@ -478,7 +478,7 @@ const CONFIG = {
   TYPE_MS: 16,        // 案内を打ち出す速さ
   ANSWER_MS: 9,       // 答えを打ち出す速さ
   ANSWER_MAX: 600,   // これより長い答えは、打ち出さず一度に出す
-  ZOOM_MS: 45        // 「大きく」で流し直すときの1文字の速さ（読むペースに合わせてゆっくり）
+  ZOOM_MS: 45        // 「読む」で流し直すときの1文字の速さ（読むペースに合わせてゆっくり）
 };
 
 const $ = (id) => document.getElementById(id);
@@ -788,7 +788,7 @@ function listenReady(a){
 }
 function readReady(row){
   lastRow = row;
-  const bb = row.querySelector('.bub'); if (bb) row.dataset.full = bb.textContent;   // 「大きく」で流し直すために、全文を覚えておく
+  const bb = row.querySelector('.bub'); if (bb) row.dataset.full = bb.textContent;   // 「読む」で流し直すために、全文を覚えておく
   $('padRead').classList.remove('off');
 }
 
@@ -813,6 +813,11 @@ const SILENT_LOOP = (() => {
 const VOICE_KEY = 'ops:voice';
 let prefs = { engine: CONFIG.VOICE || 'device', voice: '', rate: 1.1, read: 'full' };
 try { Object.assign(prefs, JSON.parse(localStorage.getItem(VOICE_KEY) || '{}')); } catch (e) { /* 覚えていなくてもよい */ }
+/* 音の出口：録音のあとは iPhone が「電話の耳もと」から小さく鳴らすことがあるので、話す前にスピーカーへ戻す
+ * playback は消音スイッチが入っていても鳴らせる（対応している iPhone のみ。LINEの中で効かないときは消音を切ってもらう） */
+function audioOut(kind){
+  try { if (navigator.audioSession && !liveActive()) navigator.audioSession.type = kind || 'playback'; } catch (e) { }
+}
 function savePrefs(){ try { localStorage.setItem(VOICE_KEY, JSON.stringify(prefs)); } catch (e) { } }
 
 const hasTTS = () => typeof window.speechSynthesis !== 'undefined' && typeof window.SpeechSynthesisUtterance !== 'undefined';
@@ -826,6 +831,15 @@ function pickVoice(){
 }
 if (hasTTS()) { try { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => {}; } catch (e) { } }
 function engineNow(){ return prefs.engine === 'gemini' || !hasTTS() || !jaVoices().length ? 'gemini' : 'device'; }
+
+/* 鳴らす用の <audio> を1つだけ持つ。最初に触ったときに無音を一度鳴らして「鳴らしてよい」にしておく
+ * （iPhoneは消音スイッチが入っていても <audio> は鳴る。端末の声と Web Audio は消音で黙る） */
+const AEL = new Audio(); AEL.setAttribute('playsinline', ''); AEL.preload = 'auto';
+let AEL_OK = false;
+document.addEventListener('pointerdown', () => {
+  if (AEL_OK || liveActive()) return;
+  try { AEL.src = SILENT_LOOP; AEL.volume = 1; const p = AEL.play(); if (p) p.then(() => { AEL.pause(); AEL_OK = true; }).catch(() => {}); } catch (e) { }
+}, { capture: true });
 
 // 最初に画面に触ったとき、読み上げと音の出口を「鳴らしてよい」状態にしておく（iPhoneのLINEはこれが無いと鳴らない）
 document.addEventListener('pointerdown', () => {
@@ -926,13 +940,17 @@ function makeGeminiSeq(chunks, cacheKey){
     while (inflight < CONFIG.TTS_PARALLEL && next < chunks.length) {
       const k = next++; inflight++;
       api({ api: 'speak', text: chunks[k] })
-        .then(d => got(k, d && d.audio ? d.audio : ''))
-        .catch(() => got(k, ''))
+        .then(d => { if (!(d && d.audio)) seq.why = (d && (d.msg || d.error)) || '空'; got(k, d && d.audio ? d.audio : ''); })
+        .catch(e => { seq.why = '通信 ' + String((e && e.message) || e).slice(0, 60); got(k, ''); })
         .finally(() => { inflight--; pump(); });
     }
   };
   const playOne = (b64, onend) => {
-    // Web Audio で鳴らす（一度触ったあとは、LINEの中でも自動で鳴らせる）
+    // <audio> で鳴らす（消音スイッチ中でも鳴る）。だめなら Web Audio
+    if (AEL_OK || !actx || actx.state !== 'running') {
+      el = AEL; el.onended = onend; el.src = 'data:audio/wav;base64,' + b64;
+      return el.play();
+    }
     if (actx && actx.state === 'running') {
       return actx.decodeAudioData(b64ToBuf(b64)).then(buf => {
         src = actx.createBufferSource(); src.buffer = buf; src.connect(actx.destination);
@@ -955,7 +973,9 @@ function makeGeminiSeq(chunks, cacheKey){
   };
   seq.start = () => {
     if (currentSeq && currentSeq !== seq) currentSeq.stop();
-    currentSeq = seq; seq.playing = true; seq.playAt(0);
+    currentSeq = seq; audioOut('playback');
+    try { if (actx && actx.state === 'suspended') actx.resume(); } catch (e) { }
+    seq.playing = true; seq.playAt(0);
   };
   seq.stop = () => {
     if (!seq.playing) return; seq.playing = false; seq.waiting = -1;
@@ -980,7 +1000,18 @@ function modeToast(text){
   m.textContent = text; m.classList.add('on');
   clearTimeout(modeToast.t); modeToast.t = setTimeout(() => m.classList.remove('on'), 2500);
 }
-function liveActive(){ const l = document.getElementById('live'); return !!(l && !l.hidden); }
+// オープンモードが「動いている」ときだけ true（始める前の説明画面を開いただけでは false）
+function liveActive(){ const l = document.getElementById('live'), r = document.getElementById('lvRun'); return !!(l && !l.hidden && r && !r.hidden); }
+// 右上の［オープン］：ふだんは入口（灰色）、動いているあいだだけ黄色く塗って「オープン中」
+(function(){
+  const sync = () => { const b = document.getElementById('lbtn'); if (!b) return; const on = liveActive(); b.classList.toggle('on', on); b.textContent = on ? 'オープン中' : 'オープン'; };
+  const obs = new MutationObserver(sync);
+  document.addEventListener('DOMContentLoaded', () => {
+    ['live', 'lvRun'].forEach(id => { const e = document.getElementById(id); if (e) obs.observe(e, { attributes: true, attributeFilter: ['hidden'] }); });
+    sync();
+  });
+  window.lbtnSync = sync;
+})();
 
 function speak(text, row, label, opts){
   if (liveActive()) return;   // オープンモードのあいだは、ふつうの会話の声を出さない
@@ -999,10 +1030,15 @@ function speak(text, row, label, opts){
   const ring = $('listenring');
   seq.onstate = (st) => {
     const la = (on) => { const pl = $('padListen'); if (pl) pl.classList.toggle('act', on); };
-    if (st === 'play' || st === 'wait') { btn.disabled = false; btn.textContent = '■ 止める'; ring && ring.classList.add('busy'); la(true); }
+    if (st === 'play' || st === 'wait') { btn.disabled = false; btn.textContent = '■ 止める'; ring && ring.classList.add('busy'); la(true); soundHint(row); }
     if (st === 'end') { btn.textContent = '▶ もう一度'; ring && ring.classList.remove('busy'); la(false); }
     if (st === 'stop' || st === 'blocked') { btn.disabled = false; btn.textContent = '▶ ' + name; ring && ring.classList.remove('busy'); la(false); }
-    if (st === 'none') { btn.remove(); }
+    if (st === 'none') {   // 声を1つも作れなかった：黙って消さずに、理由を出す
+      btn.disabled = true; btn.textContent = '声を作れませんでした';
+      const d = document.createElement('div'); d.className = 'meta'; d.style.cssText = 'margin-top:4px;font-size:12px;opacity:.85';
+      d.textContent = '理由：' + String(seq.why || '不明').slice(0, 120) + '　（右上の［声］で端末の声にすると鳴ります）';
+      row.appendChild(d);
+    }
   };
   seq.onfirst = (ok) => {
     btn.disabled = false;
@@ -1011,6 +1047,76 @@ function speak(text, row, label, opts){
     if (ok && opts.auto !== false) seq.start();
   };
   btn.onclick = () => { if (seq.playing) seq.stop(); else seq.start(); };
+}
+
+/** 声が出ているはずなのに聞こえないとき用の一言（最初の3回だけ） */
+function soundHint(row){
+  let k = 0; try { k = Number(localStorage.getItem('ops:hint') || 0); } catch (e) { }
+  if (k >= 3 || row.querySelector('.shint')) return;
+  try { localStorage.setItem('ops:hint', String(k + 1)); } catch (e) { }
+  const d = document.createElement('div');
+  d.className = 'meta shint';
+  d.style.cssText = 'margin-top:6px;font-size:12px;opacity:.8';
+  d.textContent = '聞こえないとき：iPhoneの消音（マナー）を切る・音量を上げる・右上の［声］で「きれいな声」にする';
+  row.appendChild(d);
+}
+
+/** 音のテスト：どの鳴らし方なら聞こえるかを見分ける（結果の文字をそのまま送ってもらう） */
+function soundTest(n, row){
+  const out = document.getElementById('tdiag');
+  const diag = (r) => {
+    let as = '－'; try { as = navigator.audioSession ? navigator.audioSession.type : 'なし'; } catch (e) { }
+    let ctx = actx ? actx.state : 'なし';
+    let inC = '－'; try { inC = liff.isInClient() ? 'LINEの中' : '外のブラウザ'; } catch (e) { }
+    if (out) out.textContent = 'テスト' + n + '：' + r + '　／出口 ' + as + '・WebAudio ' + ctx + '・日本語の声 ' + jaVoices().length + '・' + inC;
+  };
+  if (n === 1) {
+    try {
+      // <audio> で 0.35秒のピッ（消音スイッチ中でも鳴るはず）
+      const sr = 8000, len = Math.floor(sr * 0.35), buf = new Uint8Array(44 + len), dv = new DataView(buf.buffer);
+      const w = (o, t) => { for (let i = 0; i < t.length; i++) buf[o + i] = t.charCodeAt(i); };
+      w(0, 'RIFF'); dv.setUint32(4, 36 + len, true); w(8, 'WAVE'); w(12, 'fmt '); dv.setUint32(16, 16, true);
+      dv.setUint16(20, 1, true); dv.setUint16(22, 1, true); dv.setUint32(24, sr, true); dv.setUint32(28, sr, true);
+      dv.setUint16(32, 1, true); dv.setUint16(34, 8, true); w(36, 'data'); dv.setUint32(40, len, true);
+      for (let i = 0; i < len; i++) buf[44 + i] = 128 + Math.round(60 * Math.sin(2 * Math.PI * 880 * i / sr));
+      let bin = ''; for (let i = 0; i < buf.length; i++) bin += String.fromCharCode(buf[i]);
+      AEL.src = 'data:audio/wav;base64,' + btoa(bin);
+      AEL.play().then(() => { AEL_OK = true; diag('<audio> で鳴らしました'); }).catch(e => diag('<audio> で鳴らせません ' + e.name));
+    } catch (e) { diag('鳴らせません ' + e); }
+    return;
+  }
+  if (n === 9) {
+    try {
+      if (!actx) { const AC = window.AudioContext || window.webkitAudioContext; actx = new AC(); }
+      actx.resume().then(() => {
+        const o = actx.createOscillator(), g = actx.createGain();
+        o.frequency.value = 880; g.gain.value = 0.25; o.connect(g); g.connect(actx.destination);
+        o.start(); o.stop(actx.currentTime + 0.35);
+        diag('鳴らしました');
+      }).catch(e => diag('鳴らせません ' + e));
+    } catch (e) { diag('鳴らせません ' + e); }
+    return;
+  }
+  if (n === 2) {
+    if (!hasTTS()) { diag('この画面では端末の声が使えません'); return; }
+    try {
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance('端末の声のテストです。');
+      u.lang = 'ja-JP'; const v = pickVoice(); if (v) u.voice = v;
+      let st = false;
+      u.onstart = () => { st = true; diag('話し始めました'); };
+      u.onerror = (e) => diag('エラー ' + (e && e.error));
+      u.onend = () => diag(st ? '最後まで話しました' : '始まらずに終わりました');
+      speechSynthesis.speak(u);
+      setTimeout(() => { if (!st) diag('1.5秒たっても始まりません'); }, 1500);
+    } catch (e) { diag('エラー ' + e); }
+    return;
+  }
+  const keep = prefs.engine; prefs.engine = 'gemini';
+  const r2 = document.createElement('div'); row.appendChild(r2);
+  speak('きれいな声のテストです。', r2, 'もう一度');
+  prefs.engine = keep;
+  diag('声を作っています（2〜4秒）');
 }
 
 /* ---------- 声を選ぶ（右上の［声］） ---------- */
@@ -1030,10 +1136,14 @@ function voicePanel(){
     '<div class="dh" style="margin-top:10px">速さ</div><div class="chips" style="justify-content:flex-start;margin-top:6px">' +
     [['ゆっくり', 0.9], ['ふつう', 1.1], ['はやい', 1.35]].map(r => opt(r[0], Math.abs((prefs.rate || 1.1) - r[1]) < 0.01, 'data-vr="' + r[1] + '"')).join('') + '</div>' +
     '<div class="dh" style="margin-top:10px">読み上げ</div><div class="chips" style="justify-content:flex-start;margin-top:6px">' +
-    opt('全文', prefs.read !== 'short', 'data-rd="full"') + opt('要点だけ', prefs.read === 'short', 'data-rd="short"') + '</div>';
+    opt('全文', prefs.read !== 'short', 'data-rd="full"') + opt('要点だけ', prefs.read === 'short', 'data-rd="short"') + '</div>' +
+    '<div class="dh" style="margin-top:10px">音のテスト（聞こえないとき）</div><div class="chips" style="justify-content:flex-start;margin-top:6px">' +
+    opt('① ピッと鳴らす', false, 'data-t1="1"') + opt('② 端末の声', false, 'data-t2="1"') + opt('③ きれいな声', false, 'data-t3="1"') + '</div>' +
+    '<div class="meta" id="tdiag" style="margin-top:6px;font-size:12px"></div>';
   b.onclick = (e) => {
     const c = e.target.closest('button'); if (!c) return;
     e.stopPropagation();
+    if (c.dataset.t1 || c.dataset.t2 || c.dataset.t3) { soundTest(c.dataset.t1 ? 1 : c.dataset.t2 ? 2 : 3, row); return; }
     if (c.dataset.vv) { prefs.engine = 'device'; prefs.voice = c.dataset.vv; }
     if (c.dataset.vg) { prefs.engine = 'gemini'; }
     if (c.dataset.vr) { prefs.rate = Number(c.dataset.vr); }
@@ -1167,7 +1277,7 @@ $('bListen').onclick = async () => {
   if (lastAudio.playing) lastAudio.stop(); else lastAudio.start();   // lastAudio は細切れの声のまとまり（speak の seq）
 };
 
-/* 大きく：いちばん新しい答えを大きな字にして、画面の真ん中で文字を流し直す（読むペースで追える）。
+/* 読む：いちばん新しい答えを大きな字にして、画面の真ん中で文字を流し直す（読むペースで追える）。
    もう一度押すと元の大きさに戻る。流している途中で画面に触ると、最後まで一気に出る */
 let zoomBusy = false;
 $('bRead').onclick = async () => {
@@ -1407,7 +1517,7 @@ async function liveEnd(why){
   liveHush();
   try { Live.ctx && Live.ctx.close(); } catch (e) { }
   try { Live.keep && Live.keep.pause(); } catch (e) { }
-  try { if (navigator.audioSession) navigator.audioSession.type = 'auto'; } catch (e) { }
+  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { }
   try { Live.wake && Live.wake.release(); } catch (e) { }
   lv('lvRun').hidden = true;
   lv('live').classList.remove('run'); lv('lvBadge').textContent = '終わりました'; lv('lvMode').textContent = '';
