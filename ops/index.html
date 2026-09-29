@@ -350,7 +350,7 @@
   <div class="sp-name">Harmonizer</div>
   <div class="sp-msg" id="spMsg">ひらいています…</div>
   <div class="sp-steps" id="spSteps"><i></i><i></i><i></i><i></i></div>
-  <div class="sp-ver">v2.21　2026-09-29</div>
+  <div class="sp-ver">v2.23　2026-09-29</div>
 </div>
 
 <header>
@@ -438,7 +438,7 @@
 </div>
 <div class="modebar"><span id="modebar"></span></div>
 <div class="recbar" id="recbar"><span id="recbarText">録音しています</span></div>
-<div class="ver" id="ver">Harmonizer v2.21　2026-09-29</div>
+<div class="ver" id="ver">Harmonizer v2.23　2026-09-29</div>
 
 <script>
 /* ============================================================================
@@ -799,9 +799,39 @@ async function ask(payload, shownText){
  *  作れなかったら（上限・この端末が m4a で録れない）、GASは文字で送る
  * ---------------------------------------------------------------- */
 async function harmoVoiceJob(job, row){
-  const note = document.createElement('div'); note.className = 'meta'; note.style.marginTop = '6px';
+  // iPhone は「画面を押したとき」でないと音の処理を動かせないことがある。
+  // そこで［ハーモの声で送る］を押してもらい、その押した瞬間に声を作り始める（押さなければ送らない）
+  const box = document.createElement('div'); box.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;margin-top:8px';
+  const bv = document.createElement('button'); bv.className = 'play'; bv.textContent = '▶ ハーモの声で送る';
+  const bt = document.createElement('button'); bt.className = 'play'; bt.textContent = '文字で送る';
+  box.appendChild(bv); box.appendChild(bt); row.appendChild(box); toBottom();
+  let started = false;
+  const start = (voice) => {
+    if (started) return; started = true; box.remove();
+    if (!voice) { harmoSendText(job, row, '文字で送るを選んだ'); return; }
+    // 押した瞬間に音の処理を起こしておく（ここが大事）
+    try { if (!actx) { const AC = window.AudioContext || window.webkitAudioContext; actx = new AC(); } actx.resume(); } catch (e) { }
+    let finished = false;
+    const guard = setTimeout(() => { if (!finished) { finished = true; harmoSendText(job, row, '声を作る処理が40秒で終わらなかった'); } }, 40000);
+    harmoVoiceJobRun(job, row, () => finished, () => { finished = true; clearTimeout(guard); }).catch(() => {});
+  };
+  bv.onclick = () => start(true);
+  bt.onclick = () => start(false);
+}
+async function harmoSendText(job, row, why){
+  let n = row.querySelector('.hvnote');
+  if (!n) { n = document.createElement('div'); n.className = 'meta hvnote'; n.style.marginTop = '6px'; row.appendChild(n); }
+  n.textContent = '文字で送っています…';
+  try {
+    const r = await api({ api: 'relay_voice', id: job.id, fail: true, why: why });
+    n.textContent = r && r.ok ? '文字で ' + (r.group || 'グループ') + ' に送りました' : '送れませんでした：' + ((r && (r.msg || r.error)) || '');
+  } catch (e) { n.textContent = '送れませんでした：' + String(e.message || e).slice(0, 80); }
+}
+async function harmoVoiceJobRun(job, row, isDone, markDone){
+  const note = document.createElement('div'); note.className = 'meta hvnote'; note.style.marginTop = '6px';
   note.textContent = 'ハーモの声を作っています…'; row.appendChild(note); toBottom();
   const done = async (payload, msg) => {
+    if (isDone()) return; markDone();
     try {
       const r = await api(Object.assign({ api: 'relay_voice', id: job.id }, payload));
       note.textContent = r && r.ok ? (r.voice ? 'ハーモの声で ' + (r.group || 'グループ') + ' に送りました' : msg + '。文字で ' + (r.group || 'グループ') + ' に送りました') : '送れませんでした：' + ((r && (r.msg || r.error)) || '');
@@ -816,7 +846,8 @@ async function harmoVoiceJob(job, row){
     const r = await api({ api: 'speak', text: job.text, voice: prefs.gvoice || '', style: prefs.gstyle || '' });
     if (!r || !r.audio) { why = '声を作れませんでした（' + String((r && (r.msg || r.error)) || '').slice(0, 60) + '）'; throw new Error(why); }
     if (!actx) { const AC = window.AudioContext || window.webkitAudioContext; actx = new AC(); }
-    if (actx.state !== 'running') await actx.resume();
+    if (actx.state !== 'running') await Promise.race([actx.resume(), new Promise(r => setTimeout(r, 1500))]);
+    if (actx.state !== 'running') { why = 'この画面では音の処理が止まっていて声を作れません'; throw new Error(why); }
     const buf = await actx.decodeAudioData(b64ToBuf(r.audio));
     note.textContent = 'ハーモの声を LINE 用にしています（' + Math.ceil(buf.duration) + '秒）…';
     const dest = actx.createMediaStreamDestination(), src = actx.createBufferSource();
@@ -825,7 +856,7 @@ async function harmoVoiceJob(job, row){
     rec2.ondataavailable = (e) => { if (e.data && e.data.size) parts.push(e.data); };
     const stopped = new Promise(res => { rec2.onstop = res; });
     rec2.start(); src.start();
-    await new Promise(res => { src.onended = () => setTimeout(res, 250); });
+    await new Promise(res => { src.onended = () => setTimeout(res, 250); setTimeout(res, (buf.duration + 3) * 1000); });   // onended が来なくても長さ＋3秒で進む
     rec2.stop(); await stopped;
     const blob = new Blob(parts, { type: mime });
     if (blob.size < 1000) { why = '録れた声が空でした'; throw new Error(why); }
