@@ -180,6 +180,37 @@
     border:2px solid rgba(255,255,255,.35);animation:ring 1.5s infinite ease-out;
   }
   .pad.on .ring{box-shadow:0 8px 26px rgba(140,198,63,.35)}
+  /* 押した瞬間：少し沈んで明るくなる（iPhone でも :active が効くよう、touchstart を登録しています） */
+  .ring > button:active,.ring > button.press{transform:scale(.86);filter:brightness(1.35)}
+  .mic:active,.mic.press{transform:scale(.9)}
+  /* いま動いている：ボタンが自分の色で塗りつぶされ、字もその色になる */
+  .pad.act .ring{box-shadow:0 0 0 5px rgba(255,255,255,.08),0 8px 26px rgba(0,0,0,.45)}
+  .pad.act .ring.blue > button{background:var(--blue)}
+  .pad.act .ring.green > button{background:var(--green)}
+  .pad.act .ring.pink > button{background:var(--pink)}
+  .pad.act .ring.amber > button{background:var(--amber)}
+  .pad.act .ring > button svg{fill:#0b0d12 !important}
+  .pad.act .cap{color:#fff}
+  #padWrite.act .cap{color:var(--blue)} #padListen.act .cap{color:var(--green)} #padRead.act .cap{color:var(--pink)}
+  #padTalk.rec .cap{color:var(--red)}
+  /* 話すボタン（#micring は class="ring tri"。.micring の指定が当たっていなかったので、id で指定し直す） */
+  #micring.rec{background:var(--red);box-shadow:0 0 0 7px rgba(255,91,91,.28),0 12px 34px rgba(0,0,0,.45)}
+  #micring.rec > button{background:var(--red)}
+  #micring.rec > button svg{fill:#fff}
+  #micring.rec::before,#micring.rec::after{content:'';position:absolute;inset:-5px;border-radius:50%;
+    border:3px solid rgba(255,91,91,.7);animation:ring 1.5s infinite ease-out;pointer-events:none}
+  #micring.rec::after{animation-delay:.75s}
+  #micring.sending{animation:spin 1.1s linear infinite}
+  #micring.sending > button{background:#2a2f3c;animation:spin 1.1s linear infinite reverse}
+  #micring.sending > button svg{fill:#8b93a6}
+  /* 録音中は画面の上に赤い帯（どの画面の位置からでも分かるように） */
+  .recbar{position:fixed;left:0;right:0;top:0;z-index:35;display:flex;justify-content:center;
+          padding:calc(env(safe-area-inset-top) + 8px) 12px 8px;pointer-events:none;
+          transform:translateY(-110%);transition:transform .2s ease}
+  .recbar.on{transform:none}
+  .recbar span{background:var(--red);color:#fff;font-size:13.5px;font-weight:700;padding:7px 16px;border-radius:999px;
+               box-shadow:0 6px 20px rgba(255,91,91,.45);font-variant-numeric:tabular-nums;display:inline-flex;align-items:center;gap:8px}
+  .recbar span::before{content:'';width:9px;height:9px;border-radius:50%;background:#fff;animation:blink 1s infinite}
 
   .micwrap{display:flex;flex-direction:column;align-items:center;gap:10px}
   /* ロゴの「丸のなかに3色」を、そのままボタンにしています */
@@ -196,8 +227,13 @@
   .mic:active{transform:scale(.94)}
   .mic svg{width:36px;height:36px;fill:#111}
   .micring.rec{background:var(--red);animation:spinoff 0s}
-  .micring.rec .mic{background:#111}
+  .micring.rec .mic{background:var(--red)}
   .micring.rec .mic svg{fill:#fff}
+  .micring.rec{box-shadow:0 0 0 6px rgba(255,91,91,.25),0 12px 34px rgba(0,0,0,.45)}
+  /* 送っている間：輪がゆっくり回り、ボタンは灰色に */
+  .micring.sending{animation:spin 1.2s linear infinite}
+  .micring.sending .mic{background:#2a2f3c}
+  .micring.sending .mic svg{fill:#8b93a6}
   /* 広がる輪は見せるだけ。タップを吸わないように pointer-events を切ります
      （これが無いと、録音中の2回目の押下がボタンに届きません） */
   .micring.rec::before,.micring.rec::after{
@@ -347,7 +383,7 @@
       <div class="ring tri" id="micring"><button id="mic" aria-label="話す">
         <svg viewBox="0 0 24 24"><path d="M12 15a3.5 3.5 0 0 0 3.5-3.5V6a3.5 3.5 0 1 0-7 0v5.5A3.5 3.5 0 0 0 12 15Zm6-3.5a6 6 0 0 1-5 5.92V21h-2v-3.58a6 6 0 0 1-5-5.92h2a4 4 0 0 0 8 0h2Z"/></svg>
       </button></div>
-      <div class="cap">話す</div>
+      <div class="cap" id="capTalk">話す</div>
     </div>
     <div class="pad off" id="padListen">
       <div class="ring green" id="listenring"><button id="bListen" aria-label="聞く">
@@ -391,7 +427,8 @@
   </div>
 </div>
 <div class="modebar"><span id="modebar"></span></div>
-<div class="ver" id="ver">Harmonizer v2.4　2026-09-29</div>
+<div class="recbar" id="recbar"><span id="recbarText">録音しています</span></div>
+<div class="ver" id="ver">Harmonizer v2.5　2026-09-29</div>
 
 <script>
 /* ============================================================================
@@ -717,6 +754,7 @@ async function ask(payload, shownText){
   } finally {
     clearInterval(timer); stateOff();
     busy = false;
+    sendingLook(false);
     $('mic').disabled = false;
     micLabel('押して話す');
   }
@@ -941,9 +979,10 @@ function speak(text, row, label, opts){
   const seq = engineNow() === 'device' ? makeDeviceSeq(chunks) : makeGeminiSeq(chunks, opts.cache ? 'ops:tts:' + hashText(text) : '');
   const ring = $('listenring');
   seq.onstate = (st) => {
-    if (st === 'play' || st === 'wait') { btn.disabled = false; btn.textContent = '■ 止める'; ring && ring.classList.add('busy'); }
-    if (st === 'end') { btn.textContent = '▶ もう一度'; ring && ring.classList.remove('busy'); }
-    if (st === 'stop' || st === 'blocked') { btn.disabled = false; btn.textContent = '▶ ' + name; ring && ring.classList.remove('busy'); }
+    const la = (on) => { const pl = $('padListen'); if (pl) pl.classList.toggle('act', on); };
+    if (st === 'play' || st === 'wait') { btn.disabled = false; btn.textContent = '■ 止める'; ring && ring.classList.add('busy'); la(true); }
+    if (st === 'end') { btn.textContent = '▶ もう一度'; ring && ring.classList.remove('busy'); la(false); }
+    if (st === 'stop' || st === 'blocked') { btn.disabled = false; btn.textContent = '▶ ' + name; ring && ring.classList.remove('busy'); la(false); }
     if (st === 'none') { btn.remove(); }
   };
   seq.onfirst = (ok) => {
@@ -1023,7 +1062,7 @@ async function recStart(){
     rec.onerror = (e) => { showErr('録音でエラーが出ました：' + String((e && e.error && e.error.name) || e).slice(0, 80)); };
     rec.onstop = async () => {
       // どの道を通っても、最後にラベルは「押して話す」に戻します
-      const back = () => micLabel('押して話す');
+      const back = () => { micLabel('押して話す'); sendingLook(false); };
       try {
         stream.getTracks().forEach(t => t.stop());
         const blob = new Blob(chunks, { type: usedMime });
@@ -1041,9 +1080,12 @@ async function recStart(){
     rec.start();
     recT0 = Date.now();
     $('micring').classList.add('rec');
+    recLook(true, 0);
+    try { if (navigator.vibrate) navigator.vibrate([30, 40, 30]); } catch (e) { }
     recTimer = setInterval(() => {
       const el = (Date.now() - recT0) / 1000;
       if (el >= CONFIG.REC_MAX_SEC) { recStop(); return; }   // 押し忘れても、ここで送ります
+      recLook(true, el);
       micLabel('<b>' + el.toFixed(1) + '秒</b>　もう一度押すと送ります' + (CONFIG.REC_MAX_SEC - el < 10 ? '（あと' + Math.ceil(CONFIG.REC_MAX_SEC - el) + '秒で自動で送ります）' : ''));
     }, 100);
   } catch (err) {
@@ -1057,6 +1099,8 @@ async function recStart(){
 function recStop(){
   if (recTimer) { clearInterval(recTimer); recTimer = null; }
   $('micring').classList.remove('rec');
+  recLook(false);
+  if (rec && rec.state === 'recording') sendingLook(true);
   if (!rec) { micLabel('押して話す'); return; }
   if (rec.state === 'inactive') { micLabel('押して話す'); showErr('録音が始まっていませんでした。もう一度押してください。'); rec = null; return; }
   micLabel('送っています…');
@@ -1092,6 +1136,7 @@ $('bWrite').onclick = () => {
   const show = t.style.display === 'none';
   t.style.display = show ? 'flex' : 'none';
   $('padWrite').classList.toggle('on', show);
+  $('padWrite').classList.toggle('act', show);
   if (show) { $('q').focus(); micLabel('書いて ↑ で送ります'); }
   else micLabel('話すか、書くか。押すだけです');
 };
@@ -1109,6 +1154,7 @@ $('bRead').onclick = () => {
   const b = lastRow.querySelector('.bub');
   b.classList.toggle('zoom');
   $('padRead').classList.toggle('on', b.classList.contains('zoom'));
+  $('padRead').classList.toggle('act', b.classList.contains('zoom'));
   lastRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
   micLabel(b.classList.contains('zoom') ? '大きい字にしました。もう一度押すと戻ります' : '話すか、書くか。押すだけです');
 };
@@ -1275,7 +1321,7 @@ async function liveSwitch(){
 
 async function liveStart(mode){
   stopAllVoice();
-  if (rec && rec.state === 'recording') { try { rec.onstop = null; rec.stop(); } catch (e) { } rec = null; recTimer && clearInterval(recTimer); $('micring').classList.remove('rec'); micLabel('押して話す'); }
+  if (rec && rec.state === 'recording') { try { rec.onstop = null; rec.stop(); } catch (e) { } rec = null; recTimer && clearInterval(recTimer); $('micring').classList.remove('rec'); recLook(false); micLabel('押して話す'); }
   Live.mode = mode; Live.ended = false; Live.transcript = []; Live.curIn = ''; Live.curOut = ''; Live.handle = ''; Live.retries = 0; Live.noProactive = false;
   lv('lvSheet').hidden = true;
   lv('lvRun').hidden = false; lvModeLine();
@@ -1343,6 +1389,21 @@ lv('lvMute').onclick = () => { Live.muted = !Live.muted; if (Live.muted) liveHus
 const holdOn = (e) => { e.preventDefault(); if (Live.ws && Live.setupOk) { liveHush(); Live.ws.send(JSON.stringify({ realtimeInput: { activityStart: {} } })); lv('lvHold').classList.add('hold'); } };
 const holdOff = () => { if (Live.ws && Live.setupOk && lv('lvHold').classList.contains('hold')) { Live.ws.send(JSON.stringify({ realtimeInput: { activityEnd: {} } })); lv('lvHold').classList.remove('hold'); } };
 lv('lvHold').addEventListener('pointerdown', holdOn); lv('lvHold').addEventListener('pointerup', holdOff); lv('lvHold').addEventListener('pointerleave', holdOff);
+
+/* 押した瞬間の手ごたえ（iPhone は touchstart を登録しないと :active が効かない） */
+document.addEventListener('touchstart', () => {}, { passive: true });
+document.querySelectorAll('.ring > button, .mic').forEach(b => b.addEventListener('pointerdown', () => {
+  b.classList.add('press'); setTimeout(() => b.classList.remove('press'), 180);
+  try { if (navigator.vibrate) navigator.vibrate(12); } catch (e) { }
+}));
+/** 録音中の見た目（赤い帯・ボタン・字）をまとめて切りかえる */
+function recLook(on, sec){
+  $('recbar').classList.toggle('on', !!on);
+  $('padTalk').classList.toggle('rec', !!on);
+  $('capTalk').textContent = on ? '押して送る' : '話す';
+  if (on) $('recbarText').textContent = '録音中 ' + (sec || 0).toFixed(0) + '秒 ─ もう一度押すと送ります';
+}
+function sendingLook(on){ $('micring').classList.toggle('sending', !!on); if (on) $('capTalk').textContent = '送っています'; else if (!$('micring').classList.contains('rec')) $('capTalk').textContent = '話す'; }
 
 function send(t){
   if (!t) { showErr('入力欄に質問を打つか、マイクを押して話してください。'); return; }
