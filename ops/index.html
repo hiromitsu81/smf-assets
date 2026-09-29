@@ -349,7 +349,7 @@
   <div class="sp-name">Harmonizer</div>
   <div class="sp-msg" id="spMsg">ひらいています…</div>
   <div class="sp-steps" id="spSteps"><i></i><i></i><i></i><i></i></div>
-  <div class="sp-ver">v2.14　2026-09-29</div>
+  <div class="sp-ver">v2.15　2026-09-29</div>
 </div>
 
 <header>
@@ -437,7 +437,7 @@
 </div>
 <div class="modebar"><span id="modebar"></span></div>
 <div class="recbar" id="recbar"><span id="recbarText">録音しています</span></div>
-<div class="ver" id="ver">Harmonizer v2.14　2026-09-29</div>
+<div class="ver" id="ver">Harmonizer v2.15　2026-09-29</div>
 
 <script>
 /* ============================================================================
@@ -755,6 +755,13 @@ async function ask(payload, shownText){
     if (text.length > CONFIG.ANSWER_MAX) row.querySelector('.bub').textContent = text;
     else await typeIn(row.querySelector('.bub'), text, CONFIG.ANSWER_MS);
     meta(row, sec);
+    // エージェントが作った資料（PDF・ドキュメント）を開くボタン
+    (d.files || []).filter(f => f && f.url).forEach(f => {
+      const a = document.createElement('a'); a.href = f.url; a.target = '_blank'; a.rel = 'noopener'; a.className = 'play';
+      a.textContent = (f.kind === 'doc' ? 'ドキュメントを開く：' : 'PDFを開く：') + String(f.title || '資料').slice(0, 24);
+      a.addEventListener('click', (e) => { try { if (window.liff && liff.openWindow) { e.preventDefault(); liff.openWindow({ url: f.url, external: true }); } } catch (x) { } });
+      row.appendChild(a);
+    });
     readReady(row);
     remember('a', text);
 
@@ -832,7 +839,8 @@ function pickVoice(){
   return vs.find(v => v.voiceURI === prefs.voice) || vs.find(v => /Kyoko|O-ren|Google/i.test(v.name)) || vs[0] || null;
 }
 if (hasTTS()) { try { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => {}; } catch (e) { } }
-function engineNow(){ return prefs.engine === 'gemini' || !hasTTS() || !jaVoices().length ? 'gemini' : 'device'; }
+let GEMINI_DOWN = '';   // きれいな声が上限などで作れなかった（この画面のあいだは端末の声にする）
+function engineNow(){ if (GEMINI_DOWN && hasTTS() && jaVoices().length) return 'device'; return prefs.engine === 'gemini' || !hasTTS() || !jaVoices().length ? 'gemini' : 'device'; }
 
 /* 鳴らす用の <audio> を1つだけ持つ。最初に触ったときに無音を一度鳴らして「鳴らしてよい」にしておく
  * （iPhoneは消音スイッチが入っていても <audio> は鳴る。端末の声と Web Audio は消音で黙る） */
@@ -1035,7 +1043,14 @@ function speak(text, row, label, opts){
     if (st === 'play' || st === 'wait') { btn.disabled = false; btn.textContent = '■ 止める'; ring && ring.classList.add('busy'); la(true); soundHint(row); }
     if (st === 'end') { btn.textContent = '▶ もう一度'; ring && ring.classList.remove('busy'); la(false); }
     if (st === 'stop' || st === 'blocked') { btn.disabled = false; btn.textContent = '▶ ' + name; ring && ring.classList.remove('busy'); la(false); }
-    if (st === 'none') {   // 声を1つも作れなかった：黙って消さずに、理由を出す
+    if (st === 'none') {   // 声を1つも作れなかった
+      // きれいな声が使えないとき（上限 429 など）は、この画面のあいだ端末の声に切りかえて、そのまま読む
+      if (hasTTS() && jaVoices().length && !speak.fellBack) {
+        speak.fellBack = true; GEMINI_DOWN = String(seq.why || '');
+        btn.remove(); modeToast('きれいな声が今使えないので、端末の声で読みます');
+        speak(text, row, label, Object.assign({}, opts, { auto: true }));
+        return;
+      }
       btn.disabled = true; btn.textContent = '声を作れませんでした';
       const d = document.createElement('div'); d.className = 'meta'; d.style.cssText = 'margin-top:4px;font-size:12px;opacity:.85';
       d.textContent = '理由：' + String(seq.why || '不明').slice(0, 120) + '　（右上の［声］で端末の声にすると鳴ります）';
