@@ -349,7 +349,7 @@
   <div class="sp-name">Harmonizer</div>
   <div class="sp-msg" id="spMsg">ひらいています…</div>
   <div class="sp-steps" id="spSteps"><i></i><i></i><i></i><i></i></div>
-  <div class="sp-ver">v2.15　2026-09-29</div>
+  <div class="sp-ver">v2.16　2026-09-29</div>
 </div>
 
 <header>
@@ -437,7 +437,7 @@
 </div>
 <div class="modebar"><span id="modebar"></span></div>
 <div class="recbar" id="recbar"><span id="recbarText">録音しています</span></div>
-<div class="ver" id="ver">Harmonizer v2.15　2026-09-29</div>
+<div class="ver" id="ver">Harmonizer v2.16　2026-09-29</div>
 
 <script>
 /* ============================================================================
@@ -1368,7 +1368,7 @@ function lvCap(who, text, part){
   box.scrollTop = box.scrollHeight;
 }
 function lvFlush(which){
-  if ((which === 'in' || !which) && Live.curIn.trim()) { Live.transcript.push({ w: 'me', t: Live.curIn.trim() }); lvCap('me', Live.curIn.trim(), false); Live.curIn = ''; }
+  if ((which === 'in' || !which) && Live.curIn.trim()) { Live.transcript.push({ w: 'me', t: Live.curIn.trim() }); lvCap('me', Live.curIn.trim(), false); Live.lastIn = Live.curIn.trim(); Live.curIn = ''; }
   if ((which === 'out' || !which) && Live.curOut.trim()) { Live.transcript.push({ w: 'ai', t: Live.curOut.trim() }); lvCap('ai', Live.curOut.trim(), false); Live.curOut = ''; }
 }
 function b64FromBuf(buf){ const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }
@@ -1463,18 +1463,23 @@ function liveOnMsg(m){
 /** 画面の下に小さく「届いた声・字幕の数」を出す（喋らないとき、どこで止まっているかが分かる） */
 function lvDbg(){
   const d = document.getElementById('lvDbg'); if (!d) return;
-  d.textContent = 'AIの声 ' + (Live.nAudio || 0) + '　あなたの字幕 ' + (Live.nIn || 0) + '　AIの字幕 ' + (Live.nOut || 0) + (Live.noProactive ? '　（自動判断なし）' : '') + (Live.ctx ? '　音:' + Live.ctx.state : '');
+  d.textContent = 'AIの声 ' + (Live.nAudio || 0) + '　あなたの字幕 ' + (Live.nIn || 0) + '　AIの字幕 ' + (Live.nOut || 0) + (Live.nNudge ? '　呼びかけ ' + Live.nNudge : '') + (Live.noProactive ? '　（自動判断なし）' : '') + (Live.ctx ? '　音:' + Live.ctx.state : '');
 }
-/** 名前で呼ばれたのに6秒たっても返事がなければ、文字で「答えて」とひと押しする（自分で黙ると決めてしまう場合の保険） */
+/** 名前で呼ばれたら：画面に「呼ばれました」と出し、3.5秒たっても声が来なければ、呼ばれた発言を添えて「答えて」とひと押しする
+ *  （文字起こしは「ハーモ」「ハモ」「はーもさん」「ハーモナイザーさん」などに揺れるので、広めに拾う） */
+const WAKE = /ハ[ー〜ｰ-]?モ|は[ー〜-]?も(?:さん|な|に)|はーも|ハルモ|harmo|ﾊｰﾓ|エージェント部|えーじぇんと部/i;
 function liveWake(){
-  if (Live.mode !== 'open' || !/ハーモ|はーも|harmo|エージェント部/i.test(Live.curIn)) return;
+  if (Live.mode !== 'open' || !WAKE.test(Live.curIn)) return;
   if (Date.now() - (Live.lastCall || 0) < 8000) return;
   Live.lastCall = Date.now();
+  modeToast('呼ばれました');
   const before = Live.nAudio || 0;
   setTimeout(() => {
     if (Live.ended || (Live.nAudio || 0) > before || !Live.ws || Live.ws.readyState !== 1) return;
-    Live.ws.send(JSON.stringify({ clientContent: { turns: [{ role: 'user', parts: [{ text: '（いま名前で呼ばれました。直前の問いかけに、声で短く答えてください）' }] }], turnComplete: true } }));
-  }, 6000);
+    const said = String(Live.curIn || Live.lastIn || '').slice(-200);
+    Live.nNudge = (Live.nNudge || 0) + 1; lvDbg();
+    Live.ws.send(JSON.stringify({ clientContent: { turns: [{ role: 'user', parts: [{ text: '（いま名前で呼ばれました。呼んだ人の発言：「' + said + '」。これに、声で短く答えてください。黙らないでください）' }] }], turnComplete: true } }));
+  }, 3500);
 }
 
 function liveFail(err){ lvState('', String((err && err.message) || err)); }
