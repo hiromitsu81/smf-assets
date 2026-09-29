@@ -350,7 +350,7 @@
   <div class="sp-name">Harmonizer</div>
   <div class="sp-msg" id="spMsg">ひらいています…</div>
   <div class="sp-steps" id="spSteps"><i></i><i></i><i></i><i></i></div>
-  <div class="sp-ver">v2.20　2026-09-29</div>
+  <div class="sp-ver">v2.21　2026-09-29</div>
 </div>
 
 <header>
@@ -438,7 +438,7 @@
 </div>
 <div class="modebar"><span id="modebar"></span></div>
 <div class="recbar" id="recbar"><span id="recbarText">録音しています</span></div>
-<div class="ver" id="ver">Harmonizer v2.20　2026-09-29</div>
+<div class="ver" id="ver">Harmonizer v2.21　2026-09-29</div>
 
 <script>
 /* ============================================================================
@@ -813,7 +813,7 @@ async function harmoVoiceJob(job, row){
     // LINE は AAC の m4a しか鳴らせない。iPhone の audio/mp4 は AAC。ほかの端末は AAC と明示できるときだけ（Chrome の audio/mp4 は Opus のことがある）
     const mime = (isIOS ? ['audio/mp4;codecs=mp4a.40.2', 'audio/mp4'] : ['audio/mp4;codecs=mp4a.40.2']).find(m => { try { return window.MediaRecorder && MediaRecorder.isTypeSupported(m); } catch (e) { return false; } });
     if (!mime) { why = 'この端末では LINE 用の声（m4a）を作れません。iPhone のミニアプリから頼んでください'; throw new Error(why); }
-    const r = await api({ api: 'speak', text: job.text });
+    const r = await api({ api: 'speak', text: job.text, voice: prefs.gvoice || '', style: prefs.gstyle || '' });
     if (!r || !r.audio) { why = '声を作れませんでした（' + String((r && (r.msg || r.error)) || '').slice(0, 60) + '）'; throw new Error(why); }
     if (!actx) { const AC = window.AudioContext || window.webkitAudioContext; actx = new AC(); }
     if (actx.state !== 'running') await actx.resume();
@@ -880,7 +880,7 @@ const SILENT_LOOP = (() => {
   return 'data:audio/wav;base64,' + btoa(bin);
 })();
 const VOICE_KEY = 'ops:voice';
-let prefs = { engine: CONFIG.VOICE || 'device', voice: '', rate: 1.1, read: 'full' };
+let prefs = { engine: CONFIG.VOICE || 'device', voice: '', rate: 1.1, read: 'full', gvoice: '', gstyle: '' };   // gvoice／gstyle＝きれいな声（Gemini）の種類と話し方
 try { Object.assign(prefs, JSON.parse(localStorage.getItem(VOICE_KEY) || '{}')); } catch (e) { /* 覚えていなくてもよい */ }
 /* 音の出口：録音のあとは iPhone が「電話の耳もと」から小さく鳴らすことがあるので、話す前にスピーカーへ戻す
  * playback は消音スイッチが入っていても鳴らせる（対応している iPhone のみ。LINEの中で効かないときは消音を切ってもらう） */
@@ -1009,7 +1009,7 @@ function makeGeminiSeq(chunks, cacheKey){
   const pump = () => {
     while (inflight < CONFIG.TTS_PARALLEL && next < chunks.length) {
       const k = next++; inflight++;
-      api({ api: 'speak', text: chunks[k] })
+      api({ api: 'speak', text: chunks[k], voice: prefs.gvoice || '', style: prefs.gstyle || '' })
         .then(d => { if (!(d && d.audio)) seq.why = (d && (d.msg || d.error)) || '空'; got(k, d && d.audio ? d.audio : ''); })
         .catch(e => { seq.why = '通信 ' + String((e && e.message) || e).slice(0, 60); got(k, ''); })
         .finally(() => { inflight--; pump(); });
@@ -1096,7 +1096,7 @@ function speak(text, row, label, opts){
   row.appendChild(btn);
   toBottom();
 
-  const seq = engineNow() === 'device' ? makeDeviceSeq(chunks) : makeGeminiSeq(chunks, opts.cache ? 'ops:tts:' + hashText(text) : '');
+  const seq = engineNow() === 'device' ? makeDeviceSeq(chunks) : makeGeminiSeq(chunks, opts.cache ? 'ops:tts:' + hashText(text + '|' + prefs.gvoice + '|' + prefs.gstyle) : '');
   const ring = $('listenring');
   seq.onstate = (st) => {
     const la = (on) => { const pl = $('padListen'); if (pl) pl.classList.toggle('act', on); };
@@ -1196,6 +1196,10 @@ function soundTest(n, row){
   diag('声を作っています（2〜4秒）');
 }
 
+/* きれいな声の話し方（Gemini への指示として文の前に付く） */
+const GSTYLES = [['ふつう', ''], ['ゆっくり落ち着いて', 'ゆっくり落ち着いた声で'], ['明るく', '明るく元気に'], ['やわらかく', 'やさしくやわらかい声で'], ['低めで渋く', '低めの渋い声で']];
+const GSAMPLE = 'ハーモです。今日の定例は18時からです。よろしくお願いします。';
+
 /* ---------- 声を選ぶ（右上の［声］） ---------- */
 function voicePanel(){
   const old = document.getElementById('vpanel'); if (old) { old.remove(); return; }
@@ -1214,13 +1218,38 @@ function voicePanel(){
     [['ゆっくり', 0.9], ['ふつう', 1.1], ['はやい', 1.35]].map(r => opt(r[0], Math.abs((prefs.rate || 1.1) - r[1]) < 0.01, 'data-vr="' + r[1] + '"')).join('') + '</div>' +
     '<div class="dh" style="margin-top:10px">読み上げ</div><div class="chips" style="justify-content:flex-start;margin-top:6px">' +
     opt('全文', prefs.read !== 'short', 'data-rd="full"') + opt('要点だけ', prefs.read === 'short', 'data-rd="short"') + '</div>' +
+    '<div class="dh" style="margin-top:10px">きれいな声の種類（押すと試しに話します。ハーモの案内にも使います）</div>' +
+    '<div id="gvList" class="meta" style="margin-top:6px">読み込んでいます…</div>' +
+    '<div class="dh" style="margin-top:10px">きれいな声の話し方</div><div class="chips" style="justify-content:flex-start;margin-top:6px">' +
+    GSTYLES.map(st => opt(st[0], (prefs.gstyle || '') === st[1], 'data-gs="' + st[1] + '"')).join('') + '</div>' +
     '<div class="dh" style="margin-top:10px">音のテスト（聞こえないとき）</div><div class="chips" style="justify-content:flex-start;margin-top:6px">' +
     opt('① ピッと鳴らす', false, 'data-t1="1"') + opt('② 端末の声', false, 'data-t2="1"') + opt('③ きれいな声', false, 'data-t3="1"') + '</div>' +
     '<div class="meta" id="tdiag" style="margin-top:6px;font-size:12px"></div>';
+  // きれいな声の一覧（41 の OPS_VOICES）を読んで並べる
+  api({ api: 'voices' }).then(r => {
+    const box = document.getElementById('gvList'); if (!box) return;
+    const vs2 = (r && r.voices) || [];
+    if (!vs2.length) { box.textContent = '一覧を読めませんでした'; return; }
+    box.className = '';
+    box.innerHTML = ['低め', '中くらい', '高め'].map(k => '<div class="meta" style="margin:6px 0 4px">' + k + '</div><div class="chips" style="justify-content:flex-start">' +
+      [opt('おまかせ', !prefs.gvoice && k === '低め', 'data-gv=""')].filter(() => k === '低め').concat(
+      vs2.filter(v => v.kind === k).map(v => opt(v.name + '<small style="opacity:.7">・' + v.tone + '</small>', prefs.gvoice === v.name, 'data-gv="' + v.name + '"'))).join('') + '</div>').join('');
+  }).catch(() => { const box = document.getElementById('gvList'); if (box) box.textContent = '一覧を読めませんでした'; });
   b.onclick = (e) => {
     const c = e.target.closest('button'); if (!c) return;
     e.stopPropagation();
     if (c.dataset.t1 || c.dataset.t2 || c.dataset.t3) { soundTest(c.dataset.t1 ? 1 : c.dataset.t2 ? 2 : 3, row); return; }
+    if (c.dataset.gv !== undefined || c.dataset.gs !== undefined) {   // きれいな声の種類・話し方を選ぶ → その声で試しに話す
+      if (c.dataset.gv !== undefined) prefs.gvoice = c.dataset.gv;
+      if (c.dataset.gs !== undefined) prefs.gstyle = c.dataset.gs;
+      prefs.engine = 'gemini'; GEMINI_DOWN = ''; speak.fellBack = false; savePrefs();
+      b.querySelectorAll('[data-gv]').forEach(x => x.classList.toggle('on', x.dataset.gv === prefs.gvoice));
+      b.querySelectorAll('[data-gs]').forEach(x => x.classList.toggle('on', x.dataset.gs === prefs.gstyle));
+      b.querySelectorAll('[data-vg]').forEach(x => x.classList.add('on')); b.querySelectorAll('[data-vv]').forEach(x => x.classList.remove('on'));
+      row.querySelectorAll('.play').forEach(x => x.remove());
+      speak(GSAMPLE, row, '試しに聞く');
+      return;
+    }
     if (c.dataset.vv) { prefs.engine = 'device'; prefs.voice = c.dataset.vv; }
     if (c.dataset.vg) { prefs.engine = 'gemini'; }
     if (c.dataset.vr) { prefs.rate = Number(c.dataset.vr); }
