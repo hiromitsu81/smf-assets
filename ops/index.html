@@ -229,7 +229,7 @@
   <div class="lead" id="hint">
     <img class="hero" src="https://hiromitsu81.github.io/smf-assets/app/img/smf-logo.png" alt="" onerror="this.style.display='none'">
     <div class="big">押して、話すだけ。</div>
-    <div class="sub">ONE HUB から、根拠つきで答えます</div>
+    <div class="sub">SMF2026 の PMO です。ONE HUB から答えます</div>
   </div>
 </main>
 
@@ -272,7 +272,7 @@
   </div>
   <div class="miclabel" id="miclabel" style="margin-top:12px">話すか、書くか。押すだけです</div>
 </footer>
-<div class="ver" id="ver">Harmonizer v1.6　2026-09-29</div>
+<div class="ver" id="ver">Harmonizer v1.9　2026-09-29</div>
 
 <script>
 /* ============================================================================
@@ -302,7 +302,9 @@ const CONFIG = {
   // ロゴ（来場者向けミニアプリのものをそのまま読みます）
   LOGO: 'https://hiromitsu81.github.io/smf-assets/app/img/smf-logo.png',
   // 最初に出す質問の見本
-  CHIPS: ['協賛は今何件？', 'ロゴが届いていない協賛は？', '今週が期限のタスクは？', '調子はどう？'],
+  CHIPS: ['私の持ち場は？', '協賛は今何件？', 'ロゴが届いていない協賛は？', '今週が期限のタスクは？'],
+  // 録音はこの秒数で自動で送ります（押しっぱなしで長くなり、文字起こしが遅く・高くなるのを防ぐ）
+  REC_MAX_SEC: 60,
   // 1文字あたりの速さ（ミリ秒）。小さいほど速い
   TYPE_MS: 16,        // 案内を打ち出す速さ
   ANSWER_MS: 9,       // 答えを打ち出す速さ
@@ -411,7 +413,8 @@ const GUIDE_FULL = (name) =>
   '③ 聞き取った内容と、答えが返ります\n\n' +
   '答えは ONE HUB にある記録だけから作ります。\n' +
   '書いていないことは「見つかりませんでした」と正直に言います。\n' +
-  '協賛の金額と、権利の可否（掲載してよいか等）はお答えできません。人が確かめるところです。';
+  '協賛の金額は、管理の方にだけお答えします。\n' +
+  '掲載してよいかどうかなどの可否は、記録の中身はお伝えしますが、最後は人が確かめるところです。';
 
 const GUIDE_SHORT = (name) =>
   (name ? name + 'さん、' : '') + 'どうぞ。下のボタンを押して話すか、打ち込んでください。';
@@ -422,21 +425,26 @@ const GUIDE_SPOKEN =
   'ハーモナイザーです。SMFのワンハブを、声でも文字でも引けます。' +
   '下の大きなボタンを押して話し、もう一度押すと送られます。' +
   '答えはワンハブの記録だけから作ります。書いていないことは、見つかりませんでした、と正直にお答えします。' +
-  '協賛の金額と、掲載してよいかどうかは、お答えできません。';
+  '協賛の金額は、管理の方にだけお答えします。私はこのイベントのPMOです。何でも聞いてください。';
 
 /** 開いたときの案内。初めての人には長く、2回目からは短く */
-async function intro(name){
+async function intro(name, greet){
   clearHint();
   let first = true;
   try { first = !localStorage.getItem('ops:seen'); } catch (e) { /* 使えなくても続ける */ }
 
   const row = bubble('bot', '');
   const b = row.querySelector('.bub');
-  await typeIn(b, first ? GUIDE_FULL(name) : GUIDE_SHORT(name), CONFIG.TYPE_MS);
+  // 2回目からは、その人の持ち場と「前回から変わったこと」で始めます（43_Agent.gs の hello）
+  const text = first ? GUIDE_FULL(name) + (greet && greet.text ? '\n\n' + greet.text.split('\n').slice(1).join('\n').trim() : '')
+                     : (greet && greet.text ? greet.text : GUIDE_SHORT(name));
+  await typeIn(b, text, CONFIG.TYPE_MS);
+  if (greet && greet.text) { remember('a', greet.text); readReady(row); }
   try { localStorage.setItem('ops:seen', '1'); } catch (e) { /* 使えなくても続ける */ }
 
   // 案内そのものを声で聞けるようにします。読まない人はここから始められます。
-  speak(GUIDE_SPOKEN, row, '使い方を聞く');
+  if (!first && greet && greet.speakable) speak(greet.speakable, row, '声で聞く');
+  else speak(GUIDE_SPOKEN, row, '使い方を聞く');
 
   if (first) {
     const tip = document.createElement('div');
@@ -548,11 +556,12 @@ async function ask(payload, shownText){
   }, 400);
 
   try {
-    const d = await api(Object.assign({ api: 'ask' }, payload));
+    const d = await api(Object.assign({ api: 'chat', history: history }, payload));
     clearInterval(timer);
     if (d.error) { showErr(ERR[d.error] || (d.msg || 'うまくいきませんでした')); return; }
 
     if (payload.audio && d.heard) myRow.querySelector('.bub').textContent = d.heard;
+    remember('u', d.heard || shownText || '');
     stateOff();
 
     // 答えは打ち出します。一気に出すより、読み始めるのが早くなります。
@@ -563,6 +572,7 @@ async function ask(payload, shownText){
     else await typeIn(row.querySelector('.bub'), text, CONFIG.ANSWER_MS);
     meta(row, sec);
     readReady(row);
+    remember('a', text);
 
     // 声は、文字を出し終えてから追いかけます（できるまで3〜50秒かかることがあります）
     if (d.speakable) speak(d.speakable, row);
@@ -581,6 +591,14 @@ async function ask(payload, shownText){
 
 /* いちばん新しい声と答えを覚えておきます（「聞く」「読む」で使います） */
 let lastAudio = null, lastRow = null;
+
+/* 会話のやり取りを覚えておきます（直前の6往復ぶん）。
+   これが無いと「そのうちロゴが来てないのは？」が通りません。 */
+let history = [];
+function remember(role, text){
+  history.push({ r: role, t: String(text || '').slice(0, 400) });
+  if (history.length > 12) history = history.slice(-12);
+}
 
 function listenReady(a){
   lastAudio = a;
@@ -669,7 +687,9 @@ async function recStart(){
     recT0 = Date.now();
     $('micring').classList.add('rec');
     recTimer = setInterval(() => {
-      micLabel('<b>' + ((Date.now() - recT0) / 1000).toFixed(1) + '秒</b>　もう一度押すと送ります');
+      const el = (Date.now() - recT0) / 1000;
+      if (el >= CONFIG.REC_MAX_SEC) { recStop(); return; }   // 押し忘れても、ここで送ります
+      micLabel('<b>' + el.toFixed(1) + '秒</b>　もう一度押すと送ります' + (CONFIG.REC_MAX_SEC - el < 10 ? '（あと' + Math.ceil(CONFIG.REC_MAX_SEC - el) + '秒で自動で送ります）' : ''));
     }, 100);
   } catch (err) {
     micLabel('押して話す');
@@ -835,9 +855,13 @@ function gate(msg){
         : 'いまは使えません。');
       return;
     }
-    $('who').innerHTML = '<span class="led"></span>' + (me.name || '');
+    $('who').innerHTML = '<span class="led"></span>' + (me.name || '') +
+      (me.roleName ? '<span style="opacity:.6">・' + me.roleName + '</span>' : '');
     $('foot').style.display = 'block';
-    intro(me.name || '');
+    // 開いたときの声かけ（AIを使わないので1〜2秒）。取れなくても、いつもの案内で始めます
+    let greet = null;
+    try { say('持ち場を確かめています…'); greet = await api({ api: 'hello' }); if (!greet || !greet.ok) greet = null; } catch (e) { greet = null; }
+    intro(me.name || '', greet);
   } catch (err) {
     gate('つなげませんでした。\n' + String(err.message || err).slice(0, 90) + '\n\n調べています…');
     try {
