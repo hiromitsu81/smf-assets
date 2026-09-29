@@ -14,7 +14,7 @@
     --green:#8cc63f;
     --blue:#5b9bd5;
     --red:#ff5b5b;
-    --amber:#f3c14b;   /* 5つめ「調べる」。提灯の灯りの色 */
+    --amber:#f3c14b;   /* 5つめ「熟議」。提灯の灯りの色 */
     --pad:18px;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -88,6 +88,7 @@
 
   .bub.zoom{font-size:18px;line-height:1.85}
   .digmenu{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+  .digmenu .dh{flex:0 0 100%;font-size:11.5px;color:var(--dim);letter-spacing:.08em;margin:6px 0 -2px}
 
   .meta{font-size:11px;color:var(--dim);padding:0 5px}
   .me .meta{text-align:right}
@@ -214,9 +215,49 @@
   .gate img{width:64px;height:64px;border-radius:50%;background:#fff;margin:0 0 18px}
   .gate b{display:block;color:var(--tx);font-size:17px;margin-bottom:12px}
   .ver{text-align:center;color:#3c4354;font-size:10px;padding:0 0 4px}
+
+  /* ---------- 立ち上がり（ロード画面） ----------
+     LINEにつなぐ・本人を確かめる・ONE HUB・持ち場、の4段を、SMFのロゴの輪で見せます。
+     何を待っているかが分かると、同じ3秒でも短く感じます。 */
+  .splash{
+    position:fixed;inset:0;z-index:50;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+    padding:0 24px;
+    background:radial-gradient(120% 60% at 50% 30%, #1b1f2b 0%, transparent 65%), var(--bg);
+    transition:opacity .45s ease, visibility .45s;
+  }
+  .splash.out{opacity:0;visibility:hidden;pointer-events:none}
+  .sp-logo{position:relative;width:120px;height:120px;display:grid;place-items:center}
+  .sp-logo img{width:90px;height:90px;border-radius:50%;background:#fff;position:relative;animation:breathe 2.4s ease-in-out infinite}
+  .sp-ring{
+    position:absolute;inset:0;border-radius:50%;
+    background:conic-gradient(from 0deg, var(--pink) 0 33.3%, var(--green) 0 66.6%, var(--blue) 0);
+    -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
+            mask:radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
+    animation:spin 1.4s linear infinite;
+  }
+  .sp-name{font-weight:700;letter-spacing:.16em;font-size:15px;margin-top:4px}
+  .sp-msg{color:var(--dim);font-size:13px;min-height:20px;text-align:center}
+  .sp-steps{display:flex;gap:6px}
+  .sp-steps i{width:22px;height:3px;border-radius:2px;background:var(--line);transition:background .35s}
+  .sp-steps i.on:nth-child(1){background:var(--pink)}
+  .sp-steps i.on:nth-child(2){background:var(--green)}
+  .sp-steps i.on:nth-child(3){background:var(--blue)}
+  .sp-steps i.on:nth-child(4){background:var(--amber)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes breathe{50%{transform:scale(.95)}}
+  @media (prefers-reduced-motion: reduce){ .sp-ring,.sp-logo img{animation:none} }
 </style>
 </head>
 <body>
+
+<!-- 立ち上がり：LIFF の読み込みより先に出るよう、ここに直接書いています -->
+<div class="splash" id="splash" role="status" aria-live="polite">
+  <div class="sp-logo"><span class="sp-ring"></span><img src="https://hiromitsu81.github.io/smf-assets/app/img/smf-logo.png" alt="SMF" onerror="this.style.visibility='hidden'"></div>
+  <div class="sp-name">Harmonizer</div>
+  <div class="sp-msg" id="spMsg">ひらいています…</div>
+  <div class="sp-steps" id="spSteps"><i></i><i></i><i></i><i></i></div>
+</div>
 
 <header>
   <img class="logo" id="lg" src="https://hiromitsu81.github.io/smf-assets/app/img/smf-logo.png" alt="SMF">
@@ -264,15 +305,15 @@
       <div class="cap">聞く</div>
     </div>
     <div class="pad" id="padDig">
-      <div class="ring amber"><button id="bDig" aria-label="調べる">
-        <svg viewBox="0 0 24 24"><path d="M10 2a8 8 0 1 0 4.9 14.32l5.39 5.39 1.42-1.42-5.39-5.39A8 8 0 0 0 10 2Zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z"/></svg>
+      <div class="ring amber"><button id="bDig" aria-label="熟議">
+        <svg viewBox="0 0 24 24"><path d="M3 4h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H8l-4 3v-3H3a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm16 4h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1v3l-4-3h-5a2 2 0 0 1-2-2v-1h7a3 3 0 0 0 3-3V8Z"/></svg>
       </button></div>
-      <div class="cap">調べる</div>
+      <div class="cap">熟議</div>
     </div>
   </div>
   <div class="miclabel" id="miclabel" style="margin-top:12px">話すか、書くか。押すだけです</div>
 </footer>
-<div class="ver" id="ver">Harmonizer v1.9　2026-09-29</div>
+<div class="ver" id="ver">Harmonizer v2.0　2026-09-29</div>
 
 <script>
 /* ============================================================================
@@ -305,6 +346,10 @@ const CONFIG = {
   CHIPS: ['私の持ち場は？', '協賛は今何件？', 'ロゴが届いていない協賛は？', '今週が期限のタスクは？'],
   // 録音はこの秒数で自動で送ります（押しっぱなしで長くなり、文字起こしが遅く・高くなるのを防ぐ）
   REC_MAX_SEC: 60,
+  // 声は1文ずつ作って、最初の1文ができたら鳴らし始めます（残りは鳴っているあいだに作る）
+  TTS_MAX: 70,        // 1かたまりの最大文字数（長い文は読点で分ける）
+  TTS_MIN: 18,        // これより短いかたまりは次とまとめる（2つめ以降）
+  TTS_PARALLEL: 2,    // 同時に作る数
   // 1文字あたりの速さ（ミリ秒）。小さいほど速い
   TYPE_MS: 16,        // 案内を打ち出す速さ
   ANSWER_MS: 9,       // 答えを打ち出す速さ
@@ -364,13 +409,20 @@ function showErr(text){
 
 function toBottom(){ const m = $('main'); m.scrollTop = m.scrollHeight; }
 
-function say(msg){
+/** 立ち上がりの表示。step は 1〜4（LINE・本人・ONE HUB・持ち場） */
+function say(msg, step){
+  const m = $('spMsg'); if (m) m.textContent = msg;
+  if (step) document.querySelectorAll('#spSteps i').forEach((d, i) => d.classList.toggle('on', i < step));
   const h = $('hint');
   if (h) h.innerHTML =
     '<img class="hero" src="' + CONFIG.LOGO + '" alt="" onerror="this.style.display=\'none\'">' +
     '<div class="big" style="font-size:16px">' + msg + '</div>';
   const w = $('who'); if (w) w.textContent = '';
 }
+
+function splashOut(){ const s = $('splash'); if (s) s.classList.add('out'); }
+// 20秒たっても抜けないときは、待っていることを伝える（固まったように見せない）
+setTimeout(() => { const s = $('splash'); if (s && !s.classList.contains('out')) { const m = $('spMsg'); if (m) m.textContent = '時間がかかっています。電波の良いところで開き直すと早くなります'; } }, 20000);
 
 /* ---------------------------------------------------------------- 案内 */
 
@@ -430,6 +482,7 @@ const GUIDE_SPOKEN =
 /** 開いたときの案内。初めての人には長く、2回目からは短く */
 async function intro(name, greet){
   clearHint();
+  splashOut();
   let first = true;
   try { first = !localStorage.getItem('ops:seen'); } catch (e) { /* 使えなくても続ける */ }
 
@@ -438,13 +491,12 @@ async function intro(name, greet){
   // 2回目からは、その人の持ち場と「前回から変わったこと」で始めます（43_Agent.gs の hello）
   const text = first ? GUIDE_FULL(name) + (greet && greet.text ? '\n\n' + greet.text.split('\n').slice(1).join('\n').trim() : '')
                      : (greet && greet.text ? greet.text : GUIDE_SHORT(name));
+  // 声は、文字を打ち出すのと同時に作り始めます（打ち終わるころには鳴らせる）
+  if (!first && greet && greet.speakable) speak(greet.speakable, row, '声で聞く');
+  else speak(GUIDE_SPOKEN, row, '使い方を聞く', { cache: true });
   await typeIn(b, text, CONFIG.TYPE_MS);
   if (greet && greet.text) { remember('a', greet.text); readReady(row); }
   try { localStorage.setItem('ops:seen', '1'); } catch (e) { /* 使えなくても続ける */ }
-
-  // 案内そのものを声で聞けるようにします。読まない人はここから始められます。
-  if (!first && greet && greet.speakable) speak(greet.speakable, row, '声で聞く');
-  else speak(GUIDE_SPOKEN, row, '使い方を聞く');
 
   if (first) {
     const tip = document.createElement('div');
@@ -465,8 +517,8 @@ async function intro(name, greet){
 /** 「使い方」を押されたとき。いつでも読み直せます */
 async function guideAgain(){
   const row = bubble('bot', '');
+  speak(GUIDE_SPOKEN, row, '使い方を聞く', { cache: true });
   await typeIn(row.querySelector('.bub'), GUIDE_FULL(''), CONFIG.TYPE_MS);
-  speak(GUIDE_SPOKEN, row, '使い方を聞く');
 }
 
 function micLabel(html){ const l = $('miclabel'); if (l) l.innerHTML = html; }
@@ -568,14 +620,14 @@ async function ask(payload, shownText){
     const row = bubble('bot', '');
     const sec = ((Date.now() - t0) / 1000).toFixed(1) + '秒' + (d.parts ? '　' + d.parts : '');
     const text = String(d.answer || '');
+    // 声は、文字を打ち出すのと同時に作り始めます
+    if (d.speakable) speak(d.speakable, row);
     if (text.length > CONFIG.ANSWER_MAX) row.querySelector('.bub').textContent = text;
     else await typeIn(row.querySelector('.bub'), text, CONFIG.ANSWER_MS);
     meta(row, sec);
     readReady(row);
     remember('a', text);
 
-    // 声は、文字を出し終えてから追いかけます（できるまで3〜50秒かかることがあります）
-    if (d.speakable) speak(d.speakable, row);
   } catch (err) {
     clearInterval(timer);
     showErr(String(err.message || err));
@@ -610,8 +662,108 @@ function readReady(row){
   $('padRead').classList.remove('off');
 }
 
-async function speak(text, row, label){
+/* ----------------------------------------------------------------
+ *  声（細切れ）
+ *  1本にまとめて作ると、長い答えほど鳴り始めが遅れます（実測 3〜50秒）。
+ *  1文ずつに分けて、最初の1文ができたところで鳴らし始め、残りは鳴っているあいだに作ります。
+ *  鳴らすのは1つの Audio を使い回します（iPhone は、一度触ったあとなら続けて鳴らせる）。
+ * ---------------------------------------------------------------- */
+const SILENT = (() => {
+  const n = 400, b = new Uint8Array(44 + n), v = new DataView(b.buffer);
+  const w = (o, t) => { for (let i = 0; i < t.length; i++) b[o + i] = t.charCodeAt(i); };
+  w(0, 'RIFF'); v.setUint32(4, 36 + n, true); w(8, 'WAVE'); w(12, 'fmt '); v.setUint32(16, 16, true);
+  v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, 8000, true); v.setUint32(28, 8000, true);
+  v.setUint16(32, 1, true); v.setUint16(34, 8, true); w(36, 'data'); v.setUint32(40, n, true); b.fill(128, 44);
+  let bin = ''; b.forEach(x => bin += String.fromCharCode(x));
+  return 'data:audio/wav;base64,' + btoa(bin);
+})();
+const player = new Audio();
+player.setAttribute('playsinline', '');
+let unlocked = false, currentSeq = null;
+// 最初に画面に触ったとき、無音を1回鳴らして「鳴らしてよい」状態にしておく
+document.addEventListener('pointerdown', () => {
+  if (unlocked) return;
+  unlocked = true;
+  try { if (!currentSeq || !currentSeq.playing) { player.src = SILENT; player.play().catch(() => {}); } } catch (e) { /* 鳴らせなくても続ける */ }
+}, { capture: true });
+
+/** 読み上げる文を、1文ずつのかたまりに分ける */
+function splitSpeech(text){
+  const parts = String(text || '').split(/(?<=[。！？!?\n])/).map(x => x.trim()).filter(Boolean);
+  const out = [];
+  parts.forEach(p => {
+    while (p.length > CONFIG.TTS_MAX) {
+      let k = p.lastIndexOf('、', CONFIG.TTS_MAX);
+      if (k < 12) k = CONFIG.TTS_MAX - 1;
+      out.push(p.slice(0, k + 1)); p = p.slice(k + 1);
+    }
+    if (p) out.push(p);
+  });
+  // 2つめ以降の短いかたまりは前とまとめる（最初の1つは、早く鳴らすため短いまま）
+  const m = [];
+  out.forEach(p => {
+    const last = m[m.length - 1];
+    if (m.length >= 2 && last.length < CONFIG.TTS_MIN && last.length + p.length <= CONFIG.TTS_MAX) m[m.length - 1] = last + p;
+    else m.push(p);
+  });
+  return m;
+}
+function hashText(t){ let h = 5381; for (let i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) | 0; return (h >>> 0).toString(36); }
+
+/** かたまりを順に作り（同時に2つまで）、できた順ではなく並び順に鳴らす */
+function makeSeq(chunks, cacheKey){
+  const seq = { urls: Array.from({ length: chunks.length }, () => undefined),   // 穴あき配列だと every が素通りするので、undefined で埋める
+     playing: false, waiting: -1, onstate: () => {}, onfirst: () => {} };
+  let next = 0, inflight = 0, firstDone = false;
+  if (cacheKey) {
+    try { const c = JSON.parse(localStorage.getItem(cacheKey) || 'null'); if (c && c.length === chunks.length) { seq.urls = c; next = chunks.length; } } catch (e) { /* 覚えていなくてもよい */ }
+  }
+  const got = (k, url) => {
+    seq.urls[k] = url;
+    if (k === 0 && !firstDone) { firstDone = true; seq.onfirst(!!url); }
+    if (seq.playing && seq.waiting === k) seq.playAt(k);
+    if (seq.urls.every(u => u !== undefined)) {
+      if (!seq.urls.some(Boolean)) seq.onstate('none');
+      else if (cacheKey && seq.urls.every(Boolean)) {
+        try { const j = JSON.stringify(seq.urls); if (j.length < 2500000) localStorage.setItem(cacheKey, j); } catch (e) { /* 入らなければ覚えない */ }
+      }
+    }
+  };
+  const pump = () => {
+    while (inflight < CONFIG.TTS_PARALLEL && next < chunks.length) {
+      const k = next++; inflight++;
+      api({ api: 'speak', text: chunks[k] })
+        .then(d => got(k, d && d.audio ? 'data:' + (d.mime || 'audio/wav') + ';base64,' + d.audio : ''))
+        .catch(() => got(k, ''))
+        .finally(() => { inflight--; pump(); });
+    }
+  };
+  seq.playAt = (k) => {
+    if (!seq.playing) return;
+    if (k >= chunks.length) { seq.playing = false; seq.onstate('end'); return; }
+    const u = seq.urls[k];
+    if (u === undefined) { seq.waiting = k; seq.onstate('wait'); return; }   // まだできていない：できたら続きから
+    seq.waiting = -1;
+    if (!u) { seq.playAt(k + 1); return; }                                  // この1文は作れなかった：飛ばす
+    player.onended = () => seq.playAt(k + 1);
+    player.src = u;
+    player.play().then(() => seq.onstate('play')).catch(() => { seq.playing = false; seq.onstate('blocked'); });
+  };
+  seq.start = () => {
+    if (currentSeq && currentSeq !== seq) currentSeq.stop();
+    currentSeq = seq; seq.playing = true; seq.playAt(0);
+  };
+  seq.stop = () => { if (!seq.playing) return; seq.playing = false; seq.waiting = -1; try { player.pause(); } catch (e) { } seq.onstate('stop'); };
+  if (seq.urls.every(u => u !== undefined)) setTimeout(() => { firstDone = true; seq.onfirst(!!seq.urls[0]); }, 0);
+  else pump();
+  return seq;
+}
+
+function speak(text, row, label, opts){
+  opts = opts || {};
   const name = label || '聞く';
+  const chunks = splitSpeech(text);
+  if (!chunks.length) return;
   const btn = document.createElement('button');
   btn.className = 'play';
   btn.textContent = '♪ 声を用意しています…';
@@ -619,22 +771,21 @@ async function speak(text, row, label){
   row.appendChild(btn);
   toBottom();
 
-  try {
-    const d = await api({ api: 'speak', text: text });
-    if (d.error || !d.audio) { btn.remove(); return; }
-    // ブラウザは WAV をそのまま鳴らせます（ここが LINE との違いです）
-    const audio = new Audio('data:' + (d.mime || 'audio/wav') + ';base64,' + d.audio);
-    listenReady(audio);   // 「聞く」で鳴らせるようにする
-    btn.textContent = '▶ ' + name;
+  const seq = makeSeq(chunks, opts.cache ? 'ops:tts:' + hashText(text) : '');
+  const ring = $('listenring');
+  seq.onstate = (st) => {
+    if (st === 'play' || st === 'wait') { btn.disabled = false; btn.textContent = '■ 止める'; ring && ring.classList.add('busy'); }
+    if (st === 'end') { btn.textContent = '▶ もう一度'; ring && ring.classList.remove('busy'); }
+    if (st === 'stop' || st === 'blocked') { btn.disabled = false; btn.textContent = '▶ ' + name; ring && ring.classList.remove('busy'); }
+    if (st === 'none') { btn.remove(); }
+  };
+  seq.onfirst = (ok) => {
     btn.disabled = false;
-    btn.onclick = () => {
-      if (audio.paused) { audio.play(); btn.textContent = '■ 止める'; }
-      else { audio.pause(); audio.currentTime = 0; btn.textContent = '▶ ' + name; }
-    };
-    audio.onended = () => { btn.textContent = '▶ もう一度'; };
-    audio.play().then(() => { btn.textContent = '■ 止める'; })
-                .catch(() => { /* 自動で鳴らせない端末は押してもらう */ });
-  } catch (err) { btn.remove(); }
+    btn.textContent = '▶ ' + name;
+    listenReady(seq);                 // 「聞く」で鳴らせるようにする
+    if (ok && opts.auto !== false) seq.start();   // 鳴らせない端末では、押してもらう
+  };
+  btn.onclick = () => { if (seq.playing) seq.stop(); else seq.start(); };
 }
 
 /* ---------------------------------------------------------------- 録音 */
@@ -745,11 +896,7 @@ $('bWrite').onclick = () => {
 $('bListen').onclick = async () => {
   if ($('padListen').classList.contains('off')) return;
   if (!lastAudio) return;
-  const ring = $('listenring');
-  if (!lastAudio.paused) { lastAudio.pause(); lastAudio.currentTime = 0; ring.classList.remove('busy'); return; }
-  ring.classList.add('busy');
-  lastAudio.onended = () => ring.classList.remove('busy');
-  try { await lastAudio.play(); } catch (e) { ring.classList.remove('busy'); }
+  if (lastAudio.playing) lastAudio.stop(); else lastAudio.start();   // lastAudio は細切れの声のまとまり（speak の seq）
 };
 
 /* 読む：いちばん新しい答えを大きな字にして、画面に持ってくる */
@@ -762,24 +909,30 @@ $('bRead').onclick = () => {
   micLabel(b.classList.contains('zoom') ? '大きい字にしました。もう一度押すと戻ります' : '話すか、書くか。押すだけです');
 };
 
-/* 調べる：ひとつの答えではなく、いま気にすべきことを横断で拾う。
-   単発の質問と役割を分けています（「何件？」ではなく「何が引っかかっているか」） */
+/* 熟議：ひとつの答えではなく、みんなの話（SECOND HUB）と ONE HUB を見比べて論点を拾う。
+   食い違い・決まっていないこと・今日出た話。下の段は、いままでの「調べる」（横断で引っかかりを拾う） */
 const DIG = [
-  ['返答待ちの協賛は？',            '打診したのに返事が来ていないところ'],
-  ['ロゴが届いていない協賛は？',    'サイトに出せていないところ'],
-  ['アー写が来ていない出演者は？',  '発表に間に合わないおそれ'],
-  ['期限を過ぎているタスクは？',    '遅れているもの'],
-  ['会場でまだ取得できていないのは？', '押さえられていない会場'],
-  ['調子はどう？',                  'ONE HUB に足りないところ']
+  ['熟議する'],
+  ['食い違っているところは？',        '人によって言っていることが違うところ'],
+  ['いま決めないと止まるのは？',      '決まっていないまま、止まっていること'],
+  ['今日みんなから出た話は？',        'まだ ONE HUB に入っていない、確定前の話'],
+  ['私に関係する認識合わせは？',      'ほかの人から、すり合わせを頼まれていること'],
+  ['次の定例で決めることは？',        '議題の候補'],
+  ['調べる'],
+  ['返答待ちの協賛は？',              '打診したのに返事が来ていないところ'],
+  ['ロゴが届いていない協賛は？',      'サイトに出せていないところ'],
+  ['期限を過ぎているタスクは？',      '遅れているもの'],
+  ['調子はどう？',                    'ONE HUB に足りないところ']
 ];
 $('bDig').onclick = async () => {
   const row = bubble('bot', '');
   await typeIn(row.querySelector('.bub'),
-    '何を調べますか。\nひとつ押すと、ONE HUB を横断して拾います。', CONFIG.TYPE_MS);
+    '何を話し合いますか。\nみんなの話と ONE HUB を見比べて、論点を拾います。', CONFIG.TYPE_MS);
   const m = document.createElement('div');
   m.className = 'digmenu';
-  m.innerHTML = DIG.map(x =>
-    '<button class="chip" title="' + x[1] + '">' + x[0] + '</button>').join('');
+  m.innerHTML = DIG.map(x => x.length === 1
+    ? '<div class="dh">' + x[0] + '</div>'
+    : '<button class="chip" title="' + x[1] + '">' + x[0] + '</button>').join('');
   row.appendChild(m);
   toBottom();
 };
@@ -808,6 +961,7 @@ document.addEventListener('click', (e) => {
 });
 
 function gate(msg){
+  splashOut();
   $('main').innerHTML = '<div class="gate">' +
     '<img src="' + CONFIG.LOGO + '" alt="" onerror="this.style.display=\'none\'">' +
     '<b>使えません</b>' + msg + '</div>';
@@ -824,7 +978,7 @@ function gate(msg){
     // どのLIFF IDで開かれたか分からないので、順に試します
     let used = '', lastErr = null;
     for (const id of CONFIG.LIFF_IDS) {
-      say('LINEにつないでいます…');
+      say('LINEにつないでいます…', 1);
       try { await liff.init({ liffId: id }); used = id; break; }
       catch (e) { lastErr = e; }
     }
@@ -835,7 +989,7 @@ function gate(msg){
     }
     $('ver').textContent = $('ver').textContent + '　/ ' + used.split('-')[0];
 
-    say('本人を確かめています…');
+    say('本人を確かめています…', 2);
     // liff.login() は呼びません。ミニアプリの中で呼ぶと、窓が閉じたり往復したりします。
     if (!liff.isLoggedIn || !liff.isLoggedIn()) {
       gate('LINEアプリの中から開いてください。\nブラウザで直接開くと使えません。');
@@ -847,7 +1001,7 @@ function gate(msg){
       return;
     }
 
-    say('ONE HUB につないでいます…');
+    say('ONE HUB につないでいます…', 3);
     const me = await api({ api: 'me' });
     if (me.error) {
       gate(me.error === 'login'
@@ -860,7 +1014,7 @@ function gate(msg){
     $('foot').style.display = 'block';
     // 開いたときの声かけ（AIを使わないので1〜2秒）。取れなくても、いつもの案内で始めます
     let greet = null;
-    try { say('持ち場を確かめています…'); greet = await api({ api: 'hello' }); if (!greet || !greet.ok) greet = null; } catch (e) { greet = null; }
+    try { say('持ち場を確かめています…', 4); greet = await api({ api: 'hello' }); if (!greet || !greet.ok) greet = null; } catch (e) { greet = null; }
     intro(me.name || '', greet);
   } catch (err) {
     gate('つなげませんでした。\n' + String(err.message || err).slice(0, 90) + '\n\n調べています…');
