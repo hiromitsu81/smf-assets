@@ -57,7 +57,6 @@
   /* PC の広い画面では、真ん中に 720px の列で出す */
   @media (min-width: 820px){
     main, footer, header{width:100%;max-width:760px;margin-left:auto;margin-right:auto}
-    .live{max-width:760px;width:100%;left:50%;right:auto;transform:translateX(-50%)}
   }
   main{flex:1;overflow-y:auto;padding:var(--pad) var(--pad) 8px;
        display:flex;flex-direction:column;gap:14px;-webkit-overflow-scrolling:touch}
@@ -298,6 +297,8 @@
         background:radial-gradient(120% 60% at 50% 25%, #1b1f2b 0%, transparent 65%), var(--bg);
         padding:calc(env(safe-area-inset-top) + 14px) 18px calc(env(safe-area-inset-bottom) + 14px)}
   .live[hidden]{display:none}
+  /* PC：オープンモードは画面いっぱいに被せ、中身だけ真ん中の 760px に（下の会話が透けない） */
+  @media (min-width: 820px){ .live{padding-left:max(18px, calc((100vw - 760px) / 2));padding-right:max(18px, calc((100vw - 760px) / 2))} }
   .lv-top{display:flex;align-items:center;gap:10px}
   .lv-top b{font-size:15px;letter-spacing:.06em}
   .lv-top .lv-time{margin-left:auto;color:var(--dim);font-size:12.5px;font-variant-numeric:tabular-nums}
@@ -349,7 +350,7 @@
   <div class="sp-name">Harmonizer</div>
   <div class="sp-msg" id="spMsg">ひらいています…</div>
   <div class="sp-steps" id="spSteps"><i></i><i></i><i></i><i></i></div>
-  <div class="sp-ver">v2.18　2026-09-29</div>
+  <div class="sp-ver">v2.20　2026-09-29</div>
 </div>
 
 <header>
@@ -437,7 +438,7 @@
 </div>
 <div class="modebar"><span id="modebar"></span></div>
 <div class="recbar" id="recbar"><span id="recbarText">録音しています</span></div>
-<div class="ver" id="ver">Harmonizer v2.18　2026-09-29</div>
+<div class="ver" id="ver">Harmonizer v2.20　2026-09-29</div>
 
 <script>
 /* ============================================================================
@@ -777,6 +778,7 @@ async function ask(payload, shownText){
     });
     readReady(row);
     remember('a', text);
+    if (d.voiceJob) harmoVoiceJob(d.voiceJob, row);   // グループへ「ハーモの声」で送る（46_Relay.gs）
 
   } catch (err) {
     clearInterval(timer);
@@ -787,6 +789,51 @@ async function ask(payload, shownText){
     sendingLook(false);
     $('mic').disabled = false;
     micLabel('押して話す');
+  }
+}
+
+/* ----------------------------------------------------------------
+ *  ハーモの声でグループに送る
+ *  LINEの音声メッセージは m4a しか鳴らせない。GASでは作れないので、
+ *  Gemini の声をこの画面で鳴らしながら録り直して m4a にし、GASに渡して送ってもらう。
+ *  作れなかったら（上限・この端末が m4a で録れない）、GASは文字で送る
+ * ---------------------------------------------------------------- */
+async function harmoVoiceJob(job, row){
+  const note = document.createElement('div'); note.className = 'meta'; note.style.marginTop = '6px';
+  note.textContent = 'ハーモの声を作っています…'; row.appendChild(note); toBottom();
+  const done = async (payload, msg) => {
+    try {
+      const r = await api(Object.assign({ api: 'relay_voice', id: job.id }, payload));
+      note.textContent = r && r.ok ? (r.voice ? 'ハーモの声で ' + (r.group || 'グループ') + ' に送りました' : msg + '。文字で ' + (r.group || 'グループ') + ' に送りました') : '送れませんでした：' + ((r && (r.msg || r.error)) || '');
+    } catch (e) { note.textContent = '送れませんでした：' + String(e.message || e).slice(0, 80); }
+  };
+  let why = '';
+  try {
+    const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    // LINE は AAC の m4a しか鳴らせない。iPhone の audio/mp4 は AAC。ほかの端末は AAC と明示できるときだけ（Chrome の audio/mp4 は Opus のことがある）
+    const mime = (isIOS ? ['audio/mp4;codecs=mp4a.40.2', 'audio/mp4'] : ['audio/mp4;codecs=mp4a.40.2']).find(m => { try { return window.MediaRecorder && MediaRecorder.isTypeSupported(m); } catch (e) { return false; } });
+    if (!mime) { why = 'この端末では LINE 用の声（m4a）を作れません。iPhone のミニアプリから頼んでください'; throw new Error(why); }
+    const r = await api({ api: 'speak', text: job.text });
+    if (!r || !r.audio) { why = '声を作れませんでした（' + String((r && (r.msg || r.error)) || '').slice(0, 60) + '）'; throw new Error(why); }
+    if (!actx) { const AC = window.AudioContext || window.webkitAudioContext; actx = new AC(); }
+    if (actx.state !== 'running') await actx.resume();
+    const buf = await actx.decodeAudioData(b64ToBuf(r.audio));
+    note.textContent = 'ハーモの声を LINE 用にしています（' + Math.ceil(buf.duration) + '秒）…';
+    const dest = actx.createMediaStreamDestination(), src = actx.createBufferSource();
+    src.buffer = buf; src.connect(dest); src.connect(actx.destination);   // 録りながら、こちらでも聞こえる
+    const rec2 = new MediaRecorder(dest.stream, { mimeType: mime }), parts = [];
+    rec2.ondataavailable = (e) => { if (e.data && e.data.size) parts.push(e.data); };
+    const stopped = new Promise(res => { rec2.onstop = res; });
+    rec2.start(); src.start();
+    await new Promise(res => { src.onended = () => setTimeout(res, 250); });
+    rec2.stop(); await stopped;
+    const blob = new Blob(parts, { type: mime });
+    if (blob.size < 1000) { why = '録れた声が空でした'; throw new Error(why); }
+    const b64 = await toBase64(blob);
+    note.textContent = 'ハーモの声を送っています…';
+    await done({ audio: b64, mime: 'audio/mp4', sec: Math.round(buf.duration * 10) / 10 });
+  } catch (e) {
+    await done({ fail: true, why: why || String(e.message || e).slice(0, 80) }, why || '声を作れませんでした');
   }
 }
 
