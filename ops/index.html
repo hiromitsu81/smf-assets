@@ -54,6 +54,11 @@
   header .who .led{width:6px;height:6px;border-radius:50%;background:var(--green)}
 
   /* ---------- 会話 ---------- */
+  /* PC の広い画面では、真ん中に 720px の列で出す */
+  @media (min-width: 820px){
+    main, footer, header{width:100%;max-width:760px;margin-left:auto;margin-right:auto}
+    .live{max-width:760px;width:100%;left:50%;right:auto;transform:translateX(-50%)}
+  }
   main{flex:1;overflow-y:auto;padding:var(--pad) var(--pad) 8px;
        display:flex;flex-direction:column;gap:14px;-webkit-overflow-scrolling:touch}
 
@@ -430,7 +435,7 @@
 </div>
 <div class="modebar"><span id="modebar"></span></div>
 <div class="recbar" id="recbar"><span id="recbarText">録音しています</span></div>
-<div class="ver" id="ver">Harmonizer v2.7　2026-09-29</div>
+<div class="ver" id="ver">Harmonizer v2.8　2026-09-29</div>
 
 <script>
 /* ============================================================================
@@ -1151,7 +1156,7 @@ $('bWrite').onclick = () => {
   t.style.display = show ? 'flex' : 'none';
   $('padWrite').classList.toggle('on', show);
   $('padWrite').classList.toggle('act', show);
-  if (show) { $('q').focus(); micLabel('書いて ↑ で送ります'); }
+  if (show) { $('q').focus(); micLabel(matchMedia('(pointer: fine)').matches ? '書いて Enter で送ります（改行は Shift+Enter）' : '書いて ↑ で送ります'); }
   else micLabel('話すか、書くか。押すだけです');
 };
 
@@ -1464,9 +1469,13 @@ function send(t){
 $('send').onclick = () => {
   const t = $('q').value.trim();
   $('q').value = ''; $('q').style.height = 'auto'; $('send').classList.remove('on');
-  if (t) { $('typebar').style.display = 'none'; $('padWrite').classList.remove('on', 'act'); }
+  if (t && !matchMedia('(pointer: fine)').matches) { $('typebar').style.display = 'none'; $('padWrite').classList.remove('on', 'act'); }   // PC は開いたまま続けて打てる
   send(t);
 };
+// PC：Enter で送る（Shift+Enter で改行。日本語の変換中の Enter は送らない）
+$('q').addEventListener('keydown', function(e){
+  if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.keyCode !== 229 && matchMedia('(pointer: fine)').matches) { e.preventDefault(); $('send').click(); }
+});
 $('q').addEventListener('input', function(){
   this.style.height = 'auto';
   this.style.height = Math.min(104, this.scrollHeight) + 'px';
@@ -1511,7 +1520,14 @@ function gate(msg){
     say('本人を確かめています…', 2);
     // liff.login() は呼びません。ミニアプリの中で呼ぶと、窓が閉じたり往復したりします。
     if (!liff.isLoggedIn || !liff.isLoggedIn()) {
-      gate('LINEアプリの中から開いてください。\nブラウザで直接開くと使えません。');
+      // PC（LINE for PC から開くと、ふだんのブラウザで開きます）やブラウザで直接開いたとき：LINEでログインしてから戻ってくる
+      // ※ LINEアプリの中（ミニアプリ）では login を呼ばない（呼ぶと画面が一瞬出て消える：9/29 の不具合）
+      if (liff.isInClient && !liff.isInClient()) {
+        say('LINEでログインしています…', 2);
+        liff.login({ redirectUri: location.href.split('#')[0] });
+        return;
+      }
+      gate('LINEアプリの中から開いてください。');
       return;
     }
     idToken = liff.getIDToken() || '';
@@ -1531,6 +1547,8 @@ function gate(msg){
     $('who').innerHTML = '<span class="led"></span>' + (me.name || '') +
       (me.roleName ? '<span style="opacity:.6">・' + me.roleName + '</span>' : '');
     $('foot').style.display = 'block';
+    // PC（マウスとキーボード）では、最初から打ち込み欄を開いておく
+    if (matchMedia('(pointer: fine)').matches && $('typebar').style.display === 'none') $('bWrite').click();
     // 開いたときの声かけ（AIを使わないので1〜2秒）。取れなくても、いつもの案内で始めます
     let greet = null;
     try { say('持ち場を確かめています…', 4); greet = await api({ api: 'hello' }); if (!greet || !greet.ok) greet = null; } catch (e) { greet = null; }
