@@ -349,7 +349,7 @@
   <div class="sp-name">Harmonizer</div>
   <div class="sp-msg" id="spMsg">ひらいています…</div>
   <div class="sp-steps" id="spSteps"><i></i><i></i><i></i><i></i></div>
-  <div class="sp-ver">v2.16　2026-09-29</div>
+  <div class="sp-ver">v2.18　2026-09-29</div>
 </div>
 
 <header>
@@ -437,7 +437,7 @@
 </div>
 <div class="modebar"><span id="modebar"></span></div>
 <div class="recbar" id="recbar"><span id="recbarText">録音しています</span></div>
-<div class="ver" id="ver">Harmonizer v2.16　2026-09-29</div>
+<div class="ver" id="ver">Harmonizer v2.18　2026-09-29</div>
 
 <script>
 /* ============================================================================
@@ -668,6 +668,19 @@ window.addEventListener('unhandledrejection', (e) => {
 
 /* ---------------------------------------------------------------- 通信 */
 
+function isInLine(){ try { return !!(window.liff && liff.isInClient && liff.isInClient()); } catch (e) { return false; } }
+/* 同じブラウザで2つ目のタブを開いたら知らせる（話の流れが別々になり、オープンモードは声とマイクを取り合う） */
+(function(){
+  try {
+    const bc = new BroadcastChannel('harmonizer-ops'), me = Math.random().toString(36).slice(2);
+    bc.onmessage = (e) => {
+      const d = e.data || {}; if (d.from === me) return;
+      if (d.t === 'hello') bc.postMessage({ t: 'here', from: me });
+      if (d.t === 'here' || d.t === 'hello') modeToast('このページが別のタブでも開いています。使うのは1つだけにしてください');
+    };
+    bc.postMessage({ t: 'hello', from: me });
+  } catch (e) { /* 古いブラウザは知らせないだけ */ }
+})();
 async function api(payload){
   // ヘッダーは付けません。来場者向けミニアプリで動いている書き方と同じです
   // （文字列を渡すと text/plain になり、事前確認（preflight）が起きません）
@@ -675,7 +688,7 @@ async function api(payload){
     method: 'POST',
     body: JSON.stringify(Object.assign({ kind: 'ops', idToken: idToken }, payload))
   });
-  if (!res.ok) throw new Error('つながりませんでした（' + res.status + '）');
+  if (!res.ok) throw new Error('つながりませんでした（' + res.status + '）' + (res.status === 404 && !isInLine() ? '\nGoogleに複数のアカウントでログインしているブラウザで起きることがあります。シークレットウィンドウで開き直してください' : ''));
   return await res.json();
 }
 
@@ -1216,7 +1229,7 @@ async function recStart(){
         if (blob.size < 1200) { back(); showErr('短すぎました（' + blob.size + 'バイト）。押してから、1秒以上話してください。'); return; }
         const b64 = await toBase64(blob);
         if (!b64) { back(); showErr('音声を変換できませんでした。打ち込みで聞いてください。'); return; }
-        ask({ audio: b64, mime: usedMime.split(';')[0] });   // ここから先は ask が面倒を見ます
+        ask({ audio: b64, mime: usedMime.split(';')[0], sec: Math.round((Date.now() - recT0) / 100) / 10 });   // 秒数は、伝言をLINEに声で送るときに使う   // ここから先は ask が面倒を見ます
       } catch (err) {
         back();
         showErr('送るところで止まりました：' + String(err.message || err).slice(0, 110));
