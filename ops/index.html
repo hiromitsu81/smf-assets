@@ -250,6 +250,41 @@
   @keyframes spin{to{transform:rotate(360deg)}}
   @keyframes breathe{50%{transform:scale(.95)}}
   @media (prefers-reduced-motion: reduce){ .sp-ring,.sp-logo img{animation:none} }
+  /* ---------- オープンモード（会議に同席） ---------- */
+  .lbtn{border-color:rgba(243,193,75,.55);color:var(--amber)}
+  .live{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;
+        background:radial-gradient(120% 60% at 50% 25%, #1b1f2b 0%, transparent 65%), var(--bg);
+        padding:calc(env(safe-area-inset-top) + 14px) 18px calc(env(safe-area-inset-bottom) + 14px)}
+  .live[hidden]{display:none}
+  .lv-top{display:flex;align-items:center;gap:10px}
+  .lv-top b{font-size:15px;letter-spacing:.06em}
+  .lv-top .lv-time{margin-left:auto;color:var(--dim);font-size:12.5px;font-variant-numeric:tabular-nums}
+  .lv-orb{position:relative;width:132px;height:132px;margin:22px auto 8px;display:grid;place-items:center}
+  .lv-orb img{width:92px;height:92px;border-radius:50%;background:#fff;position:relative}
+  .lv-orb .lv-ring{position:absolute;inset:0;border-radius:50%;
+        background:conic-gradient(var(--pink) 0 33.3%, var(--green) 0 66.6%, var(--blue) 0);
+        -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
+                mask:radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
+        opacity:.35;transition:opacity .3s}
+  .live.listen .lv-ring{opacity:.9;animation:spin 6s linear infinite}
+  .live.speak .lv-ring{opacity:1;animation:spin 1.2s linear infinite}
+  .live.speak .lv-orb img{animation:breathe 1s ease-in-out infinite}
+  .lv-status{text-align:center;color:var(--dim);font-size:13px;min-height:20px}
+  .lv-caps{flex:1;overflow-y:auto;margin:14px 0 10px;display:flex;flex-direction:column;gap:8px;-webkit-overflow-scrolling:touch}
+  .lv-cap{font-size:14px;line-height:1.6;color:var(--tx);opacity:.85}
+  .lv-cap.ai{color:var(--green);opacity:1}
+  .lv-cap.ai::before{content:'Harmonizer　';font-size:11px;color:var(--dim)}
+  .lv-cap.part{opacity:.55}
+  .lv-sheet{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+  .lv-sheet p{margin:0;color:var(--dim);font-size:13px;line-height:1.7}
+  .lv-acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .lv-btn{background:var(--card);border:1px solid var(--line);color:var(--tx);border-radius:999px;
+          font:inherit;font-size:14px;padding:11px 18px;cursor:pointer;min-width:96px}
+  .lv-btn.main{background:var(--green);border-color:var(--green);color:#0b0d12;font-weight:700}
+  .lv-btn.end{border-color:var(--pink);color:var(--pink)}
+  .lv-btn.on{border-color:var(--amber);color:var(--amber)}
+  .lv-btn.hold{background:var(--amber);color:#0b0d12}
+  .lv-btn[hidden],.lv-sheet[hidden],.lv-acts[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -267,6 +302,7 @@
   <span class="logo-fb" id="lgfb">SMF</span>
   <span class="t">Harmonizer</span>
   <span class="who" id="who">つないでいます…</span>
+  <button class="vbtn lbtn" id="lbtn" aria-label="オープンモード" style="display:none">オープン</button>
   <button class="vbtn" id="vbtn" aria-label="声を選ぶ">声</button>
 </header>
 
@@ -317,7 +353,31 @@
   </div>
   <div class="miclabel" id="miclabel" style="margin-top:12px">話すか、書くか。押すだけです</div>
 </footer>
-<div class="ver" id="ver">Harmonizer v2.2　2026-09-29</div>
+
+<!-- オープンモード：会議に同席して、たまに会話に入る（45_Live.gs） -->
+<div class="live" id="live" hidden>
+  <div class="lv-top"><b>オープンモード</b><span class="lv-time" id="lvTime"></span></div>
+  <div class="lv-orb"><span class="lv-ring"></span><img src="https://hiromitsu81.github.io/smf-assets/app/img/smf-logo.png" alt="" onerror="this.style.visibility='hidden'"></div>
+  <div class="lv-status" id="lvStatus"></div>
+  <div class="lv-caps" id="lvCaps">
+    <div class="lv-sheet" id="lvSheet">
+      <p>マイクをつないだまま、Harmonizer が会議に同席します。ふだんは黙って聞き、<b>名前で呼ばれたとき</b>・<b>記録と違うとき</b>・<b>担当や期限が決まっていないとき</b>・<b>「まとめて」と言われたとき</b>だけ声で入ってきます。</p>
+      <p>始める前に、参加者に「AIが聞いています」と伝えてください。外部の方がいる会議では使いません。画面はつけたまま、充電しながら置いてください。</p>
+      <p>終えると、文字起こしをドキュメントに残し、決まったこと・宿題を SECOND HUB にまとめます（ONE HUB は、いつもどおり人が確かめてから）。</p>
+      <div class="lv-acts" style="margin-top:6px">
+        <button class="lv-btn main" id="lvOpen">オープンで始める</button>
+        <button class="lv-btn" id="lvPtt">押して話すで始める</button>
+      </div>
+      <div class="lv-acts"><button class="lv-btn" id="lvCancel">やめる</button></div>
+    </div>
+  </div>
+  <div class="lv-acts" id="lvRun" hidden>
+    <button class="lv-btn" id="lvHold" hidden>押して話す</button>
+    <button class="lv-btn" id="lvMute">AIの声：オン</button>
+    <button class="lv-btn end" id="lvEnd">終える</button>
+  </div>
+</div>
+<div class="ver" id="ver">Harmonizer v2.3　2026-09-29</div>
 
 <script>
 /* ============================================================================
@@ -1052,6 +1112,184 @@ $('bDig').onclick = async () => {
   toBottom();
 };
 
+
+/* ----------------------------------------------------------------
+ *  オープンモード（Gemini Live API に直接つなぐ）
+ *  ・鍵は GAS が毎回「その場限り（1回・30分）」のものを作って渡す。本物の鍵は画面に来ない
+ *  ・マイク → 16kHz の PCM にして送り続ける。返ってくる声（24kHz）は、届いた順にすき間なく鳴らす
+ *  ・聞き取った言葉と、AIが話した言葉は、字幕として出し、終えたら GAS に渡して議事録とまとめにする
+ * ---------------------------------------------------------------- */
+const Live = { ws: null, ctx: null, stream: null, node: null, srcNode: null, sources: [], nextT: 0, handle: '',
+  mode: 'open', t0: 0, tick: null, clock: null, transcript: [], curIn: '', curOut: '', inTimer: null,
+  muted: false, ended: true, setupOk: false, noProactive: false, wake: null, retries: 0, reconnecting: false };
+
+const PCM_WORKLET = `class P extends AudioWorkletProcessor{constructor(){super();this.r=sampleRate/16000;this.a=0;this.s=0;this.n=0;this.b=[];}
+process(i){const c=i[0]&&i[0][0];if(!c)return true;for(let k=0;k<c.length;k++){this.s+=c[k];this.n++;this.a+=1;if(this.a>=this.r){this.a-=this.r;let v=this.s/this.n;this.s=0;this.n=0;v=Math.max(-1,Math.min(1,v));this.b.push(v<0?v*32768:v*32767);}}
+if(this.b.length>=1600){const x=Int16Array.from(this.b);this.b=[];this.port.postMessage(x.buffer,[x.buffer]);}return true;}}
+registerProcessor('pcm16k',P);`;
+
+function lv(id){ return document.getElementById(id); }
+function lvState(cls, msg){ const l = lv('live'); l.classList.remove('listen', 'speak'); if (cls) l.classList.add(cls); if (msg !== undefined) lv('lvStatus').textContent = msg; }
+function lvCap(who, text, part){
+  const box = lv('lvCaps');
+  let el = box.querySelector('.lv-cap.part.' + who);
+  if (!el) { el = document.createElement('div'); el.className = 'lv-cap part ' + who; box.appendChild(el); }
+  el.textContent = text;
+  if (!part) el.classList.remove('part');
+  box.scrollTop = box.scrollHeight;
+}
+function lvFlush(which){
+  if ((which === 'in' || !which) && Live.curIn.trim()) { Live.transcript.push({ w: 'me', t: Live.curIn.trim() }); lvCap('me', Live.curIn.trim(), false); Live.curIn = ''; }
+  if ((which === 'out' || !which) && Live.curOut.trim()) { Live.transcript.push({ w: 'ai', t: Live.curOut.trim() }); lvCap('ai', Live.curOut.trim(), false); Live.curOut = ''; }
+}
+function b64FromBuf(buf){ const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }
+
+function livePlay(b64){
+  if (Live.muted || !Live.ctx) return;
+  const bin = atob(b64), n = bin.length >> 1, f = new Float32Array(n);
+  for (let i = 0; i < n; i++) { let v = bin.charCodeAt(2 * i) | (bin.charCodeAt(2 * i + 1) << 8); if (v >= 32768) v -= 65536; f[i] = v / 32768; }
+  const buf = Live.ctx.createBuffer(1, n, 24000); buf.copyToChannel(f, 0);
+  const s = Live.ctx.createBufferSource(); s.buffer = buf; s.connect(Live.ctx.destination);
+  const t = Math.max(Live.ctx.currentTime + 0.03, Live.nextT); s.start(t); Live.nextT = t + buf.duration;
+  Live.sources.push(s);
+  s.onended = () => { Live.sources = Live.sources.filter(x => x !== s); if (!Live.sources.length && !Live.ended) lvState('listen', '聞いています'); };
+  lvState('speak', '話しています');
+}
+function liveHush(){ Live.sources.forEach(s => { try { s.stop(); } catch (e) { } }); Live.sources = []; Live.nextT = 0; if (!Live.ended) lvState('listen', '聞いています'); }
+
+async function liveMic(){
+  Live.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 } });
+  Live.srcNode = Live.ctx.createMediaStreamSource(Live.stream);
+  const send = (buf) => {
+    if (!Live.ws || Live.ws.readyState !== 1 || !Live.setupOk) return;
+    Live.ws.send(JSON.stringify({ realtimeInput: { audio: { data: b64FromBuf(buf), mimeType: 'audio/pcm;rate=16000' } } }));
+  };
+  try {
+    const url = URL.createObjectURL(new Blob([PCM_WORKLET], { type: 'application/javascript' }));
+    await Live.ctx.audioWorklet.addModule(url);
+    Live.node = new AudioWorkletNode(Live.ctx, 'pcm16k');
+    Live.node.port.onmessage = (e) => send(e.data);
+  } catch (e) {
+    // AudioWorklet が使えない端末：古いやり方で同じことをする
+    const sp = Live.ctx.createScriptProcessor(4096, 1, 1), r = Live.ctx.sampleRate / 16000;
+    let a = 0, sum = 0, n = 0, out = [];
+    sp.onaudioprocess = (ev) => {
+      const c = ev.inputBuffer.getChannelData(0);
+      for (let k = 0; k < c.length; k++) { sum += c[k]; n++; a += 1; if (a >= r) { a -= r; let v = Math.max(-1, Math.min(1, sum / n)); sum = 0; n = 0; out.push(v < 0 ? v * 32768 : v * 32767); } }
+      if (out.length >= 1600) { const x = Int16Array.from(out); out = []; send(x.buffer); }
+    };
+    Live.node = sp;
+  }
+  const mute = Live.ctx.createGain(); mute.gain.value = 0;   // マイクの音をスピーカーに出さない
+  Live.srcNode.connect(Live.node); Live.node.connect(mute); mute.connect(Live.ctx.destination);
+}
+
+async function liveConnect(){
+  const r = await api({ api: 'live_token', mode: Live.mode, handle: Live.handle, proactive: !Live.noProactive });
+  if (r.error) throw new Error(r.msg || (r.error === 'not allowed' ? 'オープンモードを使える人に入っていません' : r.error));
+  Live.setupOk = false;
+  const ws = new WebSocket(r.ws);
+  Live.ws = ws;
+  ws.onopen = () => ws.send(JSON.stringify({ setup: r.setup }));
+  ws.onmessage = async (ev) => {
+    let m; try { m = JSON.parse(typeof ev.data === 'string' ? ev.data : await ev.data.text()); } catch (e) { return; }
+    liveOnMsg(m);
+  };
+  ws.onclose = (ev) => {
+    if (Live.ws !== ws || Live.ended) return;
+    if (!Live.setupOk && !Live.noProactive && Live.mode === 'open') {   // 「自分で答えるかを決める」を受け付けないモデル → 外してつなぎ直す
+      Live.noProactive = true; lvState('', 'つなぎ直しています…'); liveConnect().catch(liveFail); return;
+    }
+    if (Live.setupOk && Live.retries < 5) {   // 時間の区切り・電波の瞬断 → 続きからつなぎ直す
+      Live.retries++; lvState('', 'つなぎ直しています…'); setTimeout(() => liveConnect().catch(liveFail), 400); return;
+    }
+    liveFail(new Error('つながりが切れました（' + ev.code + (ev.reason ? '：' + String(ev.reason).slice(0, 80) : '') + '）'));
+  };
+}
+
+function liveOnMsg(m){
+  if (m.setupComplete) { Live.setupOk = true; Live.retries = 0; lvState('listen', Live.mode === 'ptt' ? '［押して話す］を押しているあいだ聞きます' : '聞いています'); return; }
+  if (m.sessionResumptionUpdate && m.sessionResumptionUpdate.resumable && m.sessionResumptionUpdate.newHandle) Live.handle = m.sessionResumptionUpdate.newHandle;
+  if (m.goAway) { const old = Live.ws; lvState('', 'つなぎ直しています…'); liveConnect().then(() => { try { old.close(); } catch (e) { } }).catch(liveFail); return; }
+  const sc = m.serverContent;
+  if (!sc) return;
+  if (sc.inputTranscription && sc.inputTranscription.text) {
+    Live.curIn += sc.inputTranscription.text; lvCap('me', Live.curIn, true);
+    clearTimeout(Live.inTimer); Live.inTimer = setTimeout(() => lvFlush('in'), 2500);   // 2.5秒途切れたら1つの発言として残す
+  }
+  if (sc.modelTurn && sc.modelTurn.parts) {
+    lvFlush('in');
+    sc.modelTurn.parts.forEach(p => { if (p.inlineData && p.inlineData.data) livePlay(p.inlineData.data); });
+  }
+  if (sc.outputTranscription && sc.outputTranscription.text) { Live.curOut += sc.outputTranscription.text; lvCap('ai', Live.curOut, true); }
+  if (sc.interrupted) liveHush();
+  if (sc.turnComplete || sc.generationComplete) lvFlush('out');
+}
+
+function liveFail(err){ lvState('', String((err && err.message) || err)); }
+
+async function liveStart(mode){
+  Live.mode = mode; Live.ended = false; Live.transcript = []; Live.curIn = ''; Live.curOut = ''; Live.handle = ''; Live.retries = 0; Live.noProactive = false;
+  lv('lvSheet').hidden = true;
+  lv('lvRun').hidden = false; lv('lvHold').hidden = mode !== 'ptt';
+  lvState('', 'マイクを確かめています…');
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    Live.ctx = new AC(); await Live.ctx.resume();
+    await liveMic();
+    lvState('', 'つないでいます…');
+    await liveConnect();
+  } catch (err) { liveFail(err); return; }
+  try { if (navigator.wakeLock) Live.wake = await navigator.wakeLock.request('screen'); } catch (e) { /* 画面を消さないようにできなくても続ける */ }
+  Live.t0 = Date.now();
+  Live.clock = setInterval(() => { const s = Math.floor((Date.now() - Live.t0) / 1000); lv('lvTime').textContent = Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }, 1000);
+  Live.tick = setInterval(async () => {
+    try { const r = await api({ api: 'live_tick', min: (Date.now() - Live.t0) / 60000 }); if (r && r.stop) liveEnd('上限の時間になりました'); } catch (e) { }
+  }, 60000);
+}
+
+async function liveEnd(why){
+  if (Live.ended) return;
+  Live.ended = true;
+  lvFlush();
+  clearInterval(Live.tick); clearInterval(Live.clock); clearTimeout(Live.inTimer);
+  try { Live.ws && Live.ws.close(); } catch (e) { }
+  try { Live.stream && Live.stream.getTracks().forEach(t => t.stop()); } catch (e) { }
+  liveHush();
+  try { Live.ctx && Live.ctx.close(); } catch (e) { }
+  try { Live.wake && Live.wake.release(); } catch (e) { }
+  lv('lvRun').hidden = true;
+  lvState('', (why ? why + '。' : '') + 'まとめています…');
+  const min = (Date.now() - Live.t0) / 60000;
+  let r = null;
+  try { r = await api({ api: 'live_end', transcript: Live.transcript.slice(-4000), min: min }); } catch (e) { r = { error: String(e.message || e) }; }
+  const row = bubble('bot', '');
+  const text = r && r.ok
+    ? (r.empty ? 'オープンモードを終えました。記録に残す発言はありませんでした。'
+      : 'オープンモードを終えました（約' + Math.max(1, Math.round(min)) + '分）。\n' + r.summary + '\n' + (r.items || []).join('\n') + '\n\nSECOND HUB に入れました。ONE HUB には、人が確かめてから入ります。')
+    : 'オープンモードを終えました。まとめを作れませんでした（' + ((r && (r.msg || r.error)) || '') + '）。字幕は画面に残っています。';
+  row.querySelector('.bub').textContent = text;
+  if (r && r.doc) { const a = document.createElement('a'); a.href = r.doc; a.target = '_blank'; a.rel = 'noopener'; a.className = 'play'; a.textContent = '文字起こしを開く'; row.appendChild(a); }
+  remember('a', text);
+  lv('live').hidden = true;
+}
+
+function liveOpen(){
+  const l = lv('live');
+  lv('lvCaps').querySelectorAll('.lv-cap').forEach(x => x.remove());   // 前回の字幕を消して、説明から始める
+  lv('lvSheet').hidden = false; lv('lvRun').hidden = true; lv('lvTime').textContent = '';
+  l.hidden = false; lvState('', '');
+}
+lv('lbtn').onclick = liveOpen;
+lv('lvCancel').onclick = () => { lv('live').hidden = true; };
+lv('lvOpen').onclick = () => liveStart('open');
+lv('lvPtt').onclick = () => liveStart('ptt');
+lv('lvEnd').onclick = () => liveEnd('');
+lv('lvMute').onclick = () => { Live.muted = !Live.muted; if (Live.muted) liveHush(); lv('lvMute').textContent = 'AIの声：' + (Live.muted ? 'オフ' : 'オン'); lv('lvMute').classList.toggle('on', Live.muted); };
+const holdOn = (e) => { e.preventDefault(); if (Live.ws && Live.setupOk) { liveHush(); Live.ws.send(JSON.stringify({ realtimeInput: { activityStart: {} } })); lv('lvHold').classList.add('hold'); } };
+const holdOff = () => { if (Live.ws && Live.setupOk && lv('lvHold').classList.contains('hold')) { Live.ws.send(JSON.stringify({ realtimeInput: { activityEnd: {} } })); lv('lvHold').classList.remove('hold'); } };
+lv('lvHold').addEventListener('pointerdown', holdOn); lv('lvHold').addEventListener('pointerup', holdOff); lv('lvHold').addEventListener('pointerleave', holdOff);
+
 function send(t){
   if (!t) { showErr('入力欄に質問を打つか、マイクを押して話してください。'); return; }
   if (busy) { showErr('いま前の質問を処理しています。返事が来るまでお待ちください。'); return; }
@@ -1131,6 +1369,8 @@ function gate(msg){
     let greet = null;
     try { say('持ち場を確かめています…', 4); greet = await api({ api: 'hello' }); if (!greet || !greet.ok) greet = null; } catch (e) { greet = null; }
     intro(me.name || '', greet);
+    // オープンモードを使える人だけ、右上に［オープン］を出す（45_Live.gs）
+    api({ api: 'live_ok' }).then(r => { if (r && r.ok) document.getElementById('lbtn').style.display = ''; }).catch(() => {});
   } catch (err) {
     gate('つなげませんでした。\n' + String(err.message || err).slice(0, 90) + '\n\n調べています…');
     try {
