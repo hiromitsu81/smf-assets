@@ -89,7 +89,7 @@
   @keyframes blink{50%{opacity:0}}
   .skip{text-align:center;color:var(--dim);font-size:11.5px;padding:2px 0}
 
-  .bub.zoom{font-size:18px;line-height:1.85}
+  .bub.zoom{font-size:21px;line-height:1.9;font-weight:500;border-color:rgba(224,124,142,.55)}
   .digmenu{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
   .digmenu .dh{flex:0 0 100%;font-size:11.5px;color:var(--dim);letter-spacing:.08em;margin:6px 0 -2px}
 
@@ -138,8 +138,8 @@
   }
   .send.on{background:var(--blue);color:#fff;border-color:transparent}
 
-  /* 読む・書く・聞く・話す。言語の4つの技能そのものなので、説明が要りません。
-     こちらから出すのが「書く・話す」、返ってくるのが「読む・聞く」です。 */
+  /* 大きく・書く・話す・聞き直す・熟議。押す前に何が起きるか分かる名前にしています
+     （「読む」は「読み上げ」と取り違えやすかったので「大きく」に：9/29） */
   .pads{display:flex;justify-content:center;align-items:flex-end;gap:9px}
   .pad{display:flex;flex-direction:column;align-items:center;gap:7px;flex:0 0 auto}
   .pad .cap{font-size:11.5px;font-weight:600;letter-spacing:.04em;color:var(--tx)}
@@ -332,6 +332,7 @@
   .lv-btn.on{border-color:var(--amber);color:var(--amber)}
   .lv-btn.hold{background:var(--amber);color:#0b0d12}
   .lv-btn[hidden],.lv-sheet[hidden],.lv-acts[hidden]{display:none}
+  .lv-dbg{text-align:center;color:#4b5366;font-size:11px;margin-bottom:8px;font-variant-numeric:tabular-nums;min-height:15px}
 </style>
 </head>
 <body>
@@ -368,10 +369,10 @@
   </div>
   <div class="pads">
     <div class="pad off" id="padRead">
-      <div class="ring pink"><button id="bRead" aria-label="読む">
-        <svg viewBox="0 0 24 24"><path d="M12 5.5C10.5 4.2 8.3 3.5 6 3.5c-1 0-2 .13-3 .4v15c1-.27 2-.4 3-.4 2.3 0 4.5.7 6 2 1.5-1.3 3.7-2 6-2 1 0 2 .13 3 .4v-15c-1-.27-2-.4-3-.4-2.3 0-4.5.7-6 2Zm.9 2.6c1.1-.62 2.5-.95 3.9-.95.4 0 .8.02 1.2.07v10.9c-.4-.04-.8-.06-1.2-.06-1.5 0-2.9.3-4 .9V8.1Z"/></svg>
+      <div class="ring pink"><button id="bRead" aria-label="大きく">
+        <svg viewBox="0 0 24 24"><text x="12" y="17.5" text-anchor="middle" font-size="14.5" font-weight="800" font-family="-apple-system,Helvetica,Arial,sans-serif">Aa</text></svg>
       </button></div>
-      <div class="cap">読む</div>
+      <div class="cap">大きく</div>
     </div>
     <div class="pad" id="padWrite">
       <div class="ring blue"><button id="bWrite" aria-label="書く">
@@ -386,10 +387,10 @@
       <div class="cap" id="capTalk">話す</div>
     </div>
     <div class="pad off" id="padListen">
-      <div class="ring green" id="listenring"><button id="bListen" aria-label="聞く">
+      <div class="ring green" id="listenring"><button id="bListen" aria-label="聞き直す">
         <svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2-3.74v7.48A4.5 4.5 0 0 0 16.5 12Zm-2-8.4v2.06A6.5 6.5 0 0 1 14.5 18.3v2.06A8.5 8.5 0 0 0 14.5 3.6Z"/></svg>
       </button></div>
-      <div class="cap">聞く</div>
+      <div class="cap">聞き直す</div>
     </div>
     <div class="pad" id="padDig">
       <div class="ring amber"><button id="bDig" aria-label="熟議">
@@ -419,6 +420,7 @@
       <div class="lv-acts"><button class="lv-btn" id="lvCancel">やめる</button></div>
     </div>
   </div>
+  <div class="lv-dbg" id="lvDbg"></div>
   <div class="lv-acts" id="lvRun" hidden>
     <button class="lv-btn" id="lvHold" hidden>押して話す</button>
     <button class="lv-btn" id="lvSwitch">切りかえ</button>
@@ -428,7 +430,7 @@
 </div>
 <div class="modebar"><span id="modebar"></span></div>
 <div class="recbar" id="recbar"><span id="recbarText">録音しています</span></div>
-<div class="ver" id="ver">Harmonizer v2.5　2026-09-29</div>
+<div class="ver" id="ver">Harmonizer v2.7　2026-09-29</div>
 
 <script>
 /* ============================================================================
@@ -470,7 +472,8 @@ const CONFIG = {
   // 1文字あたりの速さ（ミリ秒）。小さいほど速い
   TYPE_MS: 16,        // 案内を打ち出す速さ
   ANSWER_MS: 9,       // 答えを打ち出す速さ
-  ANSWER_MAX: 600     // これより長い答えは、打ち出さず一度に出す
+  ANSWER_MAX: 600,   // これより長い答えは、打ち出さず一度に出す
+  ZOOM_MS: 45        // 「大きく」で流し直すときの1文字の速さ（読むペースに合わせてゆっくり）
 };
 
 const $ = (id) => document.getElementById(id);
@@ -780,6 +783,7 @@ function listenReady(a){
 }
 function readReady(row){
   lastRow = row;
+  const bb = row.querySelector('.bub'); if (bb) row.dataset.full = bb.textContent;   // 「大きく」で流し直すために、全文を覚えておく
   $('padRead').classList.remove('off');
 }
 
@@ -791,6 +795,16 @@ function readReady(row){
  *  ・声の種類と速さは、右上の［声］で選べて、この端末に覚えておく
  * ---------------------------------------------------------------- */
 let currentSeq = null, actx = null;
+/* 1秒の無音（オープンモード中に鳴らし続けて、iPhoneの音の出口をスピーカーに保つ） */
+const SILENT_LOOP = (() => {
+  const n = 8000, b = new Uint8Array(44 + n), v = new DataView(b.buffer);
+  const w = (o, t) => { for (let i = 0; i < t.length; i++) b[o + i] = t.charCodeAt(i); };
+  w(0, 'RIFF'); v.setUint32(4, 36 + n, true); w(8, 'WAVE'); w(12, 'fmt '); v.setUint32(16, 16, true);
+  v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, 8000, true); v.setUint32(28, 8000, true);
+  v.setUint16(32, 1, true); v.setUint16(34, 8, true); w(36, 'data'); v.setUint32(40, n, true); b.fill(128, 44);
+  let bin = ''; for (let i = 0; i < b.length; i++) bin += String.fromCharCode(b[i]);
+  return 'data:audio/wav;base64,' + btoa(bin);
+})();
 const VOICE_KEY = 'ops:voice';
 let prefs = { engine: CONFIG.VOICE || 'device', voice: '', rate: 1.1, read: 'full' };
 try { Object.assign(prefs, JSON.parse(localStorage.getItem(VOICE_KEY) || '{}')); } catch (e) { /* 覚えていなくてもよい */ }
@@ -814,7 +828,7 @@ document.addEventListener('pointerdown', () => {
     if (!actx) { const AC = window.AudioContext || window.webkitAudioContext; if (AC) actx = new AC(); }
     if (actx && actx.state === 'suspended') actx.resume();
   } catch (e) { }
-  try { if (hasTTS() && !(currentSeq && currentSeq.playing)) { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); } } catch (e) { }
+  try { if (!liveActive() && hasTTS() && !(currentSeq && currentSeq.playing)) { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); } } catch (e) { }   // オープンモード中は触らない（iPhoneで音の出口を取り合わないように）
 }, { capture: true });
 
 /** 読み上げる文を、1文ずつのかたまりに分ける */
@@ -953,7 +967,7 @@ function makeGeminiSeq(chunks, cacheKey){
 function stopAllVoice(){
   try { if (currentSeq) currentSeq.stop(); } catch (e) { }
   try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) { }
-  document.querySelectorAll('.play').forEach(b => { if (/止める/.test(b.textContent)) b.textContent = '▶ 聞く'; });
+  document.querySelectorAll('.play').forEach(b => { if (/止める/.test(b.textContent)) b.textContent = '▶ 聞き直す'; });
 }
 /** 画面の上に、いまのモードを2.5秒だけ出す */
 function modeToast(text){
@@ -966,7 +980,7 @@ function liveActive(){ const l = document.getElementById('live'); return !!(l &&
 function speak(text, row, label, opts){
   if (liveActive()) return;   // オープンモードのあいだは、ふつうの会話の声を出さない
   opts = opts || {};
-  const name = label || '聞く';
+  const name = label || '聞き直す';
   const chunks = splitSpeech(text);
   if (!chunks.length) return;
   const btn = document.createElement('button');
@@ -1148,15 +1162,23 @@ $('bListen').onclick = async () => {
   if (lastAudio.playing) lastAudio.stop(); else lastAudio.start();   // lastAudio は細切れの声のまとまり（speak の seq）
 };
 
-/* 読む：いちばん新しい答えを大きな字にして、画面に持ってくる */
-$('bRead').onclick = () => {
-  if (!lastRow) return;
+/* 大きく：いちばん新しい答えを大きな字にして、画面の真ん中で文字を流し直す（読むペースで追える）。
+   もう一度押すと元の大きさに戻る。流している途中で画面に触ると、最後まで一気に出る */
+let zoomBusy = false;
+$('bRead').onclick = async () => {
+  if (!lastRow || zoomBusy) return;
   const b = lastRow.querySelector('.bub');
-  b.classList.toggle('zoom');
-  $('padRead').classList.toggle('on', b.classList.contains('zoom'));
-  $('padRead').classList.toggle('act', b.classList.contains('zoom'));
+  const full = lastRow.dataset.full || b.textContent;
+  const on = !b.classList.contains('zoom');
+  b.classList.toggle('zoom', on);
+  $('padRead').classList.toggle('on', on);
+  $('padRead').classList.toggle('act', on);
   lastRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  micLabel(b.classList.contains('zoom') ? '大きい字にしました。もう一度押すと戻ります' : '話すか、書くか。押すだけです');
+  if (!on) { b.textContent = full; micLabel('話すか、書くか。押すだけです'); return; }
+  micLabel('大きな字で流しています。もう一度押すと戻ります');
+  zoomBusy = true;
+  try { b.textContent = ''; await typeIn(b, full, CONFIG.ZOOM_MS); } finally { zoomBusy = false; }
+  lastRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
 
 /* 熟議：ひとつの答えではなく、みんなの話（SECOND HUB）と ONE HUB を見比べて論点を拾う。
@@ -1220,7 +1242,9 @@ function lvFlush(which){
 function b64FromBuf(buf){ const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }
 
 function livePlay(b64){
+  Live.nAudio = (Live.nAudio || 0) + 1; lvDbg();
   if (Live.muted || !Live.ctx) return;
+  if (Live.ctx.state === 'suspended') { try { Live.ctx.resume(); } catch (e) { } }
   const bin = atob(b64), n = bin.length >> 1, f = new Float32Array(n);
   for (let i = 0; i < n; i++) { let v = bin.charCodeAt(2 * i) | (bin.charCodeAt(2 * i + 1) << 8); if (v >= 32768) v -= 65536; f[i] = v / 32768; }
   const buf = Live.ctx.createBuffer(1, n, 24000); buf.copyToChannel(f, 0);
@@ -1289,16 +1313,36 @@ function liveOnMsg(m){
   const sc = m.serverContent;
   if (!sc) return;
   if (sc.inputTranscription && sc.inputTranscription.text) {
+    Live.nIn = (Live.nIn || 0) + 1; lvDbg();
     Live.curIn += sc.inputTranscription.text; lvCap('me', Live.curIn, true);
+    liveWake();
     clearTimeout(Live.inTimer); Live.inTimer = setTimeout(() => lvFlush('in'), 2500);   // 2.5秒途切れたら1つの発言として残す
   }
   if (sc.modelTurn && sc.modelTurn.parts) {
     lvFlush('in');
     sc.modelTurn.parts.forEach(p => { if (p.inlineData && p.inlineData.data) livePlay(p.inlineData.data); });
   }
-  if (sc.outputTranscription && sc.outputTranscription.text) { Live.curOut += sc.outputTranscription.text; lvCap('ai', Live.curOut, true); }
+  if (sc.outputTranscription && sc.outputTranscription.text) {
+    Live.nOut = (Live.nOut || 0) + 1; lvDbg(); Live.curOut += sc.outputTranscription.text; lvCap('ai', Live.curOut, true); }
   if (sc.interrupted) liveHush();
   if (sc.turnComplete || sc.generationComplete) lvFlush('out');
+}
+
+/** 画面の下に小さく「届いた声・字幕の数」を出す（喋らないとき、どこで止まっているかが分かる） */
+function lvDbg(){
+  const d = document.getElementById('lvDbg'); if (!d) return;
+  d.textContent = 'AIの声 ' + (Live.nAudio || 0) + '　あなたの字幕 ' + (Live.nIn || 0) + '　AIの字幕 ' + (Live.nOut || 0) + (Live.noProactive ? '　（自動判断なし）' : '') + (Live.ctx ? '　音:' + Live.ctx.state : '');
+}
+/** 名前で呼ばれたのに6秒たっても返事がなければ、文字で「答えて」とひと押しする（自分で黙ると決めてしまう場合の保険） */
+function liveWake(){
+  if (Live.mode !== 'open' || !/ハーモ|はーも|harmo|エージェント部/i.test(Live.curIn)) return;
+  if (Date.now() - (Live.lastCall || 0) < 8000) return;
+  Live.lastCall = Date.now();
+  const before = Live.nAudio || 0;
+  setTimeout(() => {
+    if (Live.ended || (Live.nAudio || 0) > before || !Live.ws || Live.ws.readyState !== 1) return;
+    Live.ws.send(JSON.stringify({ clientContent: { turns: [{ role: 'user', parts: [{ text: '（いま名前で呼ばれました。直前の問いかけに、声で短く答えてください）' }] }], turnComplete: true } }));
+  }, 6000);
 }
 
 function liveFail(err){ lvState('', String((err && err.message) || err)); }
@@ -1323,6 +1367,11 @@ async function liveStart(mode){
   stopAllVoice();
   if (rec && rec.state === 'recording') { try { rec.onstop = null; rec.stop(); } catch (e) { } rec = null; recTimer && clearInterval(recTimer); $('micring').classList.remove('rec'); recLook(false); micLabel('押して話す'); }
   Live.mode = mode; Live.ended = false; Live.transcript = []; Live.curIn = ''; Live.curOut = ''; Live.handle = ''; Live.retries = 0; Live.noProactive = false;
+  Live.muted = false; lv('lvMute').textContent = 'AIの声：オン'; lv('lvMute').classList.remove('on');   // 前回オフにしたままにならないように
+  Live.nAudio = 0; Live.nIn = 0; Live.nOut = 0; Live.lastCall = 0; lvDbg();
+  // iPhone：マイクを使っている間も、スピーカーから鳴らす／マナーモードでも鳴らす
+  try { if (navigator.audioSession) navigator.audioSession.type = 'play-and-record'; } catch (e) { }
+  try { if (!Live.keep) { Live.keep = new Audio(SILENT_LOOP); Live.keep.loop = true; Live.keep.setAttribute('playsinline', ''); } Live.keep.play().catch(() => {}); } catch (e) { }
   lv('lvSheet').hidden = true;
   lv('lvRun').hidden = false; lvModeLine();
   lv('live').classList.add('run'); lv('lvBadge').textContent = '聞いています（録音中）';
@@ -1352,6 +1401,8 @@ async function liveEnd(why){
   try { Live.stream && Live.stream.getTracks().forEach(t => t.stop()); } catch (e) { }
   liveHush();
   try { Live.ctx && Live.ctx.close(); } catch (e) { }
+  try { Live.keep && Live.keep.pause(); } catch (e) { }
+  try { if (navigator.audioSession) navigator.audioSession.type = 'auto'; } catch (e) { }
   try { Live.wake && Live.wake.release(); } catch (e) { }
   lv('lvRun').hidden = true;
   lv('live').classList.remove('run'); lv('lvBadge').textContent = '終わりました'; lv('lvMode').textContent = '';
@@ -1413,7 +1464,7 @@ function send(t){
 $('send').onclick = () => {
   const t = $('q').value.trim();
   $('q').value = ''; $('q').style.height = 'auto'; $('send').classList.remove('on');
-  if (t) { $('typebar').style.display = 'none'; $('padWrite').classList.remove('on'); }
+  if (t) { $('typebar').style.display = 'none'; $('padWrite').classList.remove('on', 'act'); }
   send(t);
 };
 $('q').addEventListener('input', function(){
