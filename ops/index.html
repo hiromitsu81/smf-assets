@@ -441,7 +441,7 @@
 </div>
 <div class="modebar"><span id="modebar"></span></div>
 <div class="recbar" id="recbar"><span id="recbarText">録音しています</span></div>
-<div class="ver" id="ver">Harmonizer v2.27　2026-09-30</div>
+<div class="ver" id="ver">Harmonizer v2.30　2026-09-30</div>
 
 <script>
 /* ============================================================================
@@ -489,9 +489,32 @@ const CONFIG = {
 
 const $ = (id) => document.getElementById(id);
 let idToken = '';
+/* 体験版（v2.29）：招待URL（https://miniapp.line.me/＜LIFF ID＞?g=コード）を LINEアプリで開いたときだけ、「見るだけ」の体験版になる。
+   コードは覚えない（その回だけ）。LINEの外（PCやスマホのブラウザ）では開けない */
+const GUEST = (() => {
+  try {
+    const u = new URL(location.href);
+    let g = u.searchParams.get('g') || '';
+    // LINEで開いた最初の1回は ?liff.state=%3Fg%3D… の形で届く
+    if (!g && u.searchParams.get('liff.state')) { try { g = new URLSearchParams(String(u.searchParams.get('liff.state')).replace(/^[^?]*\?/, '')).get('g') || ''; } catch (e) { } }
+    g = g.replace(/[^A-Za-z0-9]/g, '');
+    if (g) { try { sessionStorage.setItem('hz_guest', g); } catch (e) { } }
+    else if (!u.searchParams.has('liff.state')) { try { g = sessionStorage.getItem('hz_guest') || ''; } catch (e) { } }   // 同じ画面の読み直し
+    return g;
+  } catch (e) { return ''; }
+})();
+if (GUEST) CONFIG.CHIPS = ['Harmonizerで何ができる？', '今週が期限のタスクは？', '遅れているのはどこ？', '何を決めないと止まる？'];
 let busy = false;
 let rec = null, chunks = [], recMime = '', recT0 = 0, recTimer = null, recStream = null;
 let holdTimer = null, holdCancelled = false;   // 長押しで取り消し（v2.24）
+/* v2.30：話しているあいだは答えの声を流さない。届いた声は取っておき、話し終わってから流す */
+let micOpening = false, voiceHeld = null;
+function micBusy(){ return micOpening || !!(rec && rec.state === 'recording'); }
+function releaseHeldVoice(){
+  const s = voiceHeld; voiceHeld = null;
+  if (!s) return;
+  setTimeout(() => { try { if (!micBusy() && !liveActive()) s.start(); } catch (e) { } }, 400);   // マイクが閉じるのを少し待つ
+}
 const HOLD_MS = 700;
 
 /* ---------------------------------------------------------------- 画面 */
@@ -623,10 +646,11 @@ async function intro(name, greet){
   const row = bubble('bot', '');
   const b = row.querySelector('.bub');
   // 2回目からは、その人の持ち場と「前回から変わったこと」で始めます（43_Agent.gs の hello）
-  const text = first ? GUIDE_FULL(name) + (greet && greet.text ? '\n\n' + greet.text.split('\n').slice(1).join('\n').trim() : '')
+  if (GUEST) first = true;   // 体験版：いつも最初の案内（hello の文）で始める
+  const text = GUEST && greet && greet.text ? greet.text : first ? GUIDE_FULL(name) + (greet && greet.text ? '\n\n' + greet.text.split('\n').slice(1).join('\n').trim() : '')
                      : (greet && greet.text ? greet.text : GUIDE_SHORT(name));
   // 声は、文字を打ち出すのと同時に作り始めます（打ち終わるころには鳴らせる）
-  if (!first && greet && greet.speakable) speak(greet.speakable, row, '声で聞く');
+  if ((GUEST || !first) && greet && greet.speakable) speak(greet.speakable, row, '声で聞く');
   else speak(GUIDE_SPOKEN, row, '使い方を聞く', { cache: true });
   await typeIn(b, text, CONFIG.TYPE_MS);
   if (greet && greet.text) { remember('a', greet.text); readReady(row); }
@@ -704,6 +728,11 @@ function relogin(){
   return true;
 }
 async function api(payload){
+  if (GUEST) {   // 体験版：LINEのトークンは使わず、招待コードで
+    const r = await fetch(CONFIG.GAS_URL, { method: 'POST', body: JSON.stringify(Object.assign({ kind: 'ops', guest: GUEST }, payload)) });
+    if (!r.ok) throw new Error('つながりませんでした（' + r.status + '）');
+    return await r.json();
+  }
   try { const t = liff.getIDToken && liff.getIDToken(); if (t) idToken = t; } catch (e) { }
   if (!isInLine() && idExpiring() && relogin()) return new Promise(() => { });   // ログインし直して戻ってくる
   // ヘッダーは付けません。来場者向けミニアプリで動いている書き方と同じです
@@ -744,7 +773,8 @@ async function diagnose(){
 
 const ERR = {
   login:      'LINEで開き直してください。運営メンバーとして確かめられませんでした。',
-  'too many': '回数の上限に達しました。少し時間をおいてください。',
+  'too many': GUEST ? '今日の回数の上限に達しました。明日またお試しください。' : '回数の上限に達しました。少し時間をおいてください。',
+  invite:     'この招待URLは使えません（期限切れか、止まっています）。お送りした方にお知らせください。',
   'stopped': 'いまAIを止めています（管理者が点検中）。少し時間をおいてください。',
   'too big':  '録音が長すぎます。短くしてもう一度お願いします。',
   empty:      '聞き取れませんでした。もう一度お願いします。',
@@ -1176,7 +1206,10 @@ function speak(text, row, label, opts){
     btn.disabled = false;
     btn.textContent = '▶ ' + name;
     listenReady(seq);
-    if (ok && opts.auto !== false) seq.start();
+    if (ok && opts.auto !== false) {
+      if (micBusy()) { voiceHeld = seq; btn.textContent = '▶ ' + name + '（話し終わったら流します）'; }   // v2.30：話している最中は待つ
+      else seq.start();
+    }
   };
   btn.onclick = () => { if (seq.playing) seq.stop(); else seq.start(); };
 }
@@ -1334,6 +1367,7 @@ function pickMime(){
 
 async function recStart(){
   if (busy) { showErr('いま前の質問を処理しています。'); return; }
+  if (currentSeq && currentSeq.playing) { voiceHeld = null; stopAllVoice(); }   // v2.30：話し始めたら、流れている声は止める
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     showErr('このブラウザではマイクが使えません。打ち込みで聞いてください。'); return;
   }
@@ -1342,6 +1376,7 @@ async function recStart(){
   }
   try {
     micLabel('マイクの許可を確かめています…');
+    micOpening = true;
     const stream = await micOpen();
     recStream = stream;
     recMime = pickMime();
@@ -1369,6 +1404,7 @@ async function recStart(){
     };
 
     rec.start();
+    micOpening = false;
     recT0 = Date.now();
     $('micring').classList.add('rec');
     recLook(true, 0);
@@ -1381,7 +1417,9 @@ async function recStart(){
     }, 100);
   } catch (err) {
     micLabel('押して話す');
+    micOpening = false;
     try { if (recStream) recStream.getTracks().forEach(t => t.stop()); } catch (e) { } recStream = null; rec = null;
+    releaseHeldVoice();
     micHelp(err);
   }
 }
@@ -1447,12 +1485,13 @@ function recStop(){
   $('micring').classList.remove('rec');
   recLook(false);
   if (rec && rec.state === 'recording') sendingLook(true);
-  if (!rec) { micLabel('押して話す'); return; }
-  if (rec.state === 'inactive') { micLabel('押して話す'); showErr('録音が始まっていませんでした。もう一度押してください。'); rec = null; return; }
+  if (!rec) { micLabel('押して話す'); releaseHeldVoice(); return; }
+  if (rec.state === 'inactive') { micLabel('押して話す'); showErr('録音が始まっていませんでした。もう一度押してください。'); rec = null; releaseHeldVoice(); return; }
   micLabel('送っています…');
   const r = rec; rec = null;
   try { r.stop(); }
   catch (err) { micLabel('押して話す'); showErr('止めるところで失敗しました：' + String(err.message || err).slice(0, 90)); }
+  releaseHeldVoice();   // v2.30：話し終わったので、待たせていた声を流す
 }
 
 function toBase64(blob){
@@ -1491,6 +1530,7 @@ function recCancel(){
   chunks = [];
   try { if (navigator.vibrate) navigator.vibrate([60, 60, 60]); } catch (e) { }
   micLabel('<b>取り消しました</b>（送っていません）');
+  releaseHeldVoice();
   setTimeout(() => { if (!rec) micLabel('押して話す'); }, 2500);
 }
 function holdEnd(){ if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; } $('micring').classList.remove('hold'); }
@@ -1857,8 +1897,47 @@ function gate(msg){
   $('who').textContent = '';
 }
 
+/** 体験版のはじまり：同意 → 招待コードを確かめる → いつもの画面 */
+async function guestStart(){
+  $('ver').textContent = $('ver').textContent + '　/ 体験版';
+  // LINEアプリの中だけで開ける
+  let inLine = false;
+  if (typeof liff !== 'undefined') {
+    say('LINEにつないでいます…', 1);
+    for (const id of CONFIG.LIFF_IDS) { try { await liff.init({ liffId: id }); break; } catch (e) { } }
+    try { inLine = !!liff.isInClient(); } catch (e) { }
+  }
+  if (!inLine) {
+    gate('体験版は、LINEアプリの中で開いてください。\nスマホで招待URLをタップすると、LINEで開きます。\n（PCのブラウザ・スマホのブラウザでは開けません）');
+    return;
+  }
+  splashOut();
+  const keep = $('main').innerHTML;
+  $('main').innerHTML = '<div class="gate"><img src="' + CONFIG.LOGO + '" alt="" onerror="this.style.display=\'none\'">' +
+    '<b>Harmonizer 体験版（試作）</b>' +
+    'SMF2026 の ONE HUB を読んで、声と文字で答えます。\n' +
+    '「Harmonizerで何ができる？」と聞くと、本番でできることもお話しします。\n' +
+    '体験版なので、ONE HUB には何も書き込みません。\n人の名前は「担当者」、金額は伏せてお答えします。\n' +
+    '話した声は文字にしたら捨てます。質問と答えの中身も残しません。\n' +
+    'マイクの許可を聞かれたら「許可」を選んでください。\n' +
+    '<button class="play" id="gOk" type="button" style="margin-top:16px;font-size:16px;padding:10px 22px">同意して始める</button></div>';
+  await new Promise(res => { $('gOk').onclick = res; });
+  $('main').innerHTML = keep;
+  say('ONE HUB につないでいます…', 3);
+  const me = await api({ api: 'me' });
+  if (!me || !me.ok) { gate(ERR[me && me.error] || 'いまは使えません。'); return; }
+  $('who').innerHTML = '<span class="led"></span>' + (me.name || '') + '<span style="opacity:.6">・体験版</span>';
+  $('foot').style.display = 'block';
+  if (matchMedia('(pointer: fine)').matches && $('typebar').style.display === 'none') $('bWrite').click();
+  let greet = null;
+  try { greet = await api({ api: 'hello' }); if (!greet || !greet.ok) greet = null; } catch (e) { greet = null; }
+  intro(me.name || '', greet);
+  // オープンモードは体験版では出さない
+}
+
 (async () => {
   try {
+    if (GUEST) { await guestStart(); return; }
     if (typeof liff === 'undefined') {
       gate('LINEの部品を読み込めませんでした。\n通信を確かめて、開き直してください。');
       return;
