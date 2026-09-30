@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Harmonizer 体験版</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root{--teal:#0E7C7B;--teal2:#14A89A;--mint:#E2F3F1;--bg:#F6FAF9;--card:#fff;--ink:#12302F;--sub:#5B7472;--line:#D5E6E3;--err:#B3261E;--me:#E2F3F1}
+@media (prefers-color-scheme:dark){:root{--bg:#0D1716;--card:#15211F;--ink:#E4F1EF;--sub:#9DB5B2;--line:#26413D;--mint:#173633;--me:#1B3B37;color-scheme:dark}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.65 -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;display:flex;flex-direction:column}
+header{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;background:var(--card);border-bottom:1px solid var(--line)}
+.dot{width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--teal2),var(--teal));flex:none}
+header b{font-size:16px;letter-spacing:.02em}
+.tag{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--mint);color:var(--teal);font-weight:700}
+header .left{margin-left:auto;font-size:12px;color:var(--sub)}
+main{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;max-width:760px;width:100%;margin:0 auto}
+.b{max-width:88%;padding:10px 14px;border-radius:16px;background:var(--card);border:1px solid var(--line);white-space:pre-wrap;word-break:break-word}
+.b.me{align-self:flex-end;background:var(--me);border-color:transparent}
+.b.err{border-color:var(--err);color:var(--err)}
+.meta{font-size:11px;color:var(--sub);margin-top:4px}
+.play{margin-top:8px;border:1px solid var(--teal);background:none;color:var(--teal);border-radius:99px;padding:4px 12px;font-size:13px;cursor:pointer}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:6px 12px;font-size:13px;cursor:pointer}
+footer{background:var(--card);border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px))}
+.bar{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:10px}
+#mic{flex:none;width:72px;height:72px;border-radius:50%;border:none;background:var(--teal);color:#fff;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(14,124,123,.35);touch-action:manipulation;-webkit-user-select:none;user-select:none}
+#mic.rec{background:#C62828;animation:pulse 1.2s infinite}
+#mic:disabled{opacity:.5}
+@keyframes pulse{50%{box-shadow:0 0 0 12px rgba(198,40,40,.15)}}
+.txt{flex:1;display:flex;gap:6px;min-width:0}
+.txt input{flex:1;min-width:0;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:16px;background:var(--bg);color:var(--ink)}
+.txt button{border:none;background:var(--mint);color:var(--teal);border-radius:12px;padding:0 14px;font-weight:700;cursor:pointer}
+#hint{max-width:760px;margin:6px auto 0;font-size:12px;color:var(--sub);text-align:center}
+#gate{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:16px;z-index:5}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px 20px;max-width:460px;width:100%}
+.card h1{font-size:20px;margin:8px 0 4px}
+.card ul{padding-left:1.2em;margin:12px 0;font-size:14px}
+.card li{margin:4px 0}
+.go{width:100%;border:none;background:var(--teal);color:#fff;border-radius:12px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px}
+.small{font-size:12px;color:var(--sub)}
+</style>
+</head>
+<body>
+<div id="gate">
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:10px"><span class="dot"></span><span class="tag">試作・体験版</span></div>
+    <h1>Harmonizer を声で試す</h1>
+    <p class="small" id="gname"></p>
+    <ul>
+      <li>実際に動いているイベント運営チームの台帳（ONE HUB）を読んで、声と文字で答えます。</li>
+      <li>体験版なので、台帳には何も書き込みません。人の名前と金額は伏せてあります。</li>
+      <li>話した声は文字にしたら捨てます。質問と答えの中身も保存しません（回数だけ数えます）。</li>
+      <li>マイクの許可を聞かれたら「許可」を選んでください。PC・スマホどちらでも使えます。</li>
+    </ul>
+    <button class="go" id="start">同意して始める</button>
+    <p class="small" id="gerr" style="color:var(--err)"></p>
+    <p class="small">v0.1 2026-09-30</p>
+  </div>
+</div>
+
+<header><span class="dot"></span><b>Harmonizer</b><span class="tag">体験版</span><span class="left" id="left"></span></header>
+<main id="log">
+  <div class="chips" id="chips"></div>
+</main>
+<footer>
+  <div class="bar">
+    <button id="mic" type="button">話す</button>
+    <form class="txt" id="form"><input id="q" placeholder="打ち込んで聞く" autocomplete="off" enterkeyhint="send"><button>送る</button></form>
+  </div>
+  <div id="hint">押して話す → もう一度押すと送ります（長押しで取り消し）</div>
+</footer>
+<audio id="ael" playsinline></audio>
+
+<script>
+const CONFIG = {
+  GAS_URL: 'https://script.google.com/macros/s/AKfycbwNu0dmIaRvZva1bhMtjrEJ-8yXBjInQIC6ULOT0zPoR6GgO6ZYrXHAYzOhX-6uz69v/exec',
+  CHIPS: ['今週が期限のタスクは？', '遅れているのはどこ？', '協賛は今何件？', '何を決めないと止まる？'],
+  REC_MAX_SEC: 60,
+  HOLD_MS: 700
+};
+const $ = (id) => document.getElementById(id);
+const AEL = $('ael');
+let code = '', busy = false, hist = [], canSpeak = false;
+
+/* ---------- 招待コード（URLの ?g= か、前に開いたときのもの） */
+try {
+  const u = new URL(location.href);
+  code = (u.searchParams.get('g') || '').replace(/[^A-Za-z0-9]/g, '');
+  if (code) { try { localStorage.setItem('hz_trial', code); } catch (e) { } history.replaceState(null, '', location.pathname); }
+  else { try { code = localStorage.getItem('hz_trial') || ''; } catch (e) { } }
+} catch (e) { }
+
+async function api(payload){
+  const res = await fetch(CONFIG.GAS_URL, { method: 'POST', body: JSON.stringify(Object.assign({ kind: 'ops', guest: code }, payload)) });
+  if (!res.ok) throw new Error('つながりませんでした（' + res.status + '）');
+  return await res.json();
+}
+function errText(r){
+  const e = r && r.error;
+  if (e === 'invite') return 'この招待URLは使えません（期限切れか、止まっています）。お送りした方にお知らせください。';
+  if (e === 'too many') return '今日の回数の上限に達しました。明日またお試しください。';
+  if (e === 'stopped') return 'いま体験版を止めています。少し時間をおいてお試しください。';
+  if (e === 'empty') return '聞き取れませんでした。もう一度お願いします。';
+  if (e === 'transcribe') return '声を文字にできませんでした。もう一度お願いします。';
+  if (e === 'too big') return '長すぎました。60秒以内でお願いします。';
+  return (r && r.msg) || 'うまくいきませんでした。もう一度お願いします。';
+}
+
+/* ---------- 画面 */
+function add(text, cls){
+  const d = document.createElement('div');
+  d.className = 'b' + (cls ? ' ' + cls : '');
+  d.textContent = text;
+  $('log').appendChild(d);
+  d.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  return d;
+}
+function meta(row, t){ const m = document.createElement('div'); m.className = 'meta'; m.textContent = t; row.appendChild(m); }
+function setLeft(n){ if (typeof n === 'number') $('left').textContent = '今日あと ' + n + ' 回'; }
+function chips(){
+  const c = $('chips'); c.innerHTML = '';
+  CONFIG.CHIPS.forEach(t => { const b = document.createElement('button'); b.type = 'button'; b.textContent = t; b.onclick = () => ask({ text: t }); c.appendChild(b); });
+}
+
+/* ---------- 声（Gemini の声 → だめなら端末の声） */
+function unlockAudio(){
+  try { AEL.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA='; const p = AEL.play(); if (p) p.catch(() => { }); } catch (e) { }
+}
+function devSpeak(t){
+  try { if (!window.speechSynthesis) return false; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'ja-JP'; speechSynthesis.speak(u); return true; } catch (e) { return false; }
+}
+async function speak(text, row){
+  if (!text) return;
+  const btn = document.createElement('button'); btn.className = 'play'; btn.type = 'button'; btn.textContent = '♪ 声を用意しています…'; btn.disabled = true; row.appendChild(btn);
+  let src = '';
+  if (canSpeak) {
+    try { const r = await api({ api: 'speak', text: text }); if (r && r.ok && r.audio) src = 'data:' + (r.mime || 'audio/wav') + ';base64,' + r.audio; } catch (e) { }
+  }
+  const play = () => {
+    if (src) { try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { } AEL.src = src; const p = AEL.play(); if (p) p.catch(() => { btn.textContent = '▶ 聞く'; }); }
+    else devSpeak(text);
+  };
+  btn.disabled = false; btn.textContent = '▶ もう一度聞く';
+  btn.onclick = play;
+  play();
+}
+
+/* ---------- 聞く */
+async function ask(payload){
+  if (busy) return;
+  busy = true; $('mic').disabled = true;
+  const mine = payload.text ? add(payload.text, 'me') : add('（声を送っています…）', 'me');
+  const wait = add('考えています…');
+  try {
+    const r = await api(Object.assign({ api: 'chat', history: hist.slice(-12) }, payload));
+    if (r && r.heard && !payload.text) mine.textContent = r.heard;
+    if (!r || !r.ok) { wait.remove(); add(errText(r), 'err'); setLeft(r && r.left); return; }
+    wait.textContent = r.answer;
+    meta(wait, (r.sec ? r.sec + '秒' : '') + (r.parts ? '（' + r.parts + '）' : ''));
+    hist.push({ r: 'u', t: r.heard || payload.text || '' }, { r: 'a', t: r.answer });
+    setLeft(r.left);
+    speak(r.speakable, wait);
+  } catch (err) {
+    wait.remove(); add('つながりませんでした：' + String(err.message || err).slice(0, 120), 'err');
+  } finally { busy = false; $('mic').disabled = false; }
+}
+
+/* ---------- 録音（押して話す・もう一度押して送る・長押しで取り消し） */
+let rec = null, stream = null, parts = [], t0 = 0, timer = null, holdT = null, justCancelled = false;
+function pickMime(){
+  for (const m of ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm', 'audio/aac']) { try { if (MediaRecorder.isTypeSupported(m)) return m; } catch (e) { } }
+  return '';
+}
+async function micOpen(){
+  try { if (navigator.audioSession) navigator.audioSession.type = 'play-and-record'; } catch (e) { }
+  try { AEL.pause(); } catch (e) { }
+  try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) { }
+  try { return await navigator.mediaDevices.getUserMedia({ audio: true }); }
+  catch (e) {
+    if (!/InvalidState|NotReadable|Abort/.test(String(e && e.name))) throw e;
+    try { if (navigator.audioSession) navigator.audioSession.type = 'auto'; } catch (x) { }
+    await new Promise(r => setTimeout(r, 350));
+    return await navigator.mediaDevices.getUserMedia({ audio: true });
+  }
+}
+function toB64(blob){ return new Promise(res => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(',')[1] || ''); fr.onerror = () => res(''); fr.readAsDataURL(blob); }); }
+function recLook(on){ $('mic').classList.toggle('rec', on); $('mic').textContent = on ? '送る' : '話す'; if (!on) $('hint').textContent = '押して話す → もう一度押すと送ります（長押しで取り消し）'; }
+async function recStart(){
+  if (busy) return;
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) { add('このブラウザではマイクが使えません。打ち込みで聞いてください。', 'err'); return; }
+  try { stream = await micOpen(); }
+  catch (err) {
+    const n = String((err && err.name) || err);
+    add(/NotAllowed|Security|Permission/.test(n)
+      ? 'マイクの許可がオフです。アドレスバーの鍵（またはカメラ）のマークからマイクを「許可」にして、ページを読み込み直してください。iPhoneは［設定］→［Safari］→［マイク］でも変えられます。'
+      : 'マイクがいま使えませんでした（' + n + '）。ほかのアプリがマイクを使っていないか確かめて、もう一度押してください。', 'err');
+    return;
+  }
+  const mime = pickMime();
+  rec = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
+  parts = [];
+  const me = rec;
+  const used = rec.mimeType || mime || 'audio/mp4';
+  rec.ondataavailable = (e) => { if (e.data && e.data.size) parts.push(e.data); };
+  rec.onstop = async () => {
+    try { stream.getTracks().forEach(t => t.stop()); } catch (e) { }
+    recLook(false);
+    if (me.cancel) { add('取り消しました', 'me').style.opacity = .6; return; }
+    const blob = new Blob(parts, { type: used });
+    if (blob.size < 1200) { add('短すぎました。押してから1秒以上話してください。', 'err'); return; }
+    const b64 = await toB64(blob);
+    if (!b64) { add('音声を変換できませんでした。打ち込みで聞いてください。', 'err'); return; }
+    ask({ audio: b64, mime: used.split(';')[0] });
+  };
+  rec.start(); t0 = Date.now(); recLook(true);
+  timer = setInterval(() => {
+    const s = (Date.now() - t0) / 1000;
+    if (s >= CONFIG.REC_MAX_SEC) { recStop(); return; }
+    $('hint').textContent = s.toFixed(1) + '秒　押すと送る／長押しで取り消し';
+  }, 100);
+}
+function recStop(cancel){ clearInterval(timer); if (rec) rec.cancel = !!cancel; try { if (rec && rec.state !== 'inactive') rec.stop(); } catch (e) { } rec = null; }
+
+const mic = $('mic');
+mic.addEventListener('pointerdown', () => {
+  if (!rec) return;
+  holdT = setTimeout(() => { holdT = null; justCancelled = true; recStop(true); try { navigator.vibrate && navigator.vibrate(60); } catch (e) { } }, CONFIG.HOLD_MS);
+});
+mic.addEventListener('pointerup', () => {
+  if (holdT) { clearTimeout(holdT); holdT = null; recStop(false); return; }
+  if (!rec && !justCancelled) recStart();
+  justCancelled = false;
+});
+mic.addEventListener('pointerleave', () => { if (holdT) { clearTimeout(holdT); holdT = null; } });
+mic.addEventListener('contextmenu', (e) => e.preventDefault());
+
+$('form').addEventListener('submit', (e) => { e.preventDefault(); const t = $('q').value.trim(); if (!t) return; $('q').value = ''; ask({ text: t }); });
+
+/* ---------- はじめる */
+$('start').onclick = async () => {
+  unlockAudio();
+  $('start').disabled = true; $('start').textContent = '確かめています…'; $('gerr').textContent = '';
+  try {
+    if (!code) throw { error: 'invite' };
+    const me = await api({ api: 'me' });
+    if (!me || !me.ok) throw me;
+    canSpeak = !!me.speak; setLeft(me.left);
+    $('gate').hidden = true; chips();
+    const h = await api({ api: 'hello' });
+    if (h && h.ok) { const row = add(h.text); speak(h.speakable, row); }
+  } catch (r) {
+    $('start').disabled = false; $('start').textContent = '同意して始める';
+    $('gerr').textContent = r && r.error ? errText(r) : 'つながりませんでした：' + String((r && r.message) || r).slice(0, 100);
+  }
+};
+if (!code) $('gname').textContent = '招待URLから開いてください。';
+</script>
+</body>
+</html>
