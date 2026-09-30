@@ -109,6 +109,7 @@
   .eq i:nth-child(4){background:var(--pink);animation-delay:.39s}
   @keyframes eq{0%,100%{height:4px;opacity:.5}50%{height:14px;opacity:1}}
 
+  .err .micfix{margin-top:10px;white-space:nowrap}
   .err{
     background:rgba(255,91,91,.09);border:1px solid rgba(255,91,91,.34);
     color:#ffd0d0;padding:11px 14px;border-radius:14px;font-size:13.5px;white-space:pre-wrap;
@@ -352,7 +353,7 @@
   <div class="sp-name">Harmonizer</div>
   <div class="sp-msg" id="spMsg">ひらいています…</div>
   <div class="sp-steps" id="spSteps"><i></i><i></i><i></i><i></i></div>
-  <div class="sp-ver">v2.24　2026-09-29</div>
+  <div class="sp-ver">v2.25　2026-09-30</div>
 </div>
 
 <header>
@@ -440,7 +441,7 @@
 </div>
 <div class="modebar"><span id="modebar"></span></div>
 <div class="recbar" id="recbar"><span id="recbarText">録音しています</span></div>
-<div class="ver" id="ver">Harmonizer v2.24　2026-09-29</div>
+<div class="ver" id="ver">Harmonizer v2.25　2026-09-30</div>
 
 <script>
 /* ============================================================================
@@ -1322,7 +1323,7 @@ async function recStart(){
   }
   try {
     micLabel('マイクの許可を確かめています…');
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const stream = await micOpen();
     recStream = stream;
     recMime = pickMime();
     rec = new MediaRecorder(stream, recMime ? { mimeType: recMime } : undefined);
@@ -1361,10 +1362,65 @@ async function recStart(){
     }, 100);
   } catch (err) {
     micLabel('押して話す');
-    showErr('マイクを使えませんでした（' + String((err && err.name) || err).slice(0, 40) + '）。\n' +
-      'iPhoneの［設定］→［LINE］→［マイク］が オン になっているか確かめてください。\n' +
-      '打ち込みでも聞けます。');
+    try { if (recStream) recStream.getTracks().forEach(t => t.stop()); } catch (e) { } recStream = null; rec = null;
+    micHelp(err);
   }
+}
+
+/* マイクを開く（v2.25）
+   iPhone は、声を流したあと「再生だけ」のモード（audioSession = playback）のままだと、
+   マイクが InvalidStateError で開けない。録る前に「録音もする」モードへ戻し、だめなら一度だけやり直す */
+function micMode(){ try { if (navigator.audioSession && !liveActive()) navigator.audioSession.type = 'play-and-record'; } catch (e) { } }
+async function micOpen(){
+  micMode();
+  try { AEL.pause(); } catch (e) { }
+  try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) { }
+  try { return await navigator.mediaDevices.getUserMedia({ audio: true }); }
+  catch (e) {
+    if (!/InvalidState|NotReadable|Abort/.test(String(e && e.name))) throw e;
+    try { if (navigator.audioSession) navigator.audioSession.type = 'auto'; } catch (x) { }
+    await new Promise(r => setTimeout(r, 350));
+    return await navigator.mediaDevices.getUserMedia({ audio: true });
+  }
+}
+/** マイクが使えないときの案内。理由ごとに言い分けて、［マイクを使えるようにする］ボタンを付ける */
+function micHelp(err){
+  const name = String((err && err.name) || err || '');
+  let text;
+  if (/NotAllowed|Security|Permission/.test(name)) text =
+    'マイクの許可がオフになっています（' + name + '）。\n' +
+    '① 下の［マイクを使えるようにする］を押す → 「許可」を選ぶ\n' +
+    '② 許可の確認が出ないとき：iPhoneの［設定］→［LINE］→［マイク］をオン → LINEに戻って、この画面を開き直す\n' +
+    '（設定アプリはこの画面から直接は開けません。ホーム画面の［設定］からお願いします）';
+  else if (/NotFound|Overconstrained/.test(name)) text = 'マイクが見つかりませんでした（' + name + '）。イヤホンを抜き差しするか、打ち込みで聞いてください。';
+  else text =
+    'マイクがいま使えない状態でした（' + name + '）。許可はオンのままで大丈夫です。\n' +
+    '声の再生や、ほかのアプリ（通話・録音）がマイクをつかんでいることがあります。\n' +
+    '下の［マイクを使えるようにする］を押してから、もう一度［話す］を押してください。';
+  clearHint(); stateOff();
+  const d = document.createElement('div');
+  d.className = 'err'; d.textContent = text;
+  const b = document.createElement('button');
+  b.className = 'play micfix'; b.type = 'button'; b.textContent = '🎤 マイクを使えるようにする';
+  b.onclick = async () => {
+    b.disabled = true; b.textContent = '確かめています…';
+    try {
+      const st = await micOpen();
+      st.getTracks().forEach(t => t.stop());
+      micMode();
+      b.textContent = '✓ 使えます。［話す］を押してください';
+      micLabel('押して話す');
+    } catch (e) {
+      b.disabled = false; b.textContent = '🎤 もう一度ためす';
+      const n = String((e && e.name) || e);
+      d.firstChild.textContent = text + '\n\n→ まだ使えませんでした（' + n + '）。' +
+        (/NotAllowed|Security/.test(n) ? 'iPhoneの［設定］→［LINE］→［マイク］をオンにして、LINEを一度閉じてから開き直してください。' : 'LINEを一度閉じて開き直すと直ることが多いです。打ち込みでも聞けます。');
+    }
+  };
+  d.appendChild(document.createElement('br'));
+  d.appendChild(b);
+  $('main').appendChild(d);
+  toBottom();
 }
 
 function recStop(){
