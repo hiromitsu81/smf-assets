@@ -353,7 +353,7 @@
   <div class="sp-name">Harmonizer</div>
   <div class="sp-msg" id="spMsg">ひらいています…</div>
   <div class="sp-steps" id="spSteps"><i></i><i></i><i></i><i></i></div>
-  <div class="sp-ver">v2.25　2026-09-30</div>
+  <div class="sp-ver">v2.26　2026-09-30</div>
 </div>
 
 <header>
@@ -441,7 +441,7 @@
 </div>
 <div class="modebar"><span id="modebar"></span></div>
 <div class="recbar" id="recbar"><span id="recbarText">録音しています</span></div>
-<div class="ver" id="ver">Harmonizer v2.25　2026-09-30</div>
+<div class="ver" id="ver">Harmonizer v2.26　2026-09-30</div>
 
 <script>
 /* ============================================================================
@@ -687,7 +687,25 @@ function isInLine(){ try { return !!(window.liff && liff.isInClient && liff.isIn
     bc.postMessage({ t: 'hello', from: me });
   } catch (e) { /* 古いブラウザは知らせないだけ */ }
 })();
+/* ブラウザ（PC）で開いたときの本人確認の期限切れ（v2.26）
+   LINEのIDトークンは有効期限が短く、ブラウザは前回のログインを覚えているので、
+   しばらくたってから開くと期限切れのトークンで確認して「運営メンバー専用」と弾かれていた。
+   期限が近ければ、LINEでログインし直してから戻ってくる（くり返さないように3分に1回まで） */
+function idExpiring(){
+  try { const d = liff.getDecodedIDToken && liff.getDecodedIDToken(); return !!(d && d.exp && d.exp * 1000 < Date.now() + 60000); } catch (e) { return false; }
+}
+function relogin(){
+  let last = 0; try { last = Number(sessionStorage.getItem('hz_relogin') || 0); } catch (e) { }
+  if (Date.now() - last < 180000) return false;          // 3分以内にやり直したばかり：くり返さない
+  try { sessionStorage.setItem('hz_relogin', String(Date.now())); } catch (e) { }
+  say('LINEでログインし直しています…', 2);
+  try { liff.logout(); } catch (e) { }
+  liff.login({ redirectUri: location.href.split('#')[0] });
+  return true;
+}
 async function api(payload){
+  try { const t = liff.getIDToken && liff.getIDToken(); if (t) idToken = t; } catch (e) { }
+  if (!isInLine() && idExpiring() && relogin()) return new Promise(() => { });   // ログインし直して戻ってくる
   // ヘッダーは付けません。来場者向けミニアプリで動いている書き方と同じです
   // （文字列を渡すと text/plain になり、事前確認（preflight）が起きません）
   const res = await fetch(CONFIG.GAS_URL, {
@@ -1871,6 +1889,7 @@ function gate(msg){
       gate('LINEアプリの中から開いてください。');
       return;
     }
+    if (liff.isInClient && !liff.isInClient() && idExpiring() && relogin()) return;   // PC：期限切れならログインし直す
     idToken = liff.getIDToken() || '';
     if (!idToken) {
       gate('本人を確かめられませんでした。\nLINE Developers のミニアプリのチャネルで、Scope の openid がオンになっているか確かめてください。');
@@ -1880,9 +1899,17 @@ function gate(msg){
     say('ONE HUB につないでいます…', 3);
     const me = await api({ api: 'me' });
     if (me.error) {
+      if (me.error === 'login' && !isInLine() && relogin()) return;   // PC：期限切れのことが多いので、まず1回ログインし直す
       gate(me.error === 'login'
-        ? 'この画面は運営メンバー専用です。\n心当たりがあれば事務局にお伝えください。'
+        ? 'この画面は運営メンバー専用です。\n心当たりがあれば事務局にお伝えください。' +
+          (isInLine() ? '' : '\n\nPCのブラウザで開いているときは、ログインの期限切れでも出ます。下のボタンでログインし直してください。')
         : 'いまは使えません。');
+      if (me.error === 'login' && !isInLine()) {
+        const b = document.createElement('button');
+        b.className = 'play'; b.type = 'button'; b.style.marginTop = '16px'; b.textContent = 'LINEでログインし直す';
+        b.onclick = () => { try { sessionStorage.removeItem('hz_relogin'); } catch (e) { } relogin(); };
+        const g = document.querySelector('.gate'); if (g) g.appendChild(b);
+      }
       return;
     }
     $('who').innerHTML = '<span class="led"></span>' + (me.name || '') +
