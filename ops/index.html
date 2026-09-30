@@ -353,7 +353,7 @@
   <div class="sp-name">Harmonizer</div>
   <div class="sp-msg" id="spMsg">ひらいています…</div>
   <div class="sp-steps" id="spSteps"><i></i><i></i><i></i><i></i></div>
-  <div class="sp-ver">v2.26　2026-09-30</div>
+  <div class="sp-ver">v2.27　2026-09-30</div>
 </div>
 
 <header>
@@ -441,7 +441,7 @@
 </div>
 <div class="modebar"><span id="modebar"></span></div>
 <div class="recbar" id="recbar"><span id="recbarText">録音しています</span></div>
-<div class="ver" id="ver">Harmonizer v2.26　2026-09-30</div>
+<div class="ver" id="ver">Harmonizer v2.27　2026-09-30</div>
 
 <script>
 /* ============================================================================
@@ -745,6 +745,7 @@ async function diagnose(){
 const ERR = {
   login:      'LINEで開き直してください。運営メンバーとして確かめられませんでした。',
   'too many': '回数の上限に達しました。少し時間をおいてください。',
+  'stopped': 'いまAIを止めています（管理者が点検中）。少し時間をおいてください。',
   'too big':  '録音が長すぎます。短くしてもう一度お願いします。',
   empty:      '聞き取れませんでした。もう一度お願いします。',
   transcribe: '文字にできませんでした。もう一度お願いします。',
