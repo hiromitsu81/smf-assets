@@ -240,6 +240,11 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .steps small.use{display:block;font-size:11px;color:var(--dim);font-weight:400}
 /* 抽選の応募（v2.2） */
 .entry{--c:var(--pink);margin-top:12px;padding:14px;border-radius:14px;background:#0E0E0E;border:1px solid var(--line);border-left:6px solid var(--c);display:grid;gap:8px}
+.prize{margin-top:12px;display:grid;grid-template-columns:112px 1fr;gap:12px;align-items:center;width:100%;padding:10px;border-radius:14px;background:#0E0E0E;border:1px solid var(--line);color:inherit;font:inherit;text-align:left;cursor:pointer}
+.prize img{display:block;width:112px;aspect-ratio:1000/936;object-fit:contain;background:#fff;border-radius:10px}
+.prize small{display:block;font-family:var(--mono,monospace);font-size:10.5px;letter-spacing:.12em;color:var(--pink)}
+.prize b{display:block;font-size:15px;margin:2px 0 4px}.prize span{display:block;font-size:12px;color:#D6D6D6;line-height:1.5}.prize em{font-style:normal;color:var(--dim);font-size:11px}
+.prizebig{display:block;width:100%;background:#fff;border-radius:14px;margin:4px 0 12px}
 .entry h3{margin:0;font-size:16px}.entry p{margin:0;font-size:13.5px;color:#D6D6D6}.entry .sm{font-size:11.5px;color:var(--dim)}
 .entry form{display:grid;gap:8px;margin-top:4px}.entry label{font-size:12.5px;color:var(--dim)}
 .entry input{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid var(--line);background:#1B1B1B;color:#fff;font-size:16px}
@@ -629,7 +634,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">当日ガイド v2.6.1</span>
+    <br><span id="ver">当日ガイド v2.7</span>
   </footer>
 </main>
 
@@ -901,15 +906,31 @@ function renderCrew() {
 function renderDaishi() {
   const el = $('#daishi'); if (!el) return;
   const d = ME;
-  if (!d) { el.innerHTML = `<p class="note" style="margin:0">LINEで開くと、ここにあなたの台紙が出ます。</p>`; return; }
+  if (!d) { el.innerHTML = `<p class="note" style="margin:0">LINEで開くと、ここにあなたの台紙が出ます。</p>${prizeHtml(null)}`; return; }
   const img = f => d.img ? d.img + f : '';
   const cells = (d.spots || []).map(x => `<div class="cell${x.on ? ' on' : ''}">${img(x.id + (x.on ? '.png' : '_off.png')) && x.id ? `<img src="${esc(img(x.id + (x.on ? '.png' : '_off.png')))}" alt="${esc(x.name)}${x.on ? '（押した）' : ''}" loading="lazy">` : `<span class="code" style="--c:var(${x.on ? '--pink' : '--line'})">${x.on ? '✓' : ''}</span>`}${esc(x.name)}</div>`).join('')
     + (d.others ? `<div class="cell on"><img src="${esc(img('smf.png'))}" alt="その他のお店" onerror="this.onerror=null;this.src='img/smf-logo.png'">その他 ${d.others}店</div>` : '');
   el.innerHTML = `<div class="hd"><b>${d.got}</b><span>/ ${d.goal}店</span>${d.done ? '<em class="done">達成！</em>' : `<em>あと${Math.max(d.goal - d.got, 0)}店</em>`}</div>
     <div class="cells">${cells}</div>
     ${d.qr && !d.done ? `<div class="wcard" style="margin-top:12px"><div class="lbl"><b>お店でこのQRを見せる</b>　スタッフが読むとスタンプが押されます</div><div class="qr" style="width:min(48vw,200px)">${qrSvg(d.qr)}</div><div class="cd">${esc(d.code)}</div></div>` : ''}
+    ${prizeHtml(d)}
     ${d.done ? entryHtml(d) : ''}
     <p class="note">${d.done ? '達成おめでとうございます。' : 'スタンプは、お店のスタッフがあなたのQR（ホームのいちばん上）を読んで押します。押したあとは、開き直すと新しくなります。'}${d.sample ? '（サンプル表示）' : ''}</p>`;
+}
+/* ---------- 達成特典のTシャツを、達成の前から見せる（v2.7。絵はサイトの NIGHT LOOP と同じ背面の絵） ---------- */
+const PRIZE_IMG = 'img/prize-tee.webp', PRIZE_NAME = 'AZUL BY MOUSSY × santafe × SMF';
+function prizeHtml(d) {
+  const e = d && d.entry, n = (e && e.winners) || 40;
+  if (e && e.got) return '';
+  return `<button class="prize" type="button" onclick="prizeOpen(${n})" aria-label="達成特典のコラボTシャツを大きく見る">
+    <img src="${PRIZE_IMG}" alt="コラボTシャツ（背面）" loading="lazy" onerror="this.style.display='none';this.parentNode.style.gridTemplateColumns='1fr'">
+    <div><small>達成特典 ／ 抽選で${n}名</small><b>コラボ T-SHIRTS</b><span>${PRIZE_NAME}<br>外れた方には SMF オリジナルタオル<br><em>${d && d.done ? '画像は背面' : `${(d && d.goal) || 4}店そろうと、ここから応募できます`}</em></span></div></button>`;
+}
+function prizeOpen(n) {
+  sheet(`<h3 style="margin:0 0 10px">達成特典 ／ コラボ T-SHIRTS</h3><img class="prizebig" src="${PRIZE_IMG}" alt="コラボTシャツ（背面）">
+    <p style="margin:0 0 6px;font-size:14px"><b>${PRIZE_NAME}</b></p>
+    <p style="margin:0 0 14px;font-size:13px;color:#D6D6D6">協力店5店のうち4店でスタンプをそろえた方の中から、抽選で<b>${n}名</b>に。外れた方には SMF オリジナルタオルを差し上げます。応募はこの台紙から。結果はメールでお知らせし、抽選のあと FRIENDS bar &amp; lounge で受け取ります。<br><span style="color:var(--dim);font-size:11.5px">画像は背面です。</span></p>
+    <button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
 }
 /* ---------- 抽選の応募（v2.2。GAS の rally.gs v0.5・miniapp_api.gs v1.0 の api=entry） ---------- */
 const mdJa = v => { const t = new Date(String(v).length <= 10 ? v + 'T00:00:00+09:00' : v); return isNaN(t) ? '' : t.toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric', weekday: 'short', timeZone: 'Asia/Tokyo' }); };
