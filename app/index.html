@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SMF 2026 アプリ</title>
+<title>SMFアプリ</title>
 <meta name="description" content="SANGENJAYA ART MUSIC FESTIVAL 2026 の公式アプリ。LINEでできることの入口・タイムテーブル・会場・おひねりクエスト。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -731,7 +731,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">SMF 2026 アプリ v3.7</span>
+    <br><span id="ver">SMFアプリ v3.8</span>
   </footer>
 </main>
 
@@ -1174,7 +1174,7 @@ function sheet(html) { let el = $('#rs'); if (!el) { el = document.createElement
 function closeSheet() { const el = $('#rs'); if (el) el.remove(); }
 function cardsHtml(cards) {
   return (cards || []).map(c => {
-    let t = (c.texts || []).map(x => String(x).replace('相手の方も、次に「#ラリー」を開くと引けます。', '相手の方も、SMF 2026 アプリの［縁日］で引けます。'));
+    let t = (c.texts || []).map(x => String(x).replace('相手の方も、次に「#ラリー」を開くと引けます。', '相手の方も、SMFアプリの［縁日］で引けます。'));
     const k = t.length > 1 && /^[A-Z0-9 &\-!]+$/.test(t[0]) ? t.shift() : '';
     let h = t.length > 1 ? t.shift() : '';
     if (k === 'GACHA' && h === 'ガチャ' && t.length >= 2) { const rare = t.shift(); h = `${t.shift()}（${rare}）`; }
@@ -1373,7 +1373,7 @@ function shareMsg(kind) {
   }
   return { text: 'SMF 2026（11/7 三軒茶屋）一緒に行こう！', msg: flexCard('SMF 2026 一緒に行こう', {
     img: 'https://sangenjaya-mf.com/ogp_smf2026.png', ratio: '120:63', kicker: 'SANGENJAYA ART MUSIC FESTIVAL 2026', title: '11/7（土）三茶で一緒に遊ぼう', color: '#8DC21F',
-    lines: ['街じゅうの会場で、昼から翌朝まで', 'タイムテーブル・スタンプラリー・縁日のご縁'], btn: 'SMF 2026 アプリを開く', url: APP_URL() }) };
+    lines: ['街じゅうの会場で、昼から翌朝まで', 'タイムテーブル・スタンプラリー・縁日のご縁'], btn: 'SMFアプリを開く', url: APP_URL() }) };
 }
 async function share(kind) {
   const m = shareMsg(kind);
