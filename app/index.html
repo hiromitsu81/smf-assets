@@ -226,6 +226,14 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .amt{display:flex;gap:8px;align-items:center;margin-top:8px}
 .amt input,.nick input{flex:1;min-width:0;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font:inherit;font-size:15px;padding:10px}
 
+/* これまでのSMF（v2.5） */
+.arc{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;margin:0 -16px;padding:0 16px 6px}
+.arv{flex:0 0 46%;max-width:200px;scroll-snap-align:start;position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#111;aspect-ratio:9/16}
+.arv video{width:100%;height:100%;object-fit:cover;display:block}
+.arv .cap{position:absolute;left:0;right:0;bottom:0;padding:26px 10px 9px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.82));pointer-events:none;font-size:11px;color:#D0D0D0;line-height:1.35}
+.arv .cap b{display:block;font-size:12.5px;color:#fff}
+.arv .pl{position:absolute;inset:0;margin:auto;width:46px;height:46px;border-radius:50%;border:2px solid #fff;background:rgba(0,0,0,.45);color:#fff;font-size:17px;display:grid;place-items:center;pointer-events:none;padding-left:3px}
+.arv.on .pl{display:none}
 /* おひねりの使い道（v2.4） */
 .q-use{margin:10px 0 0;padding:10px 12px;border-radius:12px;background:rgba(236,125,143,.1);border:1px solid rgba(236,125,143,.35);font-size:13.5px;font-weight:700}
 .q-use small{display:block;font-size:11px;font-weight:500;color:var(--dim)}
@@ -494,6 +502,10 @@ footer a{color:var(--dim)}
     </div>
     <p class="note">BORRACHOS は20:30で営業を終えます。SANCHA NIGHT LOOP の達成を目指す方は、日中のうちに寄っておくのがおすすめです。</p>
 
+    <h2><span class="en">ARCHIVE</span>これまでのSMF</h2>
+    <p class="note" style="margin:0 0 10px">2025年9月20日・21日、三軒茶屋。ヤグラのステージから、茶沢通りのマーケット、夜のフロアまで。押すと再生します（音が出ます）。</p>
+    <div class="arc" id="arc"></div>
+
     <h2><span class="en">SPONSORSHIP</span>協賛</h2>
     <div class="spons" id="spons"></div>
     <p class="note">2026年の協賛が決まった企業・ブランドです。SMF 2026 は、協賛のみなさまの応援で開催しています。</p>
@@ -617,7 +629,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">当日ガイド v2.4.2</span>
+    <br><span id="ver">当日ガイド v2.5</span>
   </footer>
 </main>
 
@@ -1123,7 +1135,10 @@ function cardDetail(id) {
   const vcode = c.kind === 'artist' ? c.venue : c.place;
   const go = vcode && VENUES.some(v => v.code === vcode) ? `<button class="btn primary wide" type="button" onclick="goVenue('${esc(vcode)}')">${c.kind === 'artist' ? '会場と時間を見る' : 'ブースの会場を見る'}</button>`
     : c.kind === 'shop' ? shopLinks(SHOPS.find(s => 'sh-' + String(s.no).padStart(2, '0') === c.id) || { name: c.name }) : '';
-  sheet(`<img class="cd-big" style="--c:${col[0]}" src="${esc(gImg(c))}" alt="${esc(c.name)}"><div class="rc" style="margin-top:10px"><div class="b"><div class="k">${esc(col[1])}のご縁 ・ ${esc(GKIND[c.kind] || '')}</div><h3>${esc(c.name)}</h3><p>${esc(gWhere(c))}</p></div></div>${go}<button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
+  const webLabel = u => /linktr\.ee|lit\.link/.test(u) ? 'リンク集' : /music\.apple\.com/.test(u) ? 'Apple Music' : /spotify\.com/.test(u) ? 'Spotify' : /soundcloud\.com/.test(u) ? 'SoundCloud' : '公式サイト';
+  const ext = (u, l) => /^https:\/\//.test(u || '') ? `<a class="btn wide" href="${esc(u)}" target="_blank" rel="noopener">${l} ↗</a>` : '';
+  const links = c.kind === 'artist' ? ext(c.ig, 'Instagram') + ext(c.yt, 'YouTube') + ext(c.web, webLabel(c.web || '')) : ''; // 出演者のリンク（data/cards.json。届いている分だけ）
+  sheet(`<img class="cd-big" style="--c:${col[0]}" src="${esc(gImg(c))}" alt="${esc(c.name)}"><div class="rc" style="margin-top:10px"><div class="b"><div class="k">${esc(col[1])}のご縁 ・ ${esc(GKIND[c.kind] || '')}</div><h3>${esc(c.name)}</h3><p>${esc(gWhere(c))}</p></div></div>${go}${links}<button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
 }
 function goVenue(code) {
   closeSheet(); FILTER = 'ALL'; showTab('time'); renderFilters(); renderTimetable();
@@ -1312,6 +1327,20 @@ document.addEventListener('click', e => {
   }
   const p = e.target.closest && e.target.closest('.mapbox .pin'); if (p) pinDetail(p);
 }, true);
+/* ---------- これまでのSMF（v2.5。動画は smf-assets/archive/。GAS の archive.gs と同じ並び） ---------- */
+const ARC_BASE = 'https://hiromitsu81.github.io/smf-assets/archive/';
+const ARC = [['01', 'YAGURA STAGE', '特設ヤグラの前で'], ['02', 'MARKET', '茶沢通りのマーケット'], ['03', 'LIVE', 'ステージの上から'], ['04', 'the ravens', '三軒茶屋音楽祭のステージ'], ['05', 'AUDIENCE', 'ヤグラ前のフロア'], ['06', 'HAN-KUN', 'ステージ'],
+  ['07', 'DJ CHARI & DJ TATSUKI', 'フロア'], ['08', 'NIGHT', '提灯とミラーボールの下で'], ['09', 'DJ', '夜のフロア'], ['10', 'BAR', 'カウンターのDJ'], ['11', 'STREET', '路地の入口'], ['12', 'GOODS', 'オフィシャルグッズ'], ['13', 'THANK YOU', 'また来年、三茶で']];
+function renderArchive() {
+  const el = $('#arc'); if (!el) return;
+  el.innerHTML = ARC.map(a => `<div class="arv"><video playsinline preload="none" loop poster="${ARC_BASE}${a[0]}.jpg" src="${ARC_BASE}${a[0]}.mp4" aria-label="${esc(a[1])}"></video><span class="pl" aria-hidden="true">▶</span><div class="cap"><b>${esc(a[1])}</b>${esc(a[2])}</div></div>`).join('');
+  el.onclick = e => {
+    const box = e.target.closest('.arv'); if (!box) return;
+    const v = box.querySelector('video');
+    el.querySelectorAll('video').forEach(x => { if (x !== v) { x.pause(); x.parentNode.classList.remove('on'); } }); // 1本ずつ
+    if (v.paused) { const pr = v.play(); box.classList.add('on'); if (pr && pr.catch) pr.catch(() => box.classList.remove('on')); } else { v.pause(); box.classList.remove('on'); }
+  };
+}
 function renderHowto() {
   const el = $('#hte'); if (!el) return;
   const Q = [
@@ -1386,6 +1415,7 @@ function showTab(name) {
   if (name === 'loop' || name === 'home' || name === 'quest' || name === 'ennichi') loadMe();
   try { history.replaceState(null, '', '#' + name); } catch (e) { /* 表示は変わる */ }
   if (AMAP_MID) setTimeout(AMAP_MID, 30);
+  document.querySelectorAll('#arc video').forEach(x => { x.pause(); x.parentNode.classList.remove('on'); });
 }
 document.querySelector('nav.tabs').onclick = e => { const b = e.target.closest('button'); if (b) showTab(b.dataset.tab); };
 
@@ -1394,7 +1424,7 @@ async function boot() {
   try { VENUES = (await (await fetch('data/venues.json', { cache: 'no-store' })).json()).venues; } catch (e) { VENUES = window.VENUES_INLINE || []; }
   VENUES.sort((a, b) => { const x = min(a.start), y = min(b.start); return (x == null ? 9999 : x) - (y == null ? 9999 : y); }); // 開演時間の早い順（同じ時刻は venues.json の並びのまま）
   try { $('#src').textContent = '出どころ：公式サイト sangenjaya-mf.com（2026-10-10時点）。変更があればこの画面を更新します。'; } catch (e) { }
-  renderHome(); renderHowto(); renderLoop(); renderSponsors(); renderShops(); renderFilters(); renderTimetable(); renderMap(); renderStatus();
+  renderHome(); renderHowto(); renderArchive(); renderLoop(); renderSponsors(); renderShops(); renderFilters(); renderTimetable(); renderMap(); renderStatus();
   const qs = new URLSearchParams(location.search), st = qs.get('liff.state');
   const first = qs.get('tab') || (st ? new URLSearchParams(st.replace(/^[^?]*\?/, '')).get('tab') : '') || (location.hash || '').replace('#', '');
   if (['home', 'time', 'loop', 'ennichi', 'quest'].indexOf(first) >= 0) showTab(first); else if (first === 'map') showTab('time');
