@@ -225,10 +225,24 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .amt{display:flex;gap:8px;align-items:center;margin-top:8px}
 .amt input,.nick input{flex:1;min-width:0;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font:inherit;font-size:15px;padding:10px}
 
+/* 抽選の応募（v2.2） */
+.entry{--c:var(--pink);margin-top:12px;padding:14px;border-radius:14px;background:#0E0E0E;border:1px solid var(--line);border-left:6px solid var(--c);display:grid;gap:8px}
+.entry h3{margin:0;font-size:16px}.entry p{margin:0;font-size:13.5px;color:#D6D6D6}.entry .sm{font-size:11.5px;color:var(--dim)}
+.entry form{display:grid;gap:8px;margin-top:4px}.entry label{font-size:12.5px;color:var(--dim)}
+.entry input{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid var(--line);background:#1B1B1B;color:#fff;font-size:16px}
+.entry details summary{font-size:12.5px;color:var(--dim);cursor:pointer}
 /* 協賛 */
-.spons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.spons a{background:#fff;border-radius:10px;height:64px;display:grid;place-items:center;padding:8px;text-decoration:none}
-.spons img{max-width:100%;max-height:44px;object-fit:contain;display:block}
+.spons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.spons a{background:#fff;border-radius:4px;aspect-ratio:3/2;display:grid;place-items:center;overflow:hidden;text-decoration:none}
+.spons img{width:100%;height:100%;object-fit:contain;display:block}
+/* 協力店（公式サイトと同じ：ロゴ・店名・Instagram・MAP） */
+.rel{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 8px}
+.rel button{all:unset;display:grid;gap:5px;cursor:pointer;min-width:0}
+.rel .lg{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:#fff}
+.rel .lg img{width:100%;height:100%;object-fit:cover;display:block}
+.rel .lg i{position:absolute;left:4px;top:4px;min-width:20px;height:20px;border-radius:10px;background:#6F6F6F;color:#fff;font:700 11px/20px Oswald,sans-serif;font-style:normal;text-align:center;padding:0 5px}
+.rel b{font-size:11px;line-height:1.3;font-weight:700;text-align:center;overflow-wrap:anywhere}
+.rel button:active .lg{transform:scale(.97)}
 .spons span{color:#111;font-size:10.5px;font-weight:700;text-align:center;line-height:1.2;overflow:hidden;max-height:100%}
 
 /* 友だちを誘う（シェアターゲットピッカー） */
@@ -405,13 +419,14 @@ footer a{color:var(--dim)}
       </form>
     </div>
 
-    <h2><span class="en">SUPPORTED BY</span>協賛</h2>
+    <h2><span class="en">SPONSORSHIP</span>協賛</h2>
     <div class="spons" id="spons"></div>
-    <p class="note">SMF 2026 は、協賛のみなさまの応援で開催しています。<a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a>でも紹介しています。</p>
+    <p class="note">2026年の協賛が決まった企業・ブランドです。SMF 2026 は、協賛のみなさまの応援で開催しています。</p>
 
-    <h2><span class="en">RELATION</span>協力店</h2>
-    <div class="lineup" id="shops" style="margin-top:0"></div>
-    <p class="note">三軒茶屋の協力店のみなさまです。お店の紹介は<a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a>で。</p>
+    <h2><span class="en">RELATIONSHIP</span>協力店</h2>
+    <p class="note" style="margin:0 0 10px">SMF2026 に協力いただいている三軒茶屋のお店、<span id="shopsN">31</span>店。お店を押すと、Instagram と地図を開けます。</p>
+    <div class="rel" id="shops"></div>
+    <p class="note">番号は、公式サイトのエリアマップの番号と同じです。</p>
   </section>
 
   <!-- タイムテーブル -->
@@ -447,7 +462,7 @@ footer a{color:var(--dim)}
       <li><span>LINEで「#ラリー」を送って、台紙と「わたしのQR」を出す<small>下のボタンで、文字が入った状態でトークが開きます</small></span></li>
       <li><span>対象の会場でドリンクを受け取るとき、リストバンドとQRをスタッフに見せる<small>スタッフが自分のスマホで読むと、スタンプが押されます。対象の会場では公式ドリンク「三茶ハイ」を1杯無料でお出しします（各店お一人さま1杯まで）</small></span></li>
       <li><span>5店のうち4店でスタンプが揃うと達成<small>台紙は「#ラリー」で開き直すと新しくなります</small></span></li>
-      <li><span>達成すると、抽選で40名にコラボTシャツ<small>AZUL BY MOUSSY × santafe × SMF。外れた方には SMF オリジナルタオル。サイズ・受け取り方法は後日お知らせします</small></span></li>
+      <li><span>達成すると、抽選で40名にコラボTシャツ<small>AZUL BY MOUSSY × santafe × SMF。外れた方には SMF オリジナルタオル。達成したら、この画面のいちばん上の台紙からメールアドレスを入れて応募します。結果はメールでお知らせし、抽選のあと FRIENDS で受け取ります</small></span></li>
     </ol>
     <div style="margin-top:12px"><a class="btn primary wide" id="loopBtn" href="#">LINEで台紙を開く</a></div>
     <button class="share" type="button" data-share="loop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>一緒にまわる人を誘う</button>
@@ -490,7 +505,7 @@ footer a{color:var(--dim)}
 
     <h2><span class="en">HOW TO</span>遊び方</h2>
     <ol class="howto">
-      <li><span>［ご縁を引く］を押すと、出演者・協力店・協賛のだれか（どこか）とのご縁が1枚出る<small>ハズレはありません。輪の色が、そのご縁の色です（出演者は会場の色、協賛は白、協力店はグレー）</small></span></li>
+      <li><span>［ご縁を引く］を押すと、ARTISTS（出演者）・SPONSORSHIP（協賛）・RELATIONSHIP（協力店）のどれかとのご縁が1枚出る<small>ハズレはありません。輪の色が、そのご縁の色です（ARTISTS は会場の色、SPONSORSHIP は白、RELATIONSHIP はグレー）</small></span></li>
       <li><span>引けるのは、はじめに10回。次の日から毎日1回<small>引かなかった分は貯まります。まとめて引くこともできます</small></span></li>
       <li><span>会場で会った人とおたがいOKなら、どちらか1人が相手の「わたしのQR」を読む<small>2人とも1回ずつ引けます。読んだ人はその場で、読まれた人はこの画面の［ご縁を引く］で。見せるQRはホームのいちばん上にあります</small></span></li>
       <li><span>出たカードは図鑑に集まる<small>カードを押すと、会場やお店の場所を見られます。当日は、ご縁のあった出演者やお店をたずねてみてください</small></span></li>
@@ -523,7 +538,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">当日ガイド v2.0</span>
+    <br><span id="ver">当日ガイド v2.2</span>
   </footer>
 </main>
 
@@ -646,19 +661,31 @@ function renderMe() {
     <div class="prog">${d.done ? '<b>達成！</b> 特典の受け取り方法は後日お知らせします' : `スタンプ <b>${d.got} / ${d.goal}</b>店 ${dots}`}</div>
     <div class="lbl">${before ? 'ご縁はいまから、スタンプは 11/7（土）13:00 から。' : ''}QRは開いているあいだ自動で新しくなります（${esc(fmtClock(new Date()))} 更新）</div>`);
 }
-/* ---------- 協力店（公式サイトと同じ並び。data/shops.json。店名だけ） ---------- */
+/* ---------- 協力店（公式サイトと同じ並び・同じリンク。data/shops.json） ---------- */
+let SHOPS = [];
 async function renderShops() {
   const el = $('#shops'); if (!el) return;
   let d = null; try { d = await (await fetch('data/shops.json', { cache: 'no-store' })).json(); } catch (e) { d = null; }
-  if (!d || !d.shops || !d.shops.length) { el.previousElementSibling.hidden = true; el.nextElementSibling.hidden = true; el.hidden = true; return; }
-  el.innerHTML = d.shops.map(n => `<span>${esc(n)}</span>`).join('');
+  SHOPS = (d && d.shops || []).map((x, i) => typeof x === 'string' ? { no: i + 1, name: x } : x);
+  if (!SHOPS.length) { el.previousElementSibling.hidden = true; el.nextElementSibling.hidden = true; el.hidden = true; return; }
+  const n = $('#shopsN'); if (n) n.textContent = SHOPS.length;
+  el.innerHTML = SHOPS.map(s => `<button type="button" data-shop="${s.no}" aria-label="${esc(s.name)}"><span class="lg">${s.logo ? `<img src="${esc(s.logo)}" alt="" loading="lazy" onerror="this.remove()">` : ''}<i>${s.no}</i></span><b>${esc(s.name)}</b></button>`).join('');
 }
+const shopMap = s => s.map || 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(s.name + ' 三軒茶屋');
+function shopLinks(s) {
+  return `${s.insta ? `<a class="btn primary wide" href="${esc(s.insta)}" target="_blank" rel="noopener">Instagram ↗</a>` : ''}<a class="btn wide${s.insta ? '' : ' primary'}" href="${esc(shopMap(s))}" target="_blank" rel="noopener">地図で開く ↗</a>`;
+}
+function shopDetail(no) {
+  const s = SHOPS.find(x => String(x.no) === String(no)); if (!s) return;
+  sheet(`${s.logo ? `<img class="cd-big" style="--c:#BEBEBE;background:#fff" src="${esc(s.logo)}" alt="${esc(s.name)}">` : ''}<div class="rc"><div class="b"><div class="k">RELATIONSHIP ・ 協力店 ${s.no}</div><h3>${esc(s.name)}</h3><p>三軒茶屋の協力店</p></div></div>${shopLinks(s)}<button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
+}
+document.addEventListener('click', e => { const b = e.target.closest('[data-shop]'); if (b) shopDetail(b.dataset.shop); });
 /* ---------- 協賛（公式サイトと同じロゴ。data/sponsors.json） ---------- */
 async function renderSponsors() {
   let d = null; try { d = await (await fetch('data/sponsors.json', { cache: 'no-store' })).json(); } catch (e) { d = null; }
   const el = $('#spons'); if (!el) return;
   if (!d || !d.sponsors || !d.sponsors.length) { el.previousElementSibling.hidden = true; el.nextElementSibling.hidden = true; el.hidden = true; return; }
-  el.innerHTML = d.sponsors.map(x => `<a href="${esc(x.url || d.link)}" target="_blank" rel="noopener" title="${esc(x.name)}"><img src="${esc(x.logo)}" alt="${esc(x.name)}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:this.alt}))"></a>`).join('');
+  el.innerHTML = d.sponsors.map(x => `<a href="${esc(x.url || d.link)}" target="_blank" rel="noopener" title="${esc(x.name)}"${x.bg ? ` style="background:${esc(x.bg)}"` : ''}><img src="${esc(x.logo)}" alt="${esc(x.name)}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:this.alt}))"></a>`).join('');
 }
 
 /* ---------- おひねりを投げる（受付番号をミニアプリで。支払いはPayPay） ---------- */
@@ -752,7 +779,7 @@ function renderCrew() {
   const btn = (label, url, primary) => `<a class="btn${primary ? ' primary' : ''}" href="${esc(url)}" data-line="${esc(url)}">${esc(label)}</a>`;
   const box = (title, inner) => `<div class="daishi"><h3 style="margin:0 0 8px;font-size:15px">${title}</h3>${inner}</div>`;
   // シフトやお店のQRなどの操作はミニアプリに置かない（LINEのトーク画面の下のメニューだけ）。ここは説明だけ
-  if (role === 'staff' || role === 'partner' || role === 'admin' || role === 'member')
+  if (role === 'crew')
     return el.innerHTML = box('スタッフ・協力店の方へ', '<p class="note" style="margin:0">シフトの確認やスタンプを押す操作は、LINEのトーク画面の下のメニューからどうぞ。ミニアプリでは行いません。</p>');
   if (role === 'pending') return el.innerHTML = box('登録を申請中です', '<p class="note" style="margin:0">運営が承認すると、LINEのトーク画面の下のメニューがボランティア用に切り替わります。</p>');
   if (!RECRUIT) return el.innerHTML = '';
@@ -775,7 +802,63 @@ function renderDaishi() {
   el.innerHTML = `<div class="hd"><b>${d.got}</b><span>/ ${d.goal}店</span>${d.done ? '<em class="done">達成！</em>' : `<em>あと${Math.max(d.goal - d.got, 0)}店</em>`}</div>
     <div class="cells">${cells}</div>
     ${d.qr && !d.done ? `<div class="wcard" style="margin-top:12px"><div class="lbl"><b>お店でこのQRを見せる</b>　スタッフが読むとスタンプが押されます</div><div class="qr" style="width:min(48vw,200px)">${qrSvg(d.qr)}</div><div class="cd">${esc(d.code)}</div></div>` : ''}
-    <p class="note">${d.done ? '達成おめでとうございます。特典（抽選でコラボTシャツ／外れた方にオリジナルタオル）の受け取り方法は、後日お知らせします。' : 'スタンプは、お店のスタッフがあなたのQR（ホームのいちばん上）を読んで押します。押したあとは、開き直すと新しくなります。'}${d.sample ? '（サンプル表示）' : ''}</p>`;
+    ${d.done ? entryHtml(d) : ''}
+    <p class="note">${d.done ? '達成おめでとうございます。' : 'スタンプは、お店のスタッフがあなたのQR（ホームのいちばん上）を読んで押します。押したあとは、開き直すと新しくなります。'}${d.sample ? '（サンプル表示）' : ''}</p>`;
+}
+/* ---------- 抽選の応募（v2.2。GAS の rally.gs v0.5・miniapp_api.gs v1.0 の api=entry） ---------- */
+const mdJa = v => { const t = new Date(String(v).length <= 10 ? v + 'T00:00:00+09:00' : v); return isNaN(t) ? '' : t.toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric', weekday: 'short', timeZone: 'Asia/Tokyo' }); };
+function entryHtml(d) {
+  const e = d.entry, box = (t, inner, c) => `<div class="entry" style="--c:var(${c || '--pink'})"><h3>${t}</h3>${inner}</div>`;
+  if (d.sample) return box('コラボTシャツの抽選（抽選で40名）', '<p>達成すると、ここからメールアドレスを入れて応募できます。（サンプル表示）</p>');
+  if (e && e.rehearsal) return box('【リハーサル】達成', '<p>リハーサルの達成です。本番では、ここから抽選に応募できます。本番が始まると、リハーサルのスタンプは数えません。</p>', '--line');
+  if (!e) return box('コラボTシャツの抽選', '<p>抽選の受付は準備中です。少し待って、開き直してください。</p>', '--line');
+  const pick = `<p>受け取り：<b>${esc(e.place || 'FRIENDS bar & lounge')}</b>${e.from ? `（${esc(mdJa(e.from))}〜${esc(mdJa(e.until))}）` : ''}<br>LINEで「#ラリー」を開き、達成カードの受け取りQRをお店のスタッフに見せてください。</p><a class="btn primary wide" href="${esc(oaMsg('#ラリー'))}" data-line="${esc(oaMsg('#ラリー'))}">LINEで受け取りQRを開く</a>`;
+  if (e.got) return box('特典を受け取りました', '<p>ご参加ありがとうございました。</p>', '--green');
+  if (e.result === '当選') return box('当選しました！', `<p>コラボTシャツ（AZUL BY MOUSSY × santafe × SMF）が当たりました。</p>${pick}`);
+  if (e.result === '落選') return box('抽選の結果', `<p>今回は Tシャツは外れました。SMF オリジナルタオルを差し上げます。</p>${pick}`, '--blue');
+  const form = (label, btn) => `<form id="entryForm" novalidate><label for="entryMail">${label}</label><input id="entryMail" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" placeholder="example@mail.com" required>
+      <button class="btn primary wide" type="submit" id="entrySend">${btn}</button></form>
+      <p class="sm">メールアドレスは、抽選結果のお知らせにだけ使います。ほかの人には見えません。</p>`;
+  if (e.entered) return box('抽選に応募済みです', `<p>お知らせ先：<b>${esc(e.mail)}</b><br>結果は、応募の締め切り（${esc(mdJa(e.to))}）のあと、メールでお知らせします。受け取りは抽選のあと、${esc(e.place || 'FRIENDS')}で。</p>
+      ${e.open ? `<details><summary>メールアドレスを入れ直す</summary>${form('新しいメールアドレス', '入れ直す')}</details>` : ''}`, '--green');
+  if (!e.open) return box('抽選の応募は締め切りました', `<p>応募の期限（${esc(mdJa(e.to))}）を過ぎました。</p>`, '--line');
+  return box(`コラボTシャツの抽選に応募する`, `<p>抽選で<b>${e.winners || 40}名</b>にコラボTシャツ（AZUL BY MOUSSY × santafe × SMF）。外れた方には SMF オリジナルタオル。<br>応募の締め切り：<b>${esc(mdJa(e.to))}</b>　結果はメールでお知らせします。</p>${form('結果をお知らせするメールアドレス', '応募する')}`);
+}
+function bindEntry() {
+  document.addEventListener('submit', async ev => {
+    const f = ev.target; if (!f || f.id !== 'entryForm') return;
+    ev.preventDefault();
+    const mail = f.elements.email.value.trim(), b = f.querySelector('button');
+    if (!/^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/.test(mail)) { toast('メールアドレスを確かめてください'); f.elements.email.focus(); return; }
+    if (!(await loadLiff()) || !liff.isLoggedIn() || !CONFIG.GAS_URL) return toast('LINEで開くと応募できます');
+    const lbl = b.textContent; b.disabled = true; b.textContent = '送っています…';
+    const d = await postApi('entry', { email: mail });
+    if (d && d.ok) { if (ME) { ME.entry = d; ME.done = true; } renderDaishi(); toast('応募しました'); return; }
+    b.disabled = false; b.textContent = lbl;
+    toast(d && d.error === 'mail' ? 'メールアドレスを確かめてください' : d && d.error === 'notdone' ? 'スタンプが4店そろうと応募できます' : d && (d.error === 'closed' || d.error === 'drawn') ? '応募は締め切りました' : d && d.error === 'too many' ? '少し時間をおいてから送ってください' : d && d.error === 'login' ? 'LINEのログインを確かめられませんでした' : '送れませんでした。もう一度お試しください');
+  });
+}
+/* ---------- BORRACHOS AFTER PARTY 入口の抽選（v2.2。入口のQR＝この画面のURL＋?after=合言葉。GAS の after.gs） ---------- */
+let AFTER_BUSY = false;
+async function runAfter(key) {
+  if (AFTER_BUSY || !key) return; AFTER_BUSY = true;
+  const close = `<button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`;
+  const el = sheet(`<div class="gacha" id="aGacha" style="--hit:#F89C22;border:0;background:none;padding:6px 0 0"><div class="g-stage"><div class="g-logo"><span class="g-ring"></span><img src="img/smf-logo.png" alt=""></div></div>
+    <div class="g-steps" id="aSteps"><i></i><i></i><i></i></div><div class="g-msg" id="aMsg" aria-live="polite"><b>BORRACHOS AFTER PARTY</b>入口の抽選</div></div><div id="aFoot"></div>`);
+  const g = $('#aGacha'), msg = $('#aMsg'), foot = $('#aFoot'), q = gQuick();
+  const end = (html, f) => { g.classList.remove('s-spin'); msg.innerHTML = html; foot.innerHTML = (f || '') + close; AFTER_BUSY = false; };
+  if (!(await loadLiff()) || !liff.isLoggedIn() || !CONFIG.GAS_URL) return end('<b>LINEで開いてください</b>入口のQRを、LINEのQRリーダーで読むと抽選できます。', `<a class="btn primary wide" href="${esc(APP_URL() + '?after=' + encodeURIComponent(key))}" data-line="${esc(APP_URL() + '?after=' + encodeURIComponent(key))}">LINEで開く</a>`);
+  g.classList.add('s-spin'); msg.innerHTML = '<b>抽選しています…</b>';
+  const req = postApi('after', { key: key });
+  for (const d of document.querySelectorAll('#aSteps i')) { await gWait(q ? 0 : 520); d.classList.add('on'); }
+  const d = await req; await gWait(q ? 0 : 400);
+  if (!$('#aGacha')) { AFTER_BUSY = false; return; } // 途中で閉じた
+  if (!d || d.error) return end(d && d.error === 'closed' ? '<b>まだ始まっていません</b>抽選は、アフターパーティ当日に入口で引けます。' : d && d.error === 'key' ? '<b>このQRでは抽選できません</b>BORRACHOS の入口に貼ってあるQRを読んでください。' : d && d.error === 'too many' ? '<b>少し時間をおいてください</b>' : d && d.error === 'login' ? '<b>LINEのログインを確かめられませんでした</b>開き直してください。' : '<b>いまは抽選できませんでした</b>少し待って、もう一度QRを読んでください。');
+  g.style.setProperty('--hit', d.win ? '#F89C22' : '#8A8A8A'); g.classList.remove('s-spin'); g.classList.add('s-hit');
+  try { if (navigator.vibrate) navigator.vibrate(d.win ? [60, 40, 120] : 40); } catch (e) { /* 震えない端末 */ }
+  msg.innerHTML = `<b style="font-size:28px">${d.win ? '当たり！' : 'ハズレ'}</b>${esc(d.text || '')}<br><small style="color:var(--dim)">番号 ${esc(d.no || '')}　${esc(d.at || '')}${d.again ? '（もう引いてあります。1人1回です）' : ''}${d.test ? '（テスト）' : ''}</small>`;
+  foot.innerHTML = close; AFTER_BUSY = false;
+  try { history.replaceState(null, '', location.pathname); } catch (e) { /* 履歴を書き換えられない */ } // 開き直しで何度も出ないように、URLから合言葉を外す
 }
 const fmtClock = d => d.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Tokyo' });
 async function loadMe(force) {
@@ -841,11 +924,11 @@ async function pullGacha() {
   if (d && d.ok) { if (ME) ME.caps = d.caps || 0; sheet(cardsHtml(d.cards) + `<button class="btn primary wide" type="button" onclick="closeSheet();loadMe(true)">閉じる</button>`); return; }
   sheet(`<p class="msg" style="margin:0">${d && d.error === 'none' ? '未開封のカプセルはありません。ご縁があると引けます。' : 'いまは開けられませんでした。LINEのトークで「#ラリー」を開くと引けます。'}</p><button class="btn wide" type="button" onclick="closeSheet();loadMe(true)">閉じる</button>`);
 }
-/* ---------- 縁日のご縁：ガチャと図鑑（v2.0。GAS の warifu.gs v1.0・miniapp_api.gs v0.9） ---------- */
+/* ---------- 縁日のご縁：ガチャと図鑑（v2.0。GAS の warifu.gs v1.1・miniapp_api.gs v1.0） ---------- */
 let CARDS = [], CARD = {}, G_BUSY = false, Z_FILTER = 'all', G_NEW = {};
 const GV = { D1: ['NTT SQUARE', '#234DA0', '青'], L: ["三軒茶屋HEAVEN'S DOOR", '#E60025', '赤'], N4: ['BORRACHOS', '#F89C22', 'オレンジ'], N3: ['梅ちゃんbar 32016', '#32B540', '緑'],
   N1: ['FRIENDS bar & lounge', '#E24593', 'ピンク'], N2: ["Niwar's SANGENJAYA", '#5DB5E8', '水色'], N5: ['DJ BAR 天狗食堂', '#6C58B1', '紫'], D3: ['SMFオフィシャルBAR', '#8DC21F', '黄緑'], D2: ['企業ブース会場', '#8DC21F', '黄緑'] };
-const GKIND = { artist: '出演者', shop: '協力店', sponsor: '協賛' };
+const GKIND = { artist: 'ARTISTS', sponsor: 'SPONSORSHIP', shop: 'RELATIONSHIP' }; // 公式サイトと同じ呼び名・同じ並び（v2.2）
 const gWait = ms => new Promise(r => setTimeout(r, ms));
 const gQuick = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 const gCol = c => c.kind === 'artist' && GV[c.venue] ? [GV[c.venue][1], GV[c.venue][2]] : c.kind === 'sponsor' ? ['#FFFFFF', '白'] : ['#BEBEBE', 'グレー'];
@@ -899,7 +982,7 @@ async function playGoen(cards, lead) {
     const m = $('#gMany'); m.hidden = false;
     m.innerHTML = cards.map((c, i) => `<button type="button" data-card="${esc(c.id)}" style="--c:${gCol(c)[0]};animation-delay:${q ? 0 : i * 70}ms" aria-label="${esc(c.name)}"><img src="${esc(gImg(c, true))}" alt="">${c.isNew === false ? '' : '<span class="new">NEW</span>'}</button>`).join('');
     const k = { artist: 0, shop: 0, sponsor: 0 }; cards.forEach(c => { k[c.kind] = (k[c.kind] || 0) + 1; });
-    $('#gMsg').innerHTML = `<b>${cards.length}枚のご縁</b>出演者 ${k.artist}・協力店 ${k.shop}・協賛 ${k.sponsor}　カードを押すと大きく見られます`;
+    $('#gMsg').innerHTML = `<b>${cards.length}枚のご縁</b>ARTISTS ${k.artist}・SPONSORSHIP ${k.sponsor}・RELATIONSHIP ${k.shop}　カードを押すと大きく見られます`;
   }
   await gWait(q ? 0 : 450);
   G_BUSY = false; renderGoen();
@@ -918,19 +1001,19 @@ async function pullGoen(n) {
   $('#gMsg').textContent = d && d.error === 'none' ? 'いま引ける回数はありません。' : d && d.error === 'closed' ? '縁日のご縁は、いまは行っていません。' : d && d.error === 'too many' ? '続けて引きすぎています。少し時間をおいてください。' : 'いまは引けませんでした。少し待って、もう一度お試しください。';
   renderGoen();
 }
-/** 図鑑：出演者は会場ごと（会場の色）、協力店、協賛 */
+/** 図鑑：公式サイトと同じ並び。ARTISTS（会場ごと・会場の色）→ SPONSORSHIP → RELATIONSHIP */
 function renderZukan() {
   const box = $('#zukan'); if (!box) return;
   const g = goenOf(), have = {}; (g && g.mine || []).forEach(id => { have[id] = 1; });
   const total = CARDS.length || (g && g.total) || 149, got = CARDS.length ? CARDS.filter(c => have[c.id]).length : (g ? g.got : 0);
   $('#zGot').textContent = got; $('#zTotal').textContent = `/ ${total}枚`; $('#zBar').style.width = (total ? got / total * 100 : 0).toFixed(1) + '%';
   $('#zLeftTag').textContent = g && g.left ? `あと${g.left}回 引けます` : '';
-  const F = [['all', 'すべて'], ['artist', '出演者'], ['shop', '協力店'], ['sponsor', '協賛'], ['mine', '持っている']];
+  const F = [['all', 'すべて'], ['artist', 'ARTISTS'], ['sponsor', 'SPONSORSHIP'], ['shop', 'RELATIONSHIP'], ['mine', '持っている']];
   $('#zFilter').innerHTML = F.map(([k, l]) => `<button class="chip" type="button" data-z="${k}" aria-pressed="${Z_FILTER === k}">${l}</button>`).join('');
   if (!CARDS.length) { box.innerHTML = '<p class="note" style="margin:10px 0 0">図鑑を読み込めませんでした。開き直してください。</p>'; return; }
   if (!g) { box.innerHTML = '<p class="note" style="margin:10px 0 0">LINEで開くと、ここにあなたの図鑑が出ます。</p>'; return; }
   const groups = ['D1', 'L', 'N4', 'N3', 'N1', 'N2', 'N5'].map(v => ({ k: 'artist', title: GV[v][0], c: GV[v][1], list: CARDS.filter(c => c.kind === 'artist' && c.venue === v) }))
-    .concat([{ k: 'shop', title: '協力店', c: '#BEBEBE', list: CARDS.filter(c => c.kind === 'shop') }, { k: 'sponsor', title: '協賛', c: '#FFFFFF', list: CARDS.filter(c => c.kind === 'sponsor') }]);
+    .concat([{ k: 'sponsor', title: 'SPONSORSHIP（協賛）', c: '#FFFFFF', list: CARDS.filter(c => c.kind === 'sponsor') }, { k: 'shop', title: 'RELATIONSHIP（協力店）', c: '#BEBEBE', list: CARDS.filter(c => c.kind === 'shop') }]);
   box.innerHTML = groups.filter(x => Z_FILTER === 'all' || Z_FILTER === 'mine' || Z_FILTER === x.k).map(x => {
     const mine = x.list.filter(c => have[c.id]); if (Z_FILTER === 'mine' && !mine.length) return '';
     const cells = (Z_FILTER === 'mine' ? mine : x.list).map(c => have[c.id]
@@ -945,7 +1028,7 @@ function cardDetail(id) {
   const col = gCol(c);
   const vcode = c.kind === 'artist' ? c.venue : c.place;
   const go = vcode && VENUES.some(v => v.code === vcode) ? `<button class="btn primary wide" type="button" onclick="goVenue('${esc(vcode)}')">${c.kind === 'artist' ? '会場と時間を見る' : 'ブースの会場を見る'}</button>`
-    : c.kind === 'shop' ? `<a class="btn primary wide" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.name + ' 三軒茶屋')}" target="_blank" rel="noopener">地図で開く ↗</a>` : '';
+    : c.kind === 'shop' ? shopLinks(SHOPS.find(s => 'sh-' + String(s.no).padStart(2, '0') === c.id) || { name: c.name }) : '';
   sheet(`<img class="cd-big" style="--c:${col[0]}" src="${esc(gImg(c))}" alt="${esc(c.name)}"><div class="rc" style="margin-top:10px"><div class="b"><div class="k">${esc(col[1])}のご縁 ・ ${esc(GKIND[c.kind] || '')}</div><h3>${esc(c.name)}</h3><p>${esc(gWhere(c))}</p></div></div>${go}<button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
 }
 function goVenue(code) {
@@ -1179,7 +1262,9 @@ async function boot() {
   if (['home', 'time', 'loop', 'ennichi', 'quest'].indexOf(first) >= 0) showTab(first); else if (first === 'map') showTab('time');
   setInterval(() => { renderStatus(); renderTimetable(); renderLoop(); }, 60000);
   setInterval(() => { if ($('#tab-quest').classList.contains('on')) loadQuest(); }, 30000);
-  bindWallet(); bindVoice(); bindGoen();
+  bindWallet(); bindVoice(); bindGoen(); bindEntry();
+  const ak = qs.get('after') || (st ? new URLSearchParams(st.replace(/^[^?]*\?/, '')).get('after') : '');
+  if (ak) { showTab('loop'); runAfter(ak); } // 入口のQRから
 }
 boot();
 </script>
