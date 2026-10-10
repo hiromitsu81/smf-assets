@@ -157,6 +157,7 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .rank .nm{flex:1;min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rank .tt{font-size:12px;padding:2px 10px;border-radius:999px;border:1px solid currentColor}
 .tt.m{color:var(--blue)} .tt.f{color:var(--pink)} .tt.i{color:var(--green)}
+.sample[hidden]{display:none!important}
 .sample{display:inline-block;font-size:11px;color:#1A0A0D;background:#F3C969;border-radius:6px;padding:2px 8px;margin-left:8px;vertical-align:2px}
 .upd{font-size:11px;color:var(--faint);text-align:right;margin-top:6px}
 
@@ -225,12 +226,77 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .amt{display:flex;gap:8px;align-items:center;margin-top:8px}
 .amt input,.nick input{flex:1;min-width:0;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font:inherit;font-size:15px;padding:10px}
 
+/* おひねりの使い道（v2.4） */
+.q-use{margin:10px 0 0;padding:10px 12px;border-radius:12px;background:rgba(236,125,143,.1);border:1px solid rgba(236,125,143,.35);font-size:13.5px;font-weight:700}
+.q-use small{display:block;font-size:11px;font-weight:500;color:var(--dim)}
+.steps small.use{display:block;font-size:11px;color:var(--dim);font-weight:400}
 /* 抽選の応募（v2.2） */
 .entry{--c:var(--pink);margin-top:12px;padding:14px;border-radius:14px;background:#0E0E0E;border:1px solid var(--line);border-left:6px solid var(--c);display:grid;gap:8px}
 .entry h3{margin:0;font-size:16px}.entry p{margin:0;font-size:13.5px;color:#D6D6D6}.entry .sm{font-size:11.5px;color:var(--dim)}
 .entry form{display:grid;gap:8px;margin-top:4px}.entry label{font-size:12.5px;color:var(--dim)}
 .entry input{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid var(--line);background:#1B1B1B;color:#fff;font-size:16px}
 .entry details summary{font-size:12.5px;color:var(--dim);cursor:pointer}
+/* ---- v2.3：公式サイトと同じメインビジュアル・How To Enjoy・エリアマップ ---- */
+.mv{position:relative;overflow:hidden;border-radius:var(--r);border:1px solid var(--line);margin-bottom:14px;padding:18px 16px 14px;background:#0A0A0A}
+.mv::before{content:"";position:absolute;inset:0;background:url(img/hero.webp) 50% 42%/cover no-repeat;opacity:.46}
+.mv::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.5) 0%,rgba(10,10,10,.15) 40%,#0A0A0A 100%)}
+.mv>*{position:relative;z-index:1}
+.mv .jp{font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;font-size:12px;letter-spacing:.34em;color:rgba(255,255,255,.82)}
+.mv .jp span{color:#E0483F;margin-left:.8em;font-size:.86em}
+.mv .ttl{margin:6px 0 0;font-family:"Futura","Century Gothic","Avenir Next","Poppins","Helvetica Neue",Arial,sans-serif;font-weight:800;letter-spacing:-.025em;line-height:.92;font-size:clamp(30px,10.6vw,54px)}
+.mv .ttl .i1{color:var(--pink)}.mv .ttl .i2{color:var(--green)}.mv .ttl .i3{color:var(--blue)}
+.mv .dateblk{display:flex;align-items:flex-end;justify-content:flex-end;margin-top:10px;font-family:"Futura","Century Gothic","Avenir Next","Helvetica Neue",Arial,sans-serif;font-weight:800;letter-spacing:-.02em;line-height:.9}
+.mv .dateblk .dd{font-size:clamp(28px,9.2vw,46px);padding-right:12px}.mv .dateblk .rule{width:5px;align-self:stretch;background:#fff;margin-bottom:4px}.mv .dateblk .yr{font-size:clamp(32px,10.8vw,54px);padding-left:12px}
+.mv .dow{text-align:center;font:400 9.5px ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.3em;color:rgba(255,255,255,.62);margin-top:10px}
+.mv .host{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;font-size:11.5px;color:var(--dim)}
+.mv .host b{color:#fff}.mv .host img{height:16px;vertical-align:middle}
+.mv .free{margin:8px 0 0;text-align:center;font-size:11.5px;color:rgba(255,255,255,.8)}
+.hte-lead{font-size:13.5px;margin:0 0 12px}
+.hte{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:6px;margin:0 -16px;padding-inline:16px}
+.hte>div{flex:0 0 82%;max-width:330px;scroll-snap-align:center;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.hte .ph{aspect-ratio:16/10;background:#1A1A1A center/cover no-repeat}
+.hte .in{padding:12px 14px 14px}
+.hte .qq{display:flex;align-items:baseline;gap:8px}.hte .qq b{font:800 20px "Helvetica Neue",Arial,sans-serif;letter-spacing:.02em}.hte .qq span{font-size:11.5px;color:var(--dim)}
+.hte .qa{margin:6px 0 6px;font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;font-weight:600;font-size:19px;line-height:1.4}
+.hte .qa em{font-style:normal;color:var(--pink)}.hte .qa i{font-style:normal;color:var(--blue)}
+.hte p{margin:0;font-size:12.5px;color:#D0D0D0;line-height:1.8}
+.money{margin-top:12px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.money>div{display:grid;grid-template-columns:92px 1fr;gap:10px;padding:10px 12px;border-top:1px solid var(--line);align-items:start}.money>div:first-child{border-top:0}
+.money .lab{font-size:12px;font-weight:700}.money .val{display:flex;flex-wrap:wrap;gap:6px;font-size:11.5px;color:var(--dim)}
+.money .pill{border:1px solid var(--line);border-radius:999px;padding:2px 9px;color:#fff;font-size:11.5px;white-space:nowrap}.money .pill.free{border-color:var(--green);color:var(--green)}.money .pill.pay{border-color:var(--pink);color:var(--pink)}
+.mapbox{border:1px solid var(--line);background:#0E0E0E;margin-top:0;position:relative}
+.mapbox svg{display:block;width:100%;height:auto}
+.mapbox .rd{stroke:rgba(255,255,255,.22);fill:none;stroke-linecap:round}
+.mapbox .rd.major{stroke:rgba(255,255,255,.34);stroke-width:9}
+.mapbox .rd.minor{stroke-width:5}
+.mapbox .rdlb{fill:rgba(255,255,255,.4);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;letter-spacing:.08em}
+.mapbox .pin{cursor:pointer}
+.mapbox .pin circle{stroke:#0A0A0A;stroke-width:2.5;transition:r .15s ease}
+.mapbox .pin:hover circle,.mapbox .pin.on circle{r:20}
+.mapbox .pin text.c{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:800;font-size:13px;fill:#0A0A0A; text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.mapbox .pin text.n{font-family:inherit;font-size:12px;fill:rgba(255,255,255,.85); dominant-baseline:central;pointer-events:none}
+.mapbox .stn{fill:#fff}
+.mapbox .stn text{font-family:inherit;font-size:12.5px;fill:#0A0A0A;font-weight:700; text-anchor:middle;dominant-baseline:central}
+.mapbox .ctb{fill:none;stroke:rgba(255,255,255,.5);stroke-width:1.5}
+.mapbox .ctt{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;fill:rgba(255,255,255,.6);dominant-baseline:central}
+.mapbox .xmark{stroke:var(--pink);stroke-width:2;fill:none}
+.mapbox{background:rgba(255,255,255,.03)}
+.mapbox .rd.rail{stroke:rgba(255,255,255,.30);stroke-width:3;stroke-dasharray:9 6}
+.mapbox .pin circle{transition:r .18s ease, stroke-width .18s ease}
+.mapbox .pin.hi circle{r:23;stroke:#fff;stroke-width:3}
+.mapbox .pin.hi text.n{fill:#fff;font-weight:800}
+.mapbox .pinring{opacity:0;pointer-events:none}
+.mapbox .pin.hi .pinring{animation:pinpulse 1.1s ease-in-out 2}
+.mapbox .pin.flash .pinring{animation:pinflash 1.2s ease 2}
+@keyframes pinpulse{0%,100%{opacity:0}50%{opacity:.9}}
+@keyframes pinflash{0%,100%{stroke-width:2;opacity:1}50%{stroke-width:6;opacity:.45}}
+.mapbox{border-radius:var(--r);overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+.mapbox svg{min-width:660px}
+.mapbox a.rdot{cursor:pointer}.mapbox a.rdot circle{fill:#F5F5F3;stroke:rgba(0,0,0,.5);stroke-width:1}.mapbox a.rdot:hover circle,.mapbox a.rdot:focus circle{fill:#F2C744;stroke:#fff;stroke-width:2}
+.mapbox .rdot text{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;fill:#141414;font-weight:700;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.mapleg{display:flex;flex-wrap:wrap;gap:6px 12px;margin:8px 0 0;font-size:11px;color:var(--dim)}
+.mapleg b{display:inline-block;border:1.4px solid #fff;border-radius:8px;padding:0 5px;font-size:10px;color:#fff;margin-right:4px}
+.mapleg i{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-2px;margin-right:4px}.mapleg i.lp{border:2.5px solid #F2C744}.mapleg i.re{background:#F5F5F3}
 /* 協賛 */
 .spons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .spons a{background:#fff;border-radius:4px;aspect-ratio:3/2;display:grid;place-items:center;overflow:hidden;text-decoration:none}
@@ -366,6 +432,14 @@ footer a{color:var(--dim)}
 
   <!-- ホーム：LINEでできることの入口（押すと公式アカウントのトークが開き、いまのカードが出る） -->
   <section class="tab on" id="tab-home" aria-labelledby="t-home">
+    <div class="mv" aria-label="SANGENJAYA ART MUSIC FESTIVAL 2026">
+      <div class="jp">三軒茶屋芸術音楽祭<span>第三回</span></div>
+      <h1 class="ttl"><span class="i1">S</span>ANGENJAYA<br><span class="i2">A</span>RT MUSIC <span class="i3">F</span>ESTIVAL</h1>
+      <div class="dateblk"><div class="dd">11.07</div><div class="rule"></div><div class="yr">2026</div></div>
+      <div class="dow">SATURDAY / SANGENJAYA, TOKYO / 3RD EDITION</div>
+      <p class="free">日中は全会場 入場無料</p>
+      <div class="host">主催 <span class="plate"><img src="img/sanketsukai.png" alt="" onerror="this.remove()"> <b>三結會</b></span> 三軒茶屋の商店会</div>
+    </div>
     <div class="wallet" id="wallet">
       <div class="wcard" id="wcard"><p class="msg">あなたのQRを準備しています…</p></div>
       <nav class="wact" aria-label="よく使う">
@@ -378,15 +452,6 @@ footer a{color:var(--dim)}
 
     <button class="share" type="button" data-share="invite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>友だちをSMFに誘う</button>
 
-    <div class="hero">
-      <img class="big" src="img/smf-logo.png" alt="">
-      <div>
-        <h1>SMF 2026 当日ガイド</h1>
-        <p>SANGENJAYA ART MUSIC FESTIVAL 2026｜11月7日（土）11:00〜翌朝</p>
-        <div class="host">主催
-          <span class="plate"><img src="img/sanketsukai.png" alt="" onerror="this.remove()"><b>三結會</b></span>
-          三軒茶屋の商店会
-        </div>
       </div>
     </div>
 
@@ -419,6 +484,16 @@ footer a{color:var(--dim)}
       </form>
     </div>
 
+    <h2><span class="en">HOW TO ENJOY</span>SMFの楽しみ方</h2>
+    <p class="hte-lead">SMFはひとつの会場で完結するフェスではありません。三軒茶屋の街そのものが会場です。時間帯によって開いている場所と楽しみ方が変わります。決められた順番はありません。</p>
+    <div class="hte" id="hte"></div>
+    <div class="money">
+      <div><div class="lab">入場は無料</div><div class="val"><span class="pill free">日中4会場</span><span class="pill free">夜のサブ会場5店</span><span class="pill free">街歩き</span>チケットも予約も要りません</div></div>
+      <div><div class="lab">事前に買うもの</div><div class="val"><span class="pill pay">SPECIAL LIVE ¥6,000〜</span><span class="pill pay">SANCHA NIGHT LOOP ¥3,000</span>この2つだけ。SPECIAL LIVE のチケットにはパスが付きます</div></div>
+      <div><div class="lab">当日その場で</div><div class="val"><span class="pill">飲食・ドリンク</span><span class="pill">物販・グッズ</span>各会場・各店舗でのお支払い</div></div>
+    </div>
+    <p class="note">BORRACHOS は20:30で営業を終えます。SANCHA NIGHT LOOP の達成を目指す方は、日中のうちに寄っておくのがおすすめです。</p>
+
     <h2><span class="en">SPONSORSHIP</span>協賛</h2>
     <div class="spons" id="spons"></div>
     <p class="note">2026年の協賛が決まった企業・ブランドです。SMF 2026 は、協賛のみなさまの応援で開催しています。</p>
@@ -426,7 +501,9 @@ footer a{color:var(--dim)}
     <h2><span class="en">RELATIONSHIP</span>協力店</h2>
     <p class="note" style="margin:0 0 10px">SMF2026 に協力いただいている三軒茶屋のお店、<span id="shopsN">31</span>店。お店を押すと、Instagram と地図を開けます。</p>
     <div class="rel" id="shops"></div>
-    <p class="note">番号は、公式サイトのエリアマップの番号と同じです。</p>
+    <h2><span class="en">AREA MAP</span>エリアマップ</h2>
+    <p class="note" style="margin:0 0 10px">主会場9か所と、まちなかの協力店31店（白い番号）。ピンや番号を押すと、くわしい情報が出ます（地図は横に動かせます）。番号は上の協力店の番号と同じです。</p>
+    <div class="amap" data-amap></div>
   </section>
 
   <!-- タイムテーブル -->
@@ -441,7 +518,8 @@ footer a{color:var(--dim)}
     <p class="note" id="src"></p>
 
     <h2><span class="en">MAP</span>会場MAP</h2>
-    <div id="map"></div>
+    <p class="note" style="margin:0 0 10px">三軒茶屋駅を中心に、主会場9か所が徒歩圏に並びます。ピンを押すと会場の情報、白い番号を押すと協力店の情報が出ます。</p>
+    <div class="amap" data-amap id="map"></div>
     <div class="plist" id="plist"></div>
   </section>
 
@@ -526,19 +604,20 @@ footer a{color:var(--dim)}
   <!-- おひねりクエスト -->
   <section class="tab" id="tab-quest" aria-labelledby="t-quest">
     <h2><span class="en">QUEST</span>おひねりクエスト<span class="sample" id="sampleTag" hidden>サンプル表示</span></h2>
+    <p class="note" id="qLead" style="margin:0 0 10px;color:var(--text);font-size:13.5px"><b style="color:var(--pink)">未来募金</b>｜来年の開催に向けて、みんなでおひねりを。会場の「未来募金箱」と同じ、SMFを続けていくための応援です。</p>
     <div class="quest" id="quest"></div>
     <h2><span class="en">THROW</span>おひねりを投げる</h2>
     <div id="dnBox"></div>
     <h2><span class="en">RANKING</span>男気女気ランキング</h2>
     <ol class="rank" id="rank"></ol>
-    <p class="note">おひねりの受付は 11月8日（日）まで。順位は、運営が入金を確かめた応援の合計で決まります。金額は表示しません。ランキングに載せないことも選べます。</p>
+    <p class="note" id="rankNote">ランキングは 11月8日（日）まで。おひねりは、そのあとも通年で受け付けます。順位は、運営が入金を確かめた応援の合計で決まります。金額は表示しません。ランキングに載せないことも選べます。</p>
     <div class="upd" id="upd"></div>
     <button class="share" type="button" data-share="quest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>ボス戦に仲間を呼ぶ</button>
   </section>
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">当日ガイド v2.2</span>
+    <br><span id="ver">当日ガイド v2.4</span>
   </footer>
 </main>
 
@@ -703,10 +782,14 @@ function renderDonate() {
   const last = dn.tickets.find(x => x.id === DN_LAST && x.state === '確認待ち') || null;
   const ticket = x => `<div class="ticket"><div style="font-size:12px;color:#555">受付番号</div><div class="id">${esc(x.id)}</div>
     <p><b>${Number(x.amt).toLocaleString()}円</b>・${x.title === '載せない' ? 'ランキングに載せない' : esc(x.name) + '（' + esc(x.title) + '）'}</p>
-    <p>PayPayで送るとき、メッセージ欄に<b>「${esc(x.id)}」</b>と入れてください。運営が入金を確かめると、ゲージとランキングに入ります。</p>
+    <p>PayPayで送るとき、メッセージ欄に<b>「${esc(x.id)}」</b>と入れてください。運営が入金を確かめると、ゲージとランキングに入ります。${esc(dn.receipt || '')}</p>
     ${dn.payUrl ? `<a class="btn primary wide" href="${esc(dn.payUrl)}" target="_blank" rel="noopener">PayPayで送る</a>` : '<p>PayPayのリンクは準備中です。会場の本部でお支払いください。</p>'}
     <details style="width:100%"><summary style="cursor:pointer;font-size:12.5px;color:#555">会場の本部で払うとき（スタッフに見せるQR）</summary><div class="qr" style="width:min(48vw,190px);margin:8px auto 0">${qrSvg(x.confirm)}</div></details></div>`;
   const list = dn.tickets.length ? `<div style="margin-top:12px">${dn.tickets.map(x => `<div class="dnrow"><b>${esc(x.id)}</b><span class="t">${Number(x.amt).toLocaleString()}円<small>${x.title === '載せない' ? '載せない' : esc(x.name) + '（' + esc(x.title) + '）'}</small></span>${stLabel(x)}${x.state === '確認待ち' ? `<button class="btn" type="button" data-dn-open="${esc(x.id)}">払い方</button>` : ''}</div>`).join('')}</div>` : '';
+  const reqBox = dn.canReq ? `<div class="entry" style="--c:var(--blue);margin-top:14px"><h3>来年のゲストをリクエスト</h3>
+      <p>来年、SMFに呼んでほしいゲストを<b>1組</b>。おひねりを投げた方が、金額に関係なく1人1組です。${dn.req ? `<br>いまのリクエスト：<b>${esc(dn.req)}</b>` : ''}</p>
+      <form id="reqForm" novalidate><input id="reqText" maxlength="${dn.reqMax || 30}" placeholder="アーティストの名前" value="${esc(dn.req || '')}"><button class="btn primary wide" type="submit">${dn.req ? '書き直す' : 'リクエストする'}</button></form>
+      <p class="sm">出演をお約束するものではありません。来年のブッキングの参考にします。</p></div>` : '';
   if (closed) { el.innerHTML = `<div class="daishi"><p style="margin:0">おひねりの受付は終わりました。たくさんの応援、ありがとうございました。</p>${list}</div>`; return; }
   const chip = (k, v, label) => `<button type="button" data-dn="${k}" value="${esc(v)}" aria-pressed="${String(DN_PICK[k] == v)}">${esc(label)}</button>`;
   el.innerHTML = `<div class="daishi">
@@ -718,7 +801,7 @@ function renderDonate() {
       <label class="nick" id="dnNickWrap" ${DN_PICK.title === '載せない' ? 'hidden' : ''}>ニックネーム<small>12文字まで。本名は使わないでください</small><input id="dnNick" maxlength="12" value="${esc(dn.nick)}" placeholder="例：さんちゃ"></label>
       <button class="btn primary wide" type="submit" id="dnSend">受付番号をもらう</button>
       <p class="note" style="margin:0">受付番号をもらったあと、PayPayで送ります。自分で「払った」と言っただけでは数えず、運営が入金を確かめてからゲージに入ります。</p>
-    </form>${list ? `<h3 style="margin:16px 0 0;font-size:14px">あなたの受付</h3>${list}` : ''}</div>`;
+    </form>${list ? `<h3 style="margin:16px 0 0;font-size:14px">あなたの受付</h3>${list}` : ''}${reqBox}</div>`;
 }
 document.addEventListener('click', e => {
   const c = e.target.closest('[data-dn]');
@@ -727,6 +810,17 @@ document.addEventListener('click', e => {
   if (o) { DN_LAST = o.dataset.dnOpen; renderDonate(); $('#dnBox').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 });
 document.addEventListener('input', e => { if (e.target.id === 'dnAmt' && e.target.value) { DN_PICK.amt = e.target.value; document.querySelectorAll('[data-dn="amt"]').forEach(b => b.setAttribute('aria-pressed', 'false')); } });
+document.addEventListener('submit', async e => {
+  if (e.target.id !== 'reqForm') return;
+  e.preventDefault();
+  const text = ($('#reqText').value || '').trim(), b = e.target.querySelector('button');
+  if (!text) return toast('アーティストの名前を入れてください');
+  b.disabled = true;
+  const d = await postApi('request', { text: text });
+  if (d && d.ok) { ME.donate = Object.assign({}, ME.donate, { req: d.req }); renderDonate(); return toast('リクエストを受け取りました'); }
+  b.disabled = false;
+  toast(d && d.error === 'long' ? '30文字までにしてください' : d && d.error === 'ng' ? 'アーティストの名前だけを入れてください' : d && d.error === 'nodonate' ? 'おひねりを投げた方が書けます' : d && d.error === 'too many' ? '少し時間をおいてから' : '送れませんでした。もう一度お試しください');
+});
 document.addEventListener('submit', async e => {
   if (e.target.id !== 'dnForm') return;
   e.preventDefault();
@@ -1180,15 +1274,56 @@ function card(v, i, m) {
 
 /* ---------- 会場MAP ---------- */
 function renderMap() {
-  $('#map').innerHTML = CONFIG.MAP_IMAGE
-    ? `<img class="mapimg" src="${esc(CONFIG.MAP_IMAGE)}" alt="SMF 2026 会場MAP">`
-    : `<div class="empty">会場MAPは準備中です。いまは、下の一覧から地図アプリで開けます。</div>`;
+  renderAreaMap();
   const seen = {};
   $('#plist').innerHTML = VENUES.filter(v => !seen[v.address] && (seen[v.address] = 1)).map(v =>
     `<a class="prow" href="${mapUrl(v)}" target="_blank" rel="noopener" style="${vcss(v)};text-decoration:none">
       <span class="code">${esc(v.code)}</span><span class="t">${esc(v.name)}<small>${esc(v.address)}</small></span><span aria-hidden="true">↗</span></a>`).join('');
 }
 
+/* ---------- エリアマップ（v2.3。公式サイトと同じ模式図。data/areamap.svg） ---------- */
+let AMAP_SVG = null, AMAP_MID = null;
+async function renderAreaMap() {
+  const boxes = document.querySelectorAll('[data-amap]'); if (!boxes.length) return;
+  if (AMAP_SVG === null) { try { const r = await fetch('data/areamap.svg', { cache: 'no-store' }); AMAP_SVG = r.ok ? await r.text() : ''; } catch (e) { AMAP_SVG = ''; } }
+  const ok = /^\s*<svg[\s>]/.test(AMAP_SVG);
+  const leg = `<div class="mapleg"><span><b>昼</b>11:00-18:00</span><span><b>夜</b>20:00-LATE</span><span><b>昼夜</b>通し</span><span><i class="lp"></i>SANCHA NIGHT LOOP 対象5会場</span><span><i class="re"></i>協力店31店</span></div>`;
+  boxes.forEach(b => { b.innerHTML = ok ? `<div class="mapbox">${AMAP_SVG}</div>${leg}` : '<div class="empty">エリアマップを読み込めませんでした。下の一覧から地図アプリで開けます。</div>'; });
+  const mid = () => document.querySelectorAll('.mapbox').forEach(m => { if (m.clientWidth && !m.dataset.mid) { m.scrollLeft = (m.scrollWidth - m.clientWidth) * 0.55; m.dataset.mid = 1; } }); // 横に動かせる。はじめは駅のあたりを真ん中に
+  mid(); AMAP_MID = mid;
+}
+function pinDetail(p) {
+  document.querySelectorAll('.mapbox .pin.hi').forEach(x => x.classList.remove('hi'));
+  document.querySelectorAll(`.mapbox .pin[data-c="${p.dataset.c}"]`).forEach(x => x.classList.add('hi'));
+  const code = p.dataset.c, parts = code.split(/\s*[\/・]\s*/), v = VENUES.find(x => parts.indexOf(x.code) >= 0);
+  const fill = (p.querySelector('circle:not(.loopmk):not(.pinring)') || {}).getAttribute ? p.querySelector('circle:not(.loopmk):not(.pinring)').getAttribute('fill') : '#fff';
+  const addr = v ? v.address : (p.dataset.a || ''), murl = v ? mapUrl(v) : 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(addr);
+  sheet(`<div class="rc" style="border-left:6px solid ${esc(fill)}"><div class="b"><div class="k">${esc(code)}${p.classList.contains('loop') ? ' ・ SANCHA NIGHT LOOP 対象' : ''}</div><h3>${esc(v ? v.name : p.dataset.n)}</h3><p>${esc(p.dataset.s || '')}</p><p>${esc(addr)}</p></div></div>
+    <a class="btn primary wide" href="${esc(murl)}" target="_blank" rel="noopener">地図アプリで開く</a>
+    ${v ? `<button class="btn wide" type="button" onclick="closeSheet();goVenue('${esc(v.code)}')">この会場の時間と出演者</button>` : ''}
+    <button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
+}
+document.addEventListener('click', e => {
+  const d = e.target.closest && e.target.closest('.mapbox a.rdot');
+  if (d) { // 協力店の番号：地図アプリへ飛ばさず、お店の情報（Instagram・地図）を出す
+    const no = Number((d.querySelector('text') || {}).textContent), sp = SHOPS.find(x => x.no === no);
+    if (sp) { e.preventDefault(); e.stopPropagation(); shopDetail(no); }
+    return;
+  }
+  const p = e.target.closest && e.target.closest('.mapbox .pin'); if (p) pinDetail(p);
+}, true);
+function renderHowto() {
+  const el = $('#hte'); if (!el) return;
+  const Q = [
+    ['WHY', 'なぜやるの？', '次世代に<em>つなぐ</em>、<br>三茶の町を作る', '三軒茶屋に縁のあるアーティストと、この街の店と人。カルチャーとヒストリー、独自のコミュニティカラーを全国へ伝えていくために、2024年にはじまりました。これからのカルチャーを支える地元の子どもに『遊び場』を残すことも、目的のひとつです。'],
+    ['HOW', 'いくらかかるの？', '有料は<em>1公演だけ</em>。<br>あとは入場無料', "有料公演は三軒茶屋HEAVEN'S DOOR の SPECIAL LIVE だけ。日中の4会場も夜のサブ会場5店も、入場無料でチケット・予約は要りません。事前に買うのは SPECIAL LIVE のチケットと SANCHA NIGHT LOOP のパスの2つだけです。"],
+    ['WHERE', 'どこでやるの？', '三軒茶屋の街ぜんぶ。<br><em>約40店舗</em>', '主会場9か所と、まちなかの協力店31店。駐車場に建つ特設ヤグラ、街のバー、老舗ライブハウス。すべて三軒茶屋駅から徒歩圏内です。'],
+    ['WHEN', 'いつ行けばいいの？', '昼は<em>家族で</em>、<br>夜は<i>大人だけ</i>', '11:00–18:00は子どもから大人まで。18:00–20:00は街の飲食店で食事。20:00からは20歳以上の夜の部です。どこから参加しても構いません。'],
+    ['WHO', 'だれが楽しめるの？', '日中は<em>3世代</em>で。<br>夜は<i>20歳から</i>', '日中の4会場は年齢制限がありません。ベビーカーでも、おじいちゃんおばあちゃんとでも。夜の会場は20歳未満は入場できません。店舗によっては保護者同伴でも入れません。'],
+    ['WHAT', 'なにをやるの？', '音楽と、食と、<br><i>あそび</i>', '特設ヤグラでのLIVEとDJ。アパレルや飲食のマーケット。ライブペイントやパターゴルフ、親子で遊べるeゲーム。夜はバーをめぐる周遊企画。ひとつの会場に留まらない、3部構成のフェスです。']
+  ];
+  el.innerHTML = Q.map((q, i) => `<div><div class="ph" style="background-image:url(img/howto/${i + 1}.webp)"></div><div class="in"><div class="qq"><b>${q[0]}</b><span>${q[1]}</span></div><div class="qa">${q[2]}</div><p>${esc(q[3])}</p></div></div>`).join('');
+}
 /* ---------- おひねりクエスト ---------- */
 let OA = CONFIG.OA_ID, QUEST = null;
 async function loadQuest() {
@@ -1225,17 +1360,19 @@ function renderQuest(d, sample) {
     <div class="hp" role="meter" aria-label="ボスに与えたダメージ" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${100 - st.hpPct}"><i style="width:${st.clear ? 100 : 100 - st.hpPct}%"></i><b style="width:${Math.max(st.hpPct - hpE, 0)}%"></b></div>
     ${d.expect ? `<div class="hplg"><span><i style="background:var(--pink)"></i>削った（確認済み）</span><span><i style="background:repeating-linear-gradient(135deg,rgba(236,125,143,.6) 0 4px,rgba(236,125,143,.25) 4px 8px)"></i>削れそう（確認中 ＋${yen(d.expect)}円）</span><span><i style="background:#2A2A2A;border:1px solid var(--line)"></i>残り体力</span></div>` : ''}
     <div class="q-sub">${st.clear ? 'ありがとうございました' : `ボスの残り体力 ${yen(st.left)}円（${st.hpPct}%）`}</div>
+    ${!st.clear && d.bosses[st.i] && d.bosses[st.i].use ? `<div class="q-use"><small>このボスを倒すと</small>${esc(d.bosses[st.i].use)}</div>` : ''}
     <div class="tiles"><div class="tile"><small>みんなの合計</small><b>${yen(d.total)}<span style="font-size:13px">円</span></b></div>
       <div class="tile"><small>応援した人</small><b>${yen(d.people)}<span style="font-size:13px">人</span></b></div></div>
     <ol class="steps">${d.bosses.map((b, i) => { const done = st.clear || i < st.i, cur = !st.clear && i === st.i;
-      return `<li class="${done ? 'done' : cur ? 'cur' : ''}"><span>${done ? '✔' : cur ? '▶' : '・'}</span><span><img class="bth" src="${BOSS_IMG}${i + 1}.png" alt="" onerror="this.remove()"> ${esc(b.name)}</span><span>${yen(b.goal)}円</span></li>`; }).join('')}</ol>
-    <p class="note">合計がボスの体力に届くと撃破。次のボスが現れます。ゲージは運営が入金を確かめた分で削れ、確認中の分は斜線（見込み）で出ます。</p>
+      return `<li class="${done ? 'done' : cur ? 'cur' : ''}"><span>${done ? '✔' : cur ? '▶' : '・'}</span><span><img class="bth" src="${BOSS_IMG}${i + 1}.png" alt="" onerror="this.remove()"> ${esc(b.name)}${b.use ? `<small class="use">${esc(b.use)}</small>` : ''}</span><span>${yen(b.goal)}円</span></li>`; }).join('')}</ol>
+    <p class="note">合計がボスの体力に届くと撃破。次のボスが現れます。ゲージは運営が入金を確かめた分で削れ、確認中の分は斜線（見込み）で出ます。${esc(d.useNote || '')}</p>
     ${(d.recent || []).length ? `<div class="q-k" style="margin-top:14px">LIVE ・ いま投げた人</div><ul class="live">${d.recent.map(x => `<li><span>${x.name ? esc(x.name) + (x.title ? '（' + esc(x.title) + '）' : '') : 'だれか'}が投げた！</span><span class="st ${x.ok ? 'ok' : 'wait'}">${x.ok ? '確認済み' : '確認中'}</span><small>${esc(x.at)}</small></li>`).join('')}</ul>` : ''}`;
   const cls = t => t === '男気' ? 'm' : t === '女気' ? 'f' : 'i';
   $('#rank').innerHTML = d.ranking.length ? d.ranking.map(x => `<li><span class="no">${x.lantern ? `<img src="${esc(x.lantern)}" alt="${x.rank}位" onerror="this.replaceWith(document.createTextNode('${x.rank}'))">` : x.rank}</span><span class="nm">${esc(x.name)}</span><span class="tt ${cls(x.title)}">${esc(x.title)}</span></li>`).join('')
     : '<li><span class="nm" style="font-weight:500">まだ誰も載っていません。最初の男気・女気に。</span></li>';
   const t = new Date(d.updated);
   $('#upd').textContent = sample ? 'サンプルの数字です（本番の数字ではありません）' : `更新 ${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}（30秒ごと）`;
+  if (d.rankTo && nowJst() > new Date(d.rankTo)) $('#rankNote').textContent = 'ランキングは締めました（結果は上のとおり）。おひねりは、このあとも通年で受け付けています。金額は表示しません。';
   renderDonate();
 }
 const SAMPLE_OUEN = { sample: true, title: 'SMF おひねりクエスト', total: 0, people: 0, stage: { i: 0, name: '三茶の門番', goal: 100000, left: 100000, hpPct: 100, clear: false }, bosses: [{ name: '三茶の門番', goal: 100000 }], ranking: [], updated: new Date().toISOString() };
@@ -1248,6 +1385,7 @@ function showTab(name) {
   if (name === 'quest') loadQuest();
   if (name === 'loop' || name === 'home' || name === 'quest' || name === 'ennichi') loadMe();
   try { history.replaceState(null, '', '#' + name); } catch (e) { /* 表示は変わる */ }
+  if (AMAP_MID) setTimeout(AMAP_MID, 30);
 }
 document.querySelector('nav.tabs').onclick = e => { const b = e.target.closest('button'); if (b) showTab(b.dataset.tab); };
 
@@ -1256,7 +1394,7 @@ async function boot() {
   try { VENUES = (await (await fetch('data/venues.json', { cache: 'no-store' })).json()).venues; } catch (e) { VENUES = window.VENUES_INLINE || []; }
   VENUES.sort((a, b) => { const x = min(a.start), y = min(b.start); return (x == null ? 9999 : x) - (y == null ? 9999 : y); }); // 開演時間の早い順（同じ時刻は venues.json の並びのまま）
   try { $('#src').textContent = '出どころ：公式サイト sangenjaya-mf.com（2026-10-10時点）。変更があればこの画面を更新します。'; } catch (e) { }
-  renderHome(); renderLoop(); renderSponsors(); renderShops(); renderFilters(); renderTimetable(); renderMap(); renderStatus();
+  renderHome(); renderHowto(); renderLoop(); renderSponsors(); renderShops(); renderFilters(); renderTimetable(); renderMap(); renderStatus();
   const qs = new URLSearchParams(location.search), st = qs.get('liff.state');
   const first = qs.get('tab') || (st ? new URLSearchParams(st.replace(/^[^?]*\?/, '')).get('tab') : '') || (location.hash || '').replace('#', '');
   if (['home', 'time', 'loop', 'ennichi', 'quest'].indexOf(first) >= 0) showTab(first); else if (first === 'map') showTab('time');
