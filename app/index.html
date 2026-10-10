@@ -361,6 +361,18 @@ details.crew .in{padding:0 14px 14px;display:grid;gap:12px}
 
 /* NIGHT LOOP */
 .loophead{width:100%;max-width:100%;aspect-ratio:2/1;object-fit:cover;border-radius:var(--r);border:1px solid var(--line);display:block;margin-top:16px;background:var(--panel)}
+/* チケット（ZAIKO）への入口（v3.4）。販売の期限を過ぎたら、ボタンを「販売は終了しました」に変える */
+.tk{margin-top:14px;border:1px solid #E60025;border-radius:16px;background:linear-gradient(180deg,#1A0A0D,#0E0E0E);padding:14px}
+.tk .hd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.tk .hd b{font:700 19px Oswald,"Zen Kaku Gothic New",sans-serif;letter-spacing:.06em}.tk .hd span{font-size:12px;color:#FF8A96;font-weight:700}
+.tk p{margin:6px 0 0;font-size:13px;color:#D6D6D6;line-height:1.7}
+.tk ul{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+.tk li{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#111;font-size:13px}
+.tk li b{font-size:14px}.tk li em{font:700 15px Oswald,sans-serif;font-style:normal}.tk li small{grid-column:1/-1;color:var(--dim);font-size:11.5px}
+.tk .buy{display:block;margin-top:12px;text-align:center;padding:14px;border-radius:999px;background:#E60025;color:#fff;font-weight:700;text-decoration:none;font-size:15px}
+.tk .buy small{display:block;font-weight:400;font-size:11px;opacity:.9;margin-top:2px}.tk .buy.off{background:#333;color:#aaa;pointer-events:none}
+.tk .sm{font-size:11.5px;color:var(--dim)}
+.tkmini{display:inline-block;margin-top:10px;padding:8px 16px;border-radius:999px;background:#E60025;color:#fff;font-weight:700;font-size:13px;text-decoration:none}
+.tkmini.off{display:none}
 /* 公式ドリンク「三茶ハイ」（公式サイトの NIGHT LOOP の同じカード。v3.3） */
 .drink{margin-top:14px;border:1px solid var(--line);border-radius:16px;background:#0E0E0E;overflow:hidden}
 .drink>img{display:block;width:100%;aspect-ratio:760/507;object-fit:contain;background:#fff}
@@ -481,6 +493,7 @@ footer a{color:var(--dim)}
       <div class="dateblk"><div class="dd">11.07</div><div class="rule"></div><div class="yr">2026</div></div>
       <div class="dow">SATURDAY / SANGENJAYA, TOKYO / 3RD EDITION</div>
       <p class="free">日中の4会場と夜の5店は入場無料 ／ 有料は HEAVEN'S DOOR の SPECIAL LIVE だけ</p>
+      <div style="text-align:center"><a class="tkmini" data-tk href="https://sangenjaya-mf.zaiko.io/ja/e/smaf-2026" target="_blank" rel="noopener">TICKET 発売中 →</a></div>
       <div class="host"><span>主催</span><img class="skk" src="img/sanketsukai.svg" alt="三結會" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'三結會'}))"><span>三軒茶屋の商店会<br>Support Your Local Society</span></div>
     </div>
     <div class="wallet" id="wallet">
@@ -532,8 +545,19 @@ footer a{color:var(--dim)}
     <div class="hte" id="hte"></div>
     <div class="money">
       <div><div class="lab">入場は無料</div><div class="val"><span class="pill free">日中4会場</span><span class="pill free">夜のサブ会場5店</span><span class="pill free">街歩き</span>チケットも予約も要りません</div></div>
-      <div><div class="lab">事前に買うもの</div><div class="val"><span class="pill pay">SPECIAL LIVE ¥6,000〜</span><span class="pill pay">SANCHA NIGHT LOOP ¥3,000</span>この2つだけ。SPECIAL LIVE のチケットにはパスが付きます</div></div>
+      <div><div class="lab">事前に買うもの</div><div class="val"><span class="pill pay">SPECIAL LIVE ¥6,000〜</span><span class="pill pay">SANCHA NIGHT LOOP ¥3,000</span>この2つだけ。SPECIAL LIVE のチケットにはパスが付きます<br><a class="tkmini" data-tk href="https://sangenjaya-mf.zaiko.io/ja/e/smaf-2026" target="_blank" rel="noopener" style="margin-top:8px">ZAIKO でチケットを買う →</a></div></div>
       <div><div class="lab">当日その場で</div><div class="val"><span class="pill">飲食・ドリンク</span><span class="pill">物販・グッズ</span>各会場・各店舗でのお支払い</div></div>
+    </div>
+    <div class="tk" id="ticket">
+      <div class="hd"><b>TICKET</b><span data-tk-state>発売中 ／ 11月6日（金）23:59 まで</span></div>
+      <p>有料公演は、三軒茶屋HEAVEN'S DOOR の <b>SPECIAL LIVE</b> だけ。事前チケット制で、どの券にも <b>SANCHA NIGHT LOOP のパス</b>が付きます。</p>
+      <ul>
+        <li><b>1部</b><em>¥6,000</em><small>13:30〜17:00 ／ 100枚限定</small></li>
+        <li><b>2部</b><em>¥6,000</em><small>18:40〜21:55 ／ 100枚限定</small></li>
+        <li><b>1部・2部 通し券</b><em>¥10,000</em><small>13:30〜22:00 ／ 50枚限定</small></li>
+      </ul>
+      <a class="buy" data-tk href="https://sangenjaya-mf.zaiko.io/ja/e/smaf-2026" target="_blank" rel="noopener">チケットを購入する<small>ZAIKO（外部サイト）へ移動します</small></a>
+      <p class="sm">当日は別途ドリンク代 ¥500（通し券は各部）。各券種とも枚数に限りがあります。</p>
     </div>
     <p class="note">BORRACHOS は20:30で営業を終えます。SANCHA NIGHT LOOP の達成を目指す方は、日中のうちに寄っておくのがおすすめです。</p>
 
@@ -582,7 +606,7 @@ footer a{color:var(--dim)}
       <div><small>達成</small><b>4<span style="font-size:13px"> / 5店</span></b></div>
       <div><small>スタンプの時間</small><b style="font-size:14px;white-space:nowrap">13:00〜翌5:00</b></div>
     </div>
-    <p class="note">パスは紙のリストバンドです。当日は NTT SQUARE・SMFオフィシャルBAR・対象の5会場で、事前はチケットサイト（ZAIKO・11/6 23:59まで）で買えます。SPECIAL LIVE のチケットにはパスが付いています。スタンプはLINEの台紙にたまります。</p>
+    <p class="note">パスは紙のリストバンドです。当日は NTT SQUARE・SMFオフィシャルBAR・対象の5会場で、事前は、SPECIAL LIVE のチケット（ZAIKO・11/6 23:59まで）に付いています。<a data-tk href="https://sangenjaya-mf.zaiko.io/ja/e/smaf-2026" target="_blank" rel="noopener" style="color:#FF8A96;font-weight:700">チケットを見る →</a> スタンプはLINEの台紙にたまります。</p>
 
     <h2><span class="en">HOW TO</span>めぐり方</h2>
     <ol class="howto">
@@ -704,7 +728,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">SMF 2026 アプリ v3.3</span>
+    <br><span id="ver">SMF 2026 アプリ v3.5</span>
   </footer>
 </main>
 
@@ -754,6 +778,14 @@ function eventMinutes() {
 }
 function isOpen(v, m) { const s = min(v.start), e = min(v.end); return s != null && e != null && m >= s && m < e; }
 
+/* ---------- チケット（ZAIKO）。販売の期限を過ぎたら、入口を閉じる（v3.4） ---------- */
+const TICKET = { url: 'https://sangenjaya-mf.zaiko.io/ja/e/smaf-2026', until: '2026-11-06T23:59:59+09:00' };
+const ticketOpen = () => Date.now() <= new Date(TICKET.until).getTime();
+function renderTicket() {
+  const on = ticketOpen();
+  document.querySelectorAll('[data-tk]').forEach(a => { if (a.classList.contains('buy')) { a.classList.toggle('off', !on); if (!on) a.innerHTML = '事前の販売は終了しました'; } else a.style.display = on ? '' : 'none'; });
+  document.querySelectorAll('[data-tk-state]').forEach(x => { x.textContent = on ? '発売中 ／ 11月6日（金）23:59 まで' : '事前の販売は終了しました'; });
+}
 /* ---------- 外へのリンク（LINEの中ならブラウザで開く） ---------- */
 function openExternal(url) {
   if (window.liff && liff.isInClient && liff.isInClient()) { try { liff.openWindow({ url: url, external: true }); return; } catch (e) { /* 下へ */ } }
@@ -960,8 +992,7 @@ function renderCrew() {
   const btn = (label, url, primary) => `<a class="btn${primary ? ' primary' : ''}" href="${esc(url)}" data-line="${esc(url)}">${esc(label)}</a>`;
   const box = (title, inner) => `<div class="daishi"><h3 style="margin:0 0 8px;font-size:15px">${title}</h3>${inner}</div>`;
   // シフトやお店のQRなどの操作はミニアプリに置かない（LINEのトーク画面の下のメニューだけ）。ここは説明だけ
-  if (role === 'crew')
-    return el.innerHTML = box('スタッフ・協力店の方へ', '<p class="note" style="margin:0">シフトの確認やスタンプを押す操作は、LINEのトーク画面の下のメニューからどうぞ。ミニアプリでは行いません。</p>');
+  if (role === 'crew') return el.innerHTML = '';   // v3.5：スタッフ・協力店向けの枠は出さない（操作はLINEのメニューだけ。アプリには役割の分かるものを置かない）
   if (role === 'pending') return el.innerHTML = box('登録を申請中です', '<p class="note" style="margin:0">運営が承認すると、LINEのトーク画面の下のメニューがボランティア用に切り替わります。</p>');
   if (!RECRUIT) return el.innerHTML = '';
   el.innerHTML = box('<span class="en" style="color:var(--green);font-size:12px;letter-spacing:.2em;display:block">VOLUNTEER</span>ボランティアスタッフ募集',
@@ -1405,7 +1436,7 @@ function card(v, i, m) {
     <div class="c-head"><div class="code">${esc(v.code)}</div>
       <div class="c-title"><h3>${esc(v.name)}${v.loop ? '<span class="badge">NIGHT LOOP</span>' : ''}</h3><p>${esc(v.sub)}・${esc(BAND[v.band][0])}</p></div>
       <span class="open${live ? ' live' : ''}">${live ? '開催中' : esc(time)}</span></div>
-    <dl class="c-meta"><dt>時間</dt><dd>${esc(time)}</dd><dt>内容</dt><dd>${esc(v.genre)}</dd>${v.entry ? `<dt>入場</dt><dd>${esc(v.entry)}</dd>` : ''}<dt>場所</dt><dd>${esc(v.address)}</dd></dl>
+    <dl class="c-meta"><dt>時間</dt><dd>${esc(time)}</dd><dt>内容</dt><dd>${esc(v.genre)}</dd>${v.entry ? `<dt>入場</dt><dd>${esc(v.entry)}</dd>` : ''}<dt>場所</dt><dd>${esc(v.address)}</dd></dl>${v.code === 'L' ? `<a class="tkmini${ticketOpen() ? '' : ' off'}" href="${TICKET.url}" target="_blank" rel="noopener">チケットを購入する（ZAIKO）→</a>` : ''}
     ${v.lineup.length ? `<div class="lineup">${v.lineup.map(a => `<a href="https://sangenjaya-mf.com/#artists" target="_blank" rel="noopener">${esc(a)}</a>`).join('')}</div><p class="note" style="margin-top:6px">出演者の紹介は<a href="https://sangenjaya-mf.com/#artists" target="_blank" rel="noopener">公式サイトのARTISTS</a>で。</p>` : `<p class="note">${esc(v.note || '出演者は発表をお待ちください')}</p>`}
     ${sets || (v.lineup.length ? '<p class="note">出演時刻は発表後にここに出ます。</p>' : '')}
     <div class="c-foot"><a class="btn" href="${mapUrl(v)}" target="_blank" rel="noopener">地図で開く ↗</a></div>
@@ -1559,7 +1590,7 @@ async function boot() {
   if (['home', 'time', 'loop', 'ennichi', 'quest'].indexOf(first) >= 0) showTab(first); else if (first === 'map') showTab('time');
   setInterval(() => { renderStatus(); renderTimetable(); renderLoop(); }, 60000);
   setInterval(() => { if ($('#tab-quest').classList.contains('on')) loadQuest(); }, 30000);
-  bindWallet(); bindVoice(); bindGoen(); bindEntry();
+  bindWallet(); bindVoice(); bindGoen(); bindEntry(); renderTicket();
   const ak = qs.get('after') || (st ? new URLSearchParams(st.replace(/^[^?]*\?/, '')).get('after') : '');
   if (ak) { showTab('loop'); runAfter(ak); } // 入口のQRから
 }
