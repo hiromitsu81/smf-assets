@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SMF 2026 当日ガイド</title>
-<meta name="description" content="SANGENJAYA ART MUSIC FESTIVAL 2026 の当日ガイド。LINEでできることの入口・タイムテーブル・会場・おひねりクエスト。">
+<title>SMF 2026 アプリ</title>
+<meta name="description" content="SANGENJAYA ART MUSIC FESTIVAL 2026 の公式アプリ。LINEでできることの入口・タイムテーブル・会場・おひねりクエスト。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap">
@@ -559,10 +559,10 @@ footer a{color:var(--dim)}
     <ol class="howto">
       <li><span>LINEで「#ラリー」を送って、台紙と「わたしのQR」を出す<small>下のボタンで、文字が入った状態でトークが開きます</small></span></li>
       <li><span>対象の会場でドリンクを受け取るとき、リストバンドとQRをスタッフに見せる<small>スタッフが自分のスマホで読むと、スタンプが押されます。対象の会場では公式ドリンク「三茶ハイ」を1杯無料でお出しします（各店お一人さま1杯まで）</small></span></li>
-      <li><span>5店のうち4店でスタンプが揃うと達成<small>台紙は「#ラリー」で開き直すと新しくなります</small></span></li>
+      <li><span>5店のうち4店でスタンプが揃うと達成<small>台紙は、この画面を開き直すと新しくなります</small></span></li>
       <li><span>達成すると、抽選で40名にコラボTシャツ<small>AZUL BY MOUSSY × santafe × SMF。外れた方には SMF オリジナルタオル。達成したら、この画面のいちばん上の台紙から、ニックネーム・メールアドレス・Tシャツの希望サイズを入れて応募します（LINEのトークからも応募できます）。紙のパンフレット（ステッカー）でそろえた方は、お店でパンフレットを見せて応募用のQRを読むか、郵送で応募できます</small><small style="color:var(--pink)">応募方法：令和8年11月11日までに、協力店舗でもらえるステッカーを貼ったパンフレットを、住所、氏名、年齢を添えて書いて以下まで郵送してください。郵送先：東京都世田谷区三軒茶屋2-14-21 2F FRIENDS bar&amp;lounge『SMF Tシャツプレゼント受付』。結果はメールでお知らせし、抽選のあと FRIENDS で受け取ります</small></span></li>
     </ol>
-    <div style="margin-top:12px"><a class="btn primary wide" id="loopBtn" href="#">LINEで台紙を開く</a></div>
+    <div style="margin-top:12px"><a class="btn primary wide" id="loopBtn" href="#">わたしの台紙を見る</a></div>
     <button class="share" type="button" data-share="loop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>一緒にまわる人を誘う</button>
     <a class="artists" style="border-left-color:var(--green)" href="https://line.me/ti/g2/lRKR0aHfsNUc7gQEdGyDQA8EBjC8boY8_I3HCQ" data-line="https://line.me/ti/g2/lRKR0aHfsNUc7gQEdGyDQA8EBjC8boY8_I3HCQ"><span><b>一緒にまわろう・ハシゴ仲間</b><small>オープンチャット。当日の待ち合わせや「今からまわる人」探しに</small></span><span class="en" style="color:var(--green)">OPEN CHAT ↗</span></a>
 
@@ -637,7 +637,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">当日ガイド v2.9.3</span>
+    <br><span id="ver">SMF 2026 アプリ v3.0</span>
   </footer>
 </main>
 
@@ -942,7 +942,10 @@ function entryHtml(d) {
   if (d.sample) return box('コラボTシャツの抽選（抽選で40名）', '<p>達成すると、ここからメールアドレスを入れて応募できます。（サンプル表示）</p>');
   if (e && e.rehearsal) return box('【リハーサル】達成', '<p>リハーサルの達成です。本番では、ここから抽選に応募できます。本番が始まると、リハーサルのスタンプは数えません。</p>', '--line');
   if (!e) return box('コラボTシャツの抽選', '<p>抽選の受付は準備中です。少し待って、開き直してください。</p>', '--line');
-  const pick = `<p>受け取り：<b>${esc(e.place || 'FRIENDS bar & lounge')}</b>${e.from ? `（${esc(mdJa(e.from))}〜${esc(mdJa(e.until))}）` : ''}<br>LINEで「#ラリー」を開き、達成カードの受け取りQRをお店のスタッフに見せてください。</p><a class="btn primary wide" href="${esc(oaMsg('#ラリー'))}" data-line="${esc(oaMsg('#ラリー'))}">LINEで受け取りQRを開く</a>`;
+  // v3.0：受け取りQRは、このアプリに出す（前は LINE の達成カードにだけあった）。中身は LINE のカードと同じ「#渡す 受付コード」
+  const pick = `<p>受け取り：<b>${esc(e.place || 'FRIENDS bar & lounge')}</b>${e.from ? `（${esc(mdJa(e.from))}〜${esc(mdJa(e.until))}）` : ''}${e.nick ? `<br>ニックネーム：<b>${esc(e.nick)}</b>` : ''}</p>
+    ${d.code ? `<div class="wcard" style="margin-top:4px"><div class="lbl"><b>受け取りQR</b>　お店のスタッフに見せてください</div><div class="qr" style="width:min(52vw,220px)">${qrSvg(oaMsg('#渡す ' + d.code))}</div><div class="cd">${esc(d.code)}</div></div>` : ''}
+    <p class="sm">スタッフがこのQRを読むと、お渡しするものが出ます。スクリーンショットではなく、この画面を見せてください。</p>`;
   if (e.got) return box('特典を受け取りました', '<p>ご参加ありがとうございました。</p>', '--green');
   if (e.result === '当選') return box('当選しました！', `<p>コラボTシャツ（AZUL BY MOUSSY × santafe × SMF）が当たりました。${e.size ? `<br>ご希望のサイズ：<b>${esc(e.size)}</b>` : ''}</p>${pick}`);
   if (e.result === '落選') return box('抽選の結果', `<p>今回は Tシャツは外れました。SMF オリジナルタオルを差し上げます。</p>${pick}`, '--blue');
@@ -1026,14 +1029,14 @@ async function loadMe(force) {
   if (ME) return renderMe(); // 前のQRを出したまま（10分は使える）
   if (d && d.error === 'login') return wallet(`<p class="msg">LINEのログインを確かめられませんでした。</p><button class="btn primary" type="button" onclick="location.reload()">もう一度</button>`);
   if (d && d.error === 'closed') return wallet(`<p class="msg">スタンプラリーと縁日のご縁は、いまは行っていません。</p>`);
-  wallet(`<p class="msg">いまQRを読み込めません。少し待ってから開き直すか、LINEのトークで「#ラリー」を送ってください。</p><button class="btn" type="button" onclick="loadMe(true)">もう一度</button>`);
+  wallet(`<p class="msg">いまQRを読み込めません。少し待ってから、開き直してください。</p><button class="btn" type="button" onclick="loadMe(true)">もう一度</button>`);
 }
 /* QRを読んだ結果を、ミニアプリの中に出す（v1.7。GAS の api=scan。トークに「#押す」を送ったときと同じ処理） */
 function sheet(html) { let el = $('#rs'); if (!el) { el = document.createElement('div'); el.id = 'rs'; el.className = 'rs'; el.onclick = e => { if (e.target === el) el.remove(); }; document.body.appendChild(el); } el.innerHTML = `<div class="in" role="dialog" aria-modal="true">${html}</div>`; return el; }
 function closeSheet() { const el = $('#rs'); if (el) el.remove(); }
 function cardsHtml(cards) {
   return (cards || []).map(c => {
-    let t = (c.texts || []).map(x => String(x).replace('相手の方も、次に「#ラリー」を開くと引けます。', '相手の方も、当日ガイドのホームの［ガチャを引く］か「#ラリー」で引けます。'));
+    let t = (c.texts || []).map(x => String(x).replace('相手の方も、次に「#ラリー」を開くと引けます。', '相手の方も、SMF 2026 アプリの［縁日］で引けます。'));
     const k = t.length > 1 && /^[A-Z0-9 &\-!]+$/.test(t[0]) ? t.shift() : '';
     let h = t.length > 1 ? t.shift() : '';
     if (k === 'GACHA' && h === 'ガチャ' && t.length >= 2) { const rare = t.shift(); h = `${t.shift()}（${rare}）`; }
@@ -1066,7 +1069,7 @@ async function pullGacha() {
   sheet('<div class="busy">カプセルを開けています…</div>');
   const d = await postApi('pull');
   if (d && d.ok) { if (ME) ME.caps = d.caps || 0; sheet(cardsHtml(d.cards) + `<button class="btn primary wide" type="button" onclick="closeSheet();loadMe(true)">閉じる</button>`); return; }
-  sheet(`<p class="msg" style="margin:0">${d && d.error === 'none' ? '未開封のカプセルはありません。ご縁があると引けます。' : 'いまは開けられませんでした。LINEのトークで「#ラリー」を開くと引けます。'}</p><button class="btn wide" type="button" onclick="closeSheet();loadMe(true)">閉じる</button>`);
+  sheet(`<p class="msg" style="margin:0">${d && d.error === 'none' ? '未開封のカプセルはありません。ご縁があると引けます。' : 'いまは開けられませんでした。少し待ってから、もう一度お試しください。'}</p><button class="btn wide" type="button" onclick="closeSheet();loadMe(true)">閉じる</button>`);
 }
 /* ---------- 縁日のご縁：ガチャと図鑑（v2.0。GAS の warifu.gs v1.1・miniapp_api.gs v1.0） ---------- */
 let CARDS = [], CARD = {}, G_BUSY = false, Z_FILTER = 'all', G_NEW = {};
@@ -1232,7 +1235,7 @@ function shareMsg(kind) {
   }
   return { text: 'SMF 2026（11/7 三軒茶屋）一緒に行こう！', msg: flexCard('SMF 2026 一緒に行こう', {
     img: 'https://sangenjaya-mf.com/ogp_smf2026.png', ratio: '120:63', kicker: 'SANGENJAYA ART MUSIC FESTIVAL 2026', title: '11/7（土）三茶で一緒に遊ぼう', color: '#8DC21F',
-    lines: ['街じゅうの会場で、昼から翌朝まで', 'タイムテーブル・スタンプラリー・縁日のご縁'], btn: '当日ガイドを開く', url: APP_URL() }) };
+    lines: ['街じゅうの会場で、昼から翌朝まで', 'タイムテーブル・スタンプラリー・縁日のご縁'], btn: 'SMF 2026 アプリを開く', url: APP_URL() }) };
 }
 async function share(kind) {
   const m = shareMsg(kind);
@@ -1259,7 +1262,7 @@ function renderLoop() {
       <span class="t">${esc(v.name)}<small>${esc(hm(min(v.start)))}〜${esc(hm(min(v.end)))}${v.genre ? '　' + esc(v.genre) : ''}</small></span>
       ${live ? `<span class="open${open ? ' live' : ''}">${open ? '営業中' : '時間外'}</span>` : '<span aria-hidden="true">↗</span>'}</a>`;
   }).join('') || '<div class="empty">協力店の情報は準備中です。</div>';
-  const lb = $('#loopBtn'); lb.href = oaMsg('#ラリー'); lb.dataset.line = lb.href;
+  const lb = $('#loopBtn'); lb.onclick = ev => { ev.preventDefault(); const t = $('#daishi'); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); };   // v3.0：台紙はこの画面の上（前は LINE のトークへ送っていた）
   { const a = $('#enScan'); if (a) a.onclick = e => { e.preventDefault(); scanQr(); }; }
 }
 
