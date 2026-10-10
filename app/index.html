@@ -250,6 +250,7 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .entry input,.entry select,.entry textarea{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid var(--line);background:#1B1B1B;color:#fff;font-size:16px}
 .entry select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,#999 50%),linear-gradient(135deg,#999 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%;background-size:6px 6px;background-repeat:no-repeat}
 .entry textarea{min-height:84px;resize:vertical;font-family:inherit;line-height:1.5}
+.entry .opt[hidden]{display:none}
 .entry .opt{margin-top:6px;padding-top:10px;border-top:1px dashed var(--line);display:grid;gap:8px}.entry .opt>b{font-size:12.5px}.entry label small{color:var(--pink);margin-left:6px}
 .entry details summary{font-size:12.5px;color:var(--dim);cursor:pointer}
 /* ---- v2.3：公式サイトと同じメインビジュアル・How To Enjoy・エリアマップ ---- */
@@ -560,7 +561,7 @@ footer a{color:var(--dim)}
       <li><span>LINEで「#ラリー」を送って、台紙と「わたしのQR」を出す<small>下のボタンで、文字が入った状態でトークが開きます</small></span></li>
       <li><span>対象の会場でドリンクを受け取るとき、リストバンドとQRをスタッフに見せる<small>スタッフが自分のスマホで読むと、スタンプが押されます。対象の会場では公式ドリンク「三茶ハイ」を1杯無料でお出しします（各店お一人さま1杯まで）</small></span></li>
       <li><span>5店のうち4店でスタンプが揃うと達成<small>台紙は、この画面を開き直すと新しくなります</small></span></li>
-      <li><span>達成すると、抽選で40名にコラボTシャツ<small>AZUL BY MOUSSY × santafe × SMF。外れた方には SMF オリジナルタオル。達成したら、この画面のいちばん上の台紙から、ニックネーム・メールアドレス・Tシャツの希望サイズを入れて応募します（LINEのトークからも応募できます）。紙の台紙（シールラリー）でそろえた方は、お店で台紙を見せて応募用のQRを読むか、郵送で応募できます</small><small style="color:var(--pink)">応募方法：令和8年11月30日（月）までに、4会場ぶんのシールを貼ったこの台紙を、上の欄にご記入のうえ下記まで郵送してください。抽選で40名さまに AZUL BY MOUSSY × santafe × SMF のコラボTシャツをお送りします。郵送先：〒154-0024 東京都世田谷区三軒茶屋2-14-21 2F FRIENDS bar &amp; lounge『SMF Tシャツプレゼント受付』</small></span></li>
+      <li><span>達成すると、抽選で40名にコラボTシャツ<small>AZUL BY MOUSSY × santafe × SMF。外れた方には SMF オリジナルタオル。達成したら、この画面のいちばん上の台紙から、ニックネーム・メールアドレス・Tシャツの希望サイズを入れて応募します（LINEのトークからも応募できます）。当選のTシャツは、FRIENDS で受け取るか、郵送で受け取るかを選べます。紙の台紙（シールラリー）でそろえた方は、お店で台紙を見せて応募用のQRを読むか、郵送で応募できます</small><small style="color:var(--pink)">応募方法：令和8年11月30日（月）までに、4会場ぶんのシールを貼ったこの台紙を、上の欄にご記入のうえ下記まで郵送してください。抽選で40名さまに AZUL BY MOUSSY × santafe × SMF のコラボTシャツをお送りします。郵送先：〒154-0024 東京都世田谷区三軒茶屋2-14-21 2F FRIENDS bar &amp; lounge『SMF Tシャツプレゼント受付』</small></span></li>
     </ol>
     <div style="margin-top:12px"><a class="btn primary wide" id="loopBtn" href="#">わたしの台紙を見る</a></div>
     <button class="share" type="button" data-share="loop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>一緒にまわる人を誘う</button>
@@ -637,7 +638,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">SMF 2026 アプリ v3.0.1</span>
+    <br><span id="ver">SMF 2026 アプリ v3.1</span>
   </footer>
 </main>
 
@@ -932,7 +933,7 @@ function prizeHtml(d) {
 function prizeOpen(n) {
   sheet(`<h3 style="margin:0 0 10px">達成特典 ／ コラボ T-SHIRTS</h3><img class="prizebig" src="${PRIZE_IMG}" alt="コラボTシャツ（背面）">
     <p style="margin:0 0 6px;font-size:14px"><b>${PRIZE_NAME}</b></p>
-    <p style="margin:0 0 14px;font-size:13px;color:#D6D6D6">協力店5店のうち4店でスタンプをそろえた方の中から、抽選で<b>${n}名</b>に。外れた方には SMF オリジナルタオルを差し上げます。応募はこの台紙から。結果はメールでお知らせし、抽選のあと FRIENDS bar &amp; lounge で受け取ります。<br><span style="color:var(--dim);font-size:11.5px">画像は背面です。</span></p>
+    <p style="margin:0 0 14px;font-size:13px;color:#D6D6D6">協力店5店のうち4店でスタンプをそろえた方の中から、抽選で<b>${n}名</b>に。外れた方には SMF オリジナルタオルを差し上げます。応募はこの台紙から（11月30日まで）。結果はメールでお知らせします。当選のTシャツは、FRIENDS bar &amp; lounge で受け取るか、郵送かを選べます。<br><span style="color:var(--dim);font-size:11.5px">画像は背面です。</span></p>
     <button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
 }
 /* ---------- 抽選の応募（v2.2。GAS の rally.gs v0.5・miniapp_api.gs v1.0 の api=entry） ---------- */
@@ -947,6 +948,7 @@ function entryHtml(d) {
     ${d.code ? `<div class="wcard" style="margin-top:4px"><div class="lbl"><b>受け取りQR</b>　お店のスタッフに見せてください</div><div class="qr" style="width:min(52vw,220px)">${qrSvg(oaMsg('#渡す ' + d.code))}</div><div class="cd">${esc(d.code)}</div></div>` : ''}
     <p class="sm">スタッフがこのQRを読むと、お渡しするものが出ます。スクリーンショットではなく、この画面を見せてください。</p>`;
   if (e.got) return box('特典を受け取りました', '<p>ご参加ありがとうございました。</p>', '--green');
+  if (e.result === '当選' && e.ship && e.ship.prize) return box('当選しました！', `<p>コラボTシャツ（AZUL BY MOUSSY × santafe × SMF）が当たりました。${e.size ? `<br>ご希望のサイズ：<b>${esc(e.size)}</b>` : ''}</p><p><b>ご登録の住所へ、郵送でお送りします。</b>発送まで、しばらくお待ちください。住所に変更があるときは、結果のメールに返信してお知らせください。</p>`);
   if (e.result === '当選') return box('当選しました！', `<p>コラボTシャツ（AZUL BY MOUSSY × santafe × SMF）が当たりました。${e.size ? `<br>ご希望のサイズ：<b>${esc(e.size)}</b>` : ''}</p>${pick}`);
   if (e.result === '落選') return box('抽選の結果', `<p>今回は Tシャツは外れました。SMF オリジナルタオルを差し上げます。</p>${pick}`, '--blue');
   // v2.8：ニックネーム（必須。受け渡しのときに呼ぶ）と、かんたんなアンケート（任意）。選択肢は GAS（RALLY.LOTTERY.SURVEY）から来る
@@ -955,16 +957,26 @@ function entryHtml(d) {
   const sizes = e.sizes || [], na = e.noteAsk;
   const sizeSel = sizes.length ? `<label for="entrySize">Tシャツの希望サイズ<small>必須</small></label><select id="entrySize" name="size" required><option value="">選んでください</option>${sizes.map(o => `<option${e.size === o ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>` : '';
   const noteBox = na ? `<label for="entryNote">${esc(na.label)}</label><textarea id="entryNote" name="note" maxlength="${na.max || 300}" placeholder="ひとことでも大丈夫です">${esc(e.note || '')}</textarea>` : '';
+  // v3.1：受け取り方（FRIENDS で／郵送で）。郵送のときだけ、氏名・郵便番号・住所・電話の欄を出す。住所は画面に戻ってこないので、直すときは入れ直す
+  const sp = e.ship && e.ship.on ? e.ship : null, isShip = !!(sp && sp.mine === 'ship');
+  const shipSel = sp ? `<label for="entryRecv">当選したTシャツの受け取り方<small>必須</small></label><select id="entryRecv" name="recv" required onchange="document.getElementById('entryAddr').hidden=this.value!=='ship'"><option value="store"${isShip ? '' : ' selected'}>${esc(sp.store)}</option><option value="ship"${isShip ? ' selected' : ''}>${esc(sp.mail)}</option></select>
+      <div id="entryAddr" class="opt"${isShip ? '' : ' hidden'}><b>お届け先${isShip && sp.hasAddr ? '（登録済み。直すときだけ入れてください）' : ''}</b>
+        <label for="entryName">お名前（宛名）</label><input id="entryName" name="name" type="text" maxlength="40" autocomplete="name" placeholder="例）山田 太郎">
+        <label for="entryZip">郵便番号</label><input id="entryZip" name="zip" type="text" inputmode="numeric" maxlength="8" autocomplete="postal-code" placeholder="154-0024">
+        <label for="entryAdr">住所（建物名・部屋番号まで）</label><input id="entryAdr" name="addr" type="text" maxlength="120" autocomplete="street-address" placeholder="東京都世田谷区三軒茶屋…">
+        <label for="entryTel">電話番号（任意。配達で必要なときだけ使います）</label><input id="entryTel" name="tel" type="tel" inputmode="tel" maxlength="20" autocomplete="tel">
+        <p class="sm" style="margin:0">郵送でお届けするのは、当選のTシャツ${sp.towel ? 'とタオル' : 'だけです。外れた方のタオルは、' + esc(e.place || 'FRIENDS') + ' でお受け取りください'}。お名前と住所は、発送にだけ使います。</p></div>` : '';
   const opt = ['age', 'area', 'how'].map(sel).join('') + sel('star') + noteBox;   // v2.9：イベントの感想（満足度・ひとこと）も、ここで
   const form = (label, btn) => `<form id="entryForm" novalidate>
       <label for="entryNick">ニックネーム<small>必須</small></label><input id="entryNick" name="nick" type="text" maxlength="${nmax}" autocomplete="nickname" placeholder="例）タロー" value="${esc(e.nick || '')}" required>
       <label for="entryMail">${label}<small>必須</small></label><input id="entryMail" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" placeholder="example@mail.com" required>
       ${sizeSel}
+      ${shipSel}
       ${opt ? `<div class="opt"><b>よければ教えてください（任意）</b>${opt}</div>` : ''}
       <button class="btn primary wide" type="submit" id="entrySend">${btn}</button></form>
       <p class="sm">ニックネームは、FRIENDS で特典を受け取るときにお呼びします（本名は書かないでください）。メールアドレスは、抽選結果のお知らせにだけ使います。サイズは、当選したときにご用意するTシャツの希望です。どれも、ほかの人には見えません。アンケートと感想は、次回のSMFの参考にします。</p>`;
-  if (e.entered) return box('抽選に応募済みです', `<p>ニックネーム：<b>${esc(e.nick || '（まだ入っていません。下から入れてください）')}</b><br>お知らせ先：<b>${esc(e.mail)}</b>${sizes.length ? `<br>希望サイズ：<b>${esc(e.size || '（まだ入っていません。下から選んでください）')}</b>` : ''}<br>結果は、応募の締め切り（${esc(mdJa(e.to))}）のあと、メールでお知らせします。受け取りは抽選のあと、${esc(e.place || 'FRIENDS')}で。</p>
-      ${e.open ? `<details${e.nick && (!sizes.length || e.size) ? '' : ' open'}><summary>応募の内容を直す（ニックネーム・メールアドレス・サイズ・アンケート）</summary>${form('メールアドレス（もう一度入れてください）', '直す')}</details><a class="btn wide" href="#" onclick="showTab('home');setTimeout(()=>{const v=document.getElementById('voice');if(v)v.scrollIntoView({behavior:'smooth',block:'start'})},200);return false">次回やってほしいことも答える（1分・匿名）</a>` : ''}`, '--green');
+  if (e.entered) return box('抽選に応募済みです', `<p>ニックネーム：<b>${esc(e.nick || '（まだ入っていません。下から入れてください）')}</b><br>お知らせ先：<b>${esc(e.mail)}</b>${sizes.length ? `<br>希望サイズ：<b>${esc(e.size || '（まだ入っていません。下から選んでください）')}</b>` : ''}${sp ? `<br>受け取り方：<b>${isShip ? '郵送（当選のTシャツ）' : esc(e.place || 'FRIENDS') + ' で受け取る'}</b>` : ''}<br>結果は、応募の締め切り（${esc(mdJa(e.to))}）のあと、メールでお知らせします。</p>
+      ${e.open ? `<details${e.nick && (!sizes.length || e.size) ? '' : ' open'}><summary>応募の内容を直す（ニックネーム・メールアドレス・サイズ・受け取り方・アンケート）</summary>${form('メールアドレス（もう一度入れてください）', '直す')}</details><a class="btn wide" href="#" onclick="showTab('home');setTimeout(()=>{const v=document.getElementById('voice');if(v)v.scrollIntoView({behavior:'smooth',block:'start'})},200);return false">次回やってほしいことも答える（1分・匿名）</a>` : ''}`, '--green');
   if (!e.open) return box('抽選の応募は締め切りました', `<p>応募の期限（${esc(mdJa(e.to))}）を過ぎました。</p>`, '--line');
   return box(`コラボTシャツの抽選に応募する`, `<p>抽選で<b>${e.winners || 40}名</b>にコラボTシャツ（AZUL BY MOUSSY × santafe × SMF）。外れた方には SMF オリジナルタオル。<br>応募の締め切り：<b>${esc(mdJa(e.to))}</b>　結果はメールでお知らせします。</p>${form('結果をお知らせするメールアドレス', '応募する')}`);
 }
@@ -976,13 +988,19 @@ function bindEntry() {
     const val = k => (f.elements[k] ? f.elements[k].value : '');
     if (!nick) { toast('ニックネームを入れてください'); f.elements.nick.focus(); return; }
     if (f.elements.size && !f.elements.size.value) { toast('Tシャツの希望サイズを選んでください'); f.elements.size.focus(); return; }
+    const recv = f.elements.recv ? f.elements.recv.value : undefined, had = !!(ME && ME.entry && ME.entry.ship && ME.entry.ship.mine === 'ship' && ME.entry.ship.hasAddr);
+    if (recv === 'ship' && !had) {
+      if (!val('name').trim()) { toast('お届け先のお名前を入れてください'); f.elements.name.focus(); return; }
+      if (val('zip').replace(/[^0-9０-９]/g, '').length !== 7) { toast('郵便番号を7けたで入れてください'); f.elements.zip.focus(); return; }
+      if (val('addr').trim().length < 5) { toast('お届け先の住所を入れてください'); f.elements.addr.focus(); return; }
+    }
     if (!/^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/.test(mail)) { toast('メールアドレスを確かめてください'); f.elements.email.focus(); return; }
     if (!(await loadLiff()) || !liff.isLoggedIn() || !CONFIG.GAS_URL) return toast('LINEで開くと応募できます');
     const lbl = b.textContent; b.disabled = true; b.textContent = '送っています…';
-    const d = await postApi('entry', { email: mail, nick: nick, size: val('size'), age: val('age'), area: val('area'), how: val('how'), star: val('star'), note: f.elements.note ? f.elements.note.value : undefined });
+    const d = await postApi('entry', { email: mail, nick: nick, size: val('size'), age: val('age'), area: val('area'), how: val('how'), star: val('star'), note: f.elements.note ? f.elements.note.value : undefined, recv: recv, name: val('name'), zip: val('zip'), addr: val('addr'), tel: val('tel') });
     if (d && d.ok) { if (ME) { ME.entry = d; ME.done = true; } renderDaishi(); toast('応募しました'); return; }
     b.disabled = false; b.textContent = lbl;
-    toast(d && d.error === 'mail' ? 'メールアドレスを確かめてください' : d && d.error === 'nick' ? 'ニックネームを入れてください' : d && d.error === 'size' ? 'Tシャツの希望サイズを選んでください' : d && d.error === 'notdone' ? 'スタンプが4店そろうと応募できます' : d && (d.error === 'closed' || d.error === 'drawn') ? '応募は締め切りました' : d && d.error === 'too many' ? '少し時間をおいてから送ってください' : d && d.error === 'login' ? 'LINEのログインを確かめられませんでした' : '送れませんでした。もう一度お試しください');
+    toast(d && d.error === 'mail' ? 'メールアドレスを確かめてください' : d && d.error === 'nick' ? 'ニックネームを入れてください' : d && d.error === 'size' ? 'Tシャツの希望サイズを選んでください' : d && d.error === 'addr' ? 'お届け先（お名前・郵便番号・住所）を確かめてください' : d && d.error === 'notdone' ? 'スタンプが4店そろうと応募できます' : d && (d.error === 'closed' || d.error === 'drawn') ? '応募は締め切りました' : d && d.error === 'too many' ? '少し時間をおいてから送ってください' : d && d.error === 'login' ? 'LINEのログインを確かめられませんでした' : '送れませんでした。もう一度お試しください');
   });
 }
 /* ---------- BORRACHOS AFTER PARTY 入口の抽選（v2.2。入口のQR＝この画面のURL＋?after=合言葉。GAS の after.gs） ---------- */
