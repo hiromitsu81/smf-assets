@@ -257,7 +257,7 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .mv .dateblk .dd{font-size:clamp(28px,9.2vw,46px);padding-right:12px}.mv .dateblk .rule{width:5px;align-self:stretch;background:#fff;margin-bottom:4px}.mv .dateblk .yr{font-size:clamp(32px,10.8vw,54px);padding-left:12px}
 .mv .dow{text-align:center;font:400 9.5px ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.3em;color:rgba(255,255,255,.62);margin-top:10px}
 .mv .host{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;font-size:11.5px;color:var(--dim)}
-.mv .host b{color:#fff}.mv .host img{height:16px;vertical-align:middle}
+.mv .host b{color:#fff;font-size:15px}.mv .host img.skk{height:64px;width:auto;display:block}.mv .host span{line-height:1.5}.mv .host{gap:12px;margin-top:14px;text-align:left}
 .mv .free{margin:8px 0 0;text-align:center;font-size:11.5px;color:rgba(255,255,255,.8)}
 .hte-lead{font-size:13.5px;margin:0 0 12px}
 .hte{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:6px;margin:0 -16px;padding-inline:16px}
@@ -446,7 +446,7 @@ footer a{color:var(--dim)}
       <div class="dateblk"><div class="dd">11.07</div><div class="rule"></div><div class="yr">2026</div></div>
       <div class="dow">SATURDAY / SANGENJAYA, TOKYO / 3RD EDITION</div>
       <p class="free">日中の4会場と夜の5店は入場無料 ／ 有料は HEAVEN'S DOOR の SPECIAL LIVE だけ</p>
-      <div class="host">主催 <span class="plate"><img src="img/sanketsukai.png" alt="" onerror="this.remove()"> <b>三結會</b></span> 三軒茶屋の商店会</div>
+      <div class="host"><span>主催</span><img class="skk" src="img/sanketsukai.svg" alt="三結會" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'三結會'}))"><span>三軒茶屋の商店会<br>Support Your Local Society</span></div>
     </div>
     <div class="wallet" id="wallet">
       <div class="wcard" id="wcard"><p class="msg">あなたのQRを準備しています…</p></div>
@@ -629,7 +629,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">当日ガイド v2.6</span>
+    <br><span id="ver">当日ガイド v2.6.1</span>
   </footer>
 </main>
 
