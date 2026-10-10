@@ -361,6 +361,32 @@ details.crew .in{padding:0 14px 14px;display:grid;gap:12px}
 
 /* NIGHT LOOP */
 .loophead{width:100%;max-width:100%;aspect-ratio:2/1;object-fit:cover;border-radius:var(--r);border:1px solid var(--line);display:block;margin-top:16px;background:var(--panel)}
+/* 公式ドリンク「三茶ハイ」（公式サイトの NIGHT LOOP の同じカード。v3.3） */
+.drink{margin-top:14px;border:1px solid var(--line);border-radius:16px;background:#0E0E0E;overflow:hidden}
+.drink>img{display:block;width:100%;aspect-ratio:760/507;object-fit:contain;background:#fff}
+.drink .in{padding:14px}.drink h3{margin:0;font-size:17px}.drink p{margin:8px 0 0;font-size:13.5px;line-height:1.75;color:#D6D6D6}
+.drink .sp{display:flex;align-items:center;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:12px;color:var(--dim)}
+.drink .sp img{height:38px;width:auto}.drink .sp b{margin-left:auto;font-weight:500;color:#C9C9C9;letter-spacing:.06em}
+.drink .cap{margin-top:8px;font-size:11.5px;color:#E9C84B;letter-spacing:.04em}
+/* 1800レポサド「三茶ハイ」（周遊とは別の企画。公式サイトの同じ枠。v3.2） */
+.pz{margin-top:26px;border:1px solid var(--line);border-radius:16px;background:#0E0E0E;padding:16px;position:relative}
+.pz-x{display:inline-block;background:#E9C84B;color:#141414;font-size:11.5px;font-weight:700;letter-spacing:.12em;padding:5px 10px;border-radius:3px}
+.pz-logo{display:block;width:min(62vw,250px);margin:14px auto 10px}
+.pz h3{margin:0;font-size:19px;line-height:1.35}.pz h3 em{display:block;font-style:normal;font-size:13px;font-weight:400;color:var(--dim);margin-top:4px}
+.pz p{font-size:13.5px;color:#D6D6D6;margin:10px 0 0;line-height:1.75}
+.pz .pz-note{border-left:4px solid #E9C84B;padding:8px 10px;background:#161616;border-radius:0 8px 8px 0;font-size:12.5px}
+.pz-tl{margin-top:12px;display:grid;gap:0}
+.pz-s{display:grid;grid-template-columns:86px 1fr;gap:10px;padding:11px 0;border-top:1px solid var(--line)}
+.pz-s time{font:700 12px Oswald,"Zen Kaku Gothic New",sans-serif;color:var(--pink);letter-spacing:.04em;padding-top:2px}
+.pz-s b{display:block;font-size:14px}.pz-s span{display:block;font-size:12.5px;color:#C9C9C9;line-height:1.65;margin-top:2px}
+.pz-shops{display:grid;gap:10px;margin-top:14px}
+.pz-sh{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#111}
+.pz-sh .lg{background:#fff;display:flex;justify-content:center;padding:10px}.pz-sh .lg img{height:84px;width:auto;display:block}
+.pz-sh .in{padding:12px}.pz-sh h4{margin:0;font-size:15px}.pz-sh h4 small{display:block;font:500 10.5px Oswald,sans-serif;letter-spacing:.14em;color:var(--dim);margin-top:2px}
+.pz-sh dl{display:grid;grid-template-columns:72px 1fr;gap:4px 8px;margin:10px 0 0;font-size:12.5px}.pz-sh dt{color:var(--dim)}.pz-sh dd{margin:0}.pz-sh dd i{display:block;font-style:normal;color:#9A9A9A;font-size:11.5px}
+.pz-sh .ad{font-size:11.5px;color:var(--dim);margin:8px 0 0}.pz-sh .lk{display:flex;gap:8px;margin-top:10px}.pz-sh .lk a{flex:1;text-align:center}
+.pzstrip{display:flex;align-items:center;gap:12px;width:100%;margin-top:14px;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:#0E0E0E;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.pzstrip img{width:56px;height:56px;border-radius:50%;flex:none}.pzstrip b{display:block;font-size:14.5px}.pzstrip small{display:block;font-size:11.5px;color:var(--dim);margin-top:2px}
 .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 .facts div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
 .facts small{display:block;font-size:11px;color:var(--dim)}
@@ -511,6 +537,8 @@ footer a{color:var(--dim)}
     </div>
     <p class="note">BORRACHOS は20:30で営業を終えます。SANCHA NIGHT LOOP の達成を目指す方は、日中のうちに寄っておくのがおすすめです。</p>
 
+    <button class="pzstrip" type="button" onclick="showTab('loop');setTimeout(()=>{const t=document.getElementById('sanchahigh');if(t)t.scrollIntoView({behavior:'smooth',block:'start'})},250)"><img src="img/sanchahigh.webp" alt="" loading="lazy"><span><b>1800レポサド「三茶ハイ」</b><small>すずらん通りで、昼から深夜まで。ピザニスタ／エンニスタ（周遊とは別の企画）</small></span></button>
+
     <h2><span class="en">ARCHIVE</span>これまでのSMF</h2>
     <p class="note" style="margin:0 0 10px">2025年9月20日・21日、三軒茶屋。ヤグラのステージから、茶沢通りのマーケット、夜のフロアまで。押すと再生します（音が出ます）。</p>
     <div class="arc" id="arc"></div>
@@ -567,9 +595,47 @@ footer a{color:var(--dim)}
     <button class="share" type="button" data-share="loop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>一緒にまわる人を誘う</button>
     <a class="artists" style="border-left-color:var(--green)" href="https://line.me/ti/g2/lRKR0aHfsNUc7gQEdGyDQA8EBjC8boY8_I3HCQ" data-line="https://line.me/ti/g2/lRKR0aHfsNUc7gQEdGyDQA8EBjC8boY8_I3HCQ"><span><b>一緒にまわろう・ハシゴ仲間</b><small>オープンチャット。当日の待ち合わせや「今からまわる人」探しに</small></span><span class="en" style="color:var(--green)">OPEN CHAT ↗</span></a>
 
+    <h2><span class="en">DRINK</span>公式ドリンク</h2>
+    <div class="drink" style="margin-top:0">
+      <img src="img/drink-sanchahigh.jpg" alt="三茶ハイ SANCHA HIGH / 1800 レポサド" loading="lazy">
+      <div class="in">
+        <h3>公式ドリンク「三茶ハイ」</h3>
+        <p>プレミアムテキーラ「1800レポサド」を、ソーダとレモンで爽やかに仕上げた三軒茶屋オリジナルの一杯。樽熟成によるまろやかな味わいに、ソーダの軽快さとレモンのすっきりした風味をプラス。テキーラをショットで飲むイメージがある方にも、ゆっくり味わっていただきたいドリンクです。</p>
+        <p>ピザなどの食事のお供にも、音楽を楽しみながらの乾杯にも。パスをお持ちの方は、対象店舗で1杯ずつ無料です。</p>
+        <div class="sp"><span>協賛</span><img src="img/1800tequila.webp" alt="1800 TEQUILA" loading="lazy"><b>1800 レポサド</b></div>
+        <div class="cap">イメージ / 商品Coming soon</div>
+      </div>
+    </div>
+
     <h2><span class="en">VENUES</span>対象の5会場</h2>
     <div class="stores" id="stores"></div>
     <p class="note">ピザニスタ・エンニスタ、BORRACHOS の AFTER PARTY（21:30〜）は対象外です。リストバンドの譲渡・貸し借り・再発行はできません。夜の会場は20歳未満の方は入場できません。お酒を飲んだあとの運転はしないでください。</p>
+
+    <div class="pz" id="sanchahigh">
+      <span class="pz-x">周遊とは別の企画です</span>
+      <img class="pz-logo" src="img/sanchahigh.webp" alt="SANCHA HIGH 三茶ハイ / 1800 TEQUILA Reposado" loading="lazy">
+      <h3>1800レポサド「三茶ハイ」<em>すずらん通りで、昼から深夜まで。</em></h3>
+      <p>2026年11月7日（土）、SMF当日のすずらん通りに、一日限りの1800レポサド・プロモーションが登場。舞台は「ピザニスタ」と、そのすぐ近くにあるBAR「エンニスタ」。1800レポサドを使った「三茶ハイ」を中心に、昼から深夜まで、時間帯に合わせた楽しみ方をご提案します。</p>
+      <p class="pz-note"><b>ピザニスタ・エンニスタは SANCHA NIGHT LOOP の対象会場ではありません。</b><br>周遊の「三茶ハイ 1杯無料」の対象外で、ドリンクは通常価格でのご提供です。リストバンドや周遊台紙がなくても、どなたでもお立ち寄りいただけます。</p>
+      <div class="pz-tl">
+        <div class="pz-s"><time>11:00 — 17:00</time><div><b>昼は、ピザニスタで一杯。</b><span>ピザニスタが一日限りの特別店舗に。特設ブースとともに、三茶ハイや1800レポサドを使ったオリジナルドリンクなどをお楽しみいただけます。SMFの会場巡りや、すずらん通りの散策の途中に、ぜひお立ち寄りください。</span></div></div>
+        <div class="pz-s"><time>18:00 —</time><div><b>夕方からは、ピザと三茶ハイ。</b><span>18:00からのピザニスタ通常営業でも、三茶ハイをご用意。ピザをはじめとした食事と一緒に、1800レポサドの味わいをお楽しみください。</span></div></div>
+        <div class="pz-s"><time>18:00 — 深夜</time><div><b>夜は、エンニスタへ。</b><span>18:00以降は、近隣のBAR「エンニスタ」でもプロモーションを展開。1800レポサドの装飾で彩られた店内で、三茶ハイを中心としたドリンクを深夜までお楽しみいただけます。</span></div></div>
+      </div>
+      <p>昼の一杯から、食事のお供、夜の乾杯まで。SMFの音楽と街を楽しみながら、すずらん通りでお気に入りの飲み方を見つけてください。</p>
+      <div class="pz-shops">
+        <div class="pz-sh"><div class="lg"><img src="img/pizzanista.jpg" alt="PIZZANISTA SANGENJAYA TOKYO" loading="lazy"></div><div class="in">
+          <h4>ピザニスタ<small>PIZZANISTA / SUZURAN-DORI</small></h4>
+          <dl><dt>周遊</dt><dd>対象外（通常価格）</dd><dt>特別営業</dt><dd>11:00〜17:00<i>特設ブース・オリジナルドリンク</i></dd><dt>通常営業</dt><dd>18:00〜<i>ピザと一緒に三茶ハイ</i></dd></dl>
+          <p class="ad">〒154-0004 世田谷区太子堂4-23-4 すずらん通り</p>
+          <div class="lk"><a class="btn" href="https://www.instagram.com/pizza_nista7/" target="_blank" rel="noopener">Instagram</a><a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%94%E3%82%B6%E3%83%8B%E3%82%B9%E3%82%BF%EF%BC%97&amp;query_place_id=ChIJtZbKXp_0GGARrCDPIhqUXuQ" target="_blank" rel="noopener">地図</a></div></div></div>
+        <div class="pz-sh"><div class="lg" style="background:#000"><img src="img/ennista.jpg" alt="ENNISTA" loading="lazy"></div><div class="in">
+          <h4>エンニスタ<small>ENNISTA / BAR</small></h4>
+          <dl><dt>周遊</dt><dd>対象外（通常価格）</dd><dt>営業</dt><dd>18:00以降〜深夜<i>1800レポサドの装飾で彩られた店内</i></dd><dt>ドリンク</dt><dd>三茶ハイを中心としたドリンク</dd></dl>
+          <p class="ad">〒154-0004 世田谷区太子堂4-22-12 すずらん通り</p>
+          <div class="lk"><a class="btn" href="https://www.instagram.com/en_nista/" target="_blank" rel="noopener">Instagram</a><a class="btn" href="https://maps.app.goo.gl/X8qqfXRZ6avYyr2E9" target="_blank" rel="noopener">地図</a></div></div></div>
+      </div>
+    </div>
 
     <p class="note">会場で会った人とQRで遊ぶ「縁日のご縁」は、下の［縁日］から。</p>
   </section>
@@ -638,7 +704,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">SMF 2026 アプリ v3.1</span>
+    <br><span id="ver">SMF 2026 アプリ v3.3</span>
   </footer>
 </main>
 
