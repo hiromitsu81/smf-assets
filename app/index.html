@@ -76,11 +76,12 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px;scroll-margin-top:90px}
 .card.flash{outline:2px solid var(--pink)}
 .c-head{display:flex;gap:10px;align-items:flex-start}
-.code{flex:0 0 auto;min-width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font:700 16px Oswald,sans-serif;color:#0A0A0A;background:var(--c)}
+.code{flex:0 0 auto;min-width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font:700 16px Oswald,sans-serif;color:var(--ink,#0A0A0A);background:var(--c)}
+.card{border-left:6px solid var(--c,var(--line))}
 .c-title{flex:1;min-width:0}
 .c-title h3{margin:0;font-size:17px;line-height:1.3}
 .c-title p{margin:2px 0 0;font-size:12px;color:var(--dim)}
-.open{flex:0 0 auto;font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--dim)}
+.open{flex:0 0 auto;white-space:nowrap;font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--dim)}
 .open.live{border-color:var(--pink);color:var(--pink)}
 .c-meta{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:12px 0 0;font-size:13px}
 .c-meta dt{color:var(--dim)} .c-meta dd{margin:0}
@@ -277,6 +278,52 @@ details.crew .in{padding:0 14px 14px;display:grid;gap:12px}
 .store .t{flex:1;min-width:0;font-size:14px;line-height:1.35;font-weight:700}
 .store .t small{display:block;color:var(--dim);font-size:11.5px;font-weight:500;font-variant-numeric:tabular-nums}
 
+/* 縁日のご縁：ガチャ（Harmonizer のロード画面と同じ、ロゴのまわりを3色の輪が回る動き）と図鑑 */
+.gacha{--hit:#fff;display:flex;flex-direction:column;align-items:center;gap:12px;padding:18px 14px 16px;border-radius:var(--r);border:1px solid var(--line);
+  background:radial-gradient(120% 60% at 50% 30%,#1b1f2b 0%,transparent 65%),var(--panel);overflow:hidden}
+.g-stage{position:relative;width:min(64vw,250px);aspect-ratio:4/5;display:grid;place-items:center}
+.g-logo{position:relative;width:132px;height:132px;display:grid;place-items:center;transition:transform .5s cubic-bezier(.3,1.4,.5,1),opacity .35s}
+.g-logo img{width:98px;height:98px;border-radius:50%;background:#fff;animation:gbreathe 2.4s ease-in-out infinite}
+.g-ring{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,var(--pink) 0 33.3%,var(--green) 0 66.6%,var(--blue) 0);
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 6px),#000 calc(100% - 5px));mask:radial-gradient(farthest-side,transparent calc(100% - 6px),#000 calc(100% - 5px));animation:gspin 2.8s linear infinite}
+.gacha.s-spin .g-ring{animation-duration:.38s}
+.gacha.s-spin .g-logo{transform:scale(1.08)}
+.gacha.s-hit .g-ring{background:var(--hit);animation:none}
+.gacha.s-hit .g-logo::after{content:"";position:absolute;inset:0;border-radius:50%;border:4px solid var(--hit);animation:gburst .7s ease-out forwards}
+.gacha.s-card .g-logo{transform:scale(.3);opacity:0}
+.gacha.s-many .g-stage{display:none}
+.gacha [hidden]{display:none!important}
+.g-card{position:absolute;inset:0;border-radius:10px;overflow:hidden;opacity:0;transform:rotateY(90deg) scale(.8);background:#1A1B1B}
+.g-card img{width:100%;height:100%;object-fit:cover;display:block}
+.gacha.s-card .g-card{opacity:1;transform:none;transition:transform .55s cubic-bezier(.2,1.2,.4,1),opacity .2s;box-shadow:0 0 0 3px var(--hit),0 14px 40px rgba(0,0,0,.6);cursor:pointer}
+.g-steps{display:flex;gap:6px;height:3px}
+.g-steps i{width:22px;height:3px;border-radius:2px;background:var(--line);transition:background .25s}
+.g-steps i.on:nth-child(1){background:var(--pink)}.g-steps i.on:nth-child(2){background:var(--green)}.g-steps i.on:nth-child(3){background:var(--blue)}
+.gacha.s-hit .g-steps i,.gacha.s-card .g-steps i{background:var(--hit)}
+.g-msg{min-height:44px;text-align:center;font-size:13.5px;color:var(--dim)}
+.g-msg b{display:block;color:var(--text);font-size:17px;line-height:1.35}
+.g-btns{display:grid;gap:8px;width:100%}
+.g-left{font-size:12px;color:var(--dim);text-align:center}
+.g-many{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;width:100%}
+.g-many button,.zk button{all:unset;display:block;position:relative;aspect-ratio:4/5;border-radius:6px;overflow:hidden;cursor:pointer;background:#1A1B1B;box-shadow:0 0 0 2px var(--c,var(--line))}
+.g-many button{opacity:0;transform:translateY(8px) scale(.9);animation:gpop .4s cubic-bezier(.2,1.2,.4,1) forwards}
+.g-many img,.zk img{width:100%;height:100%;object-fit:cover;display:block}
+.g-many .new,.zk .new{position:absolute;left:3px;top:3px;font:700 9px Oswald,sans-serif;letter-spacing:.06em;background:var(--pink);color:#1A0A0D;border-radius:3px;padding:1px 4px}
+.zg{margin-top:14px}
+.zg h3{margin:0 0 8px;font-size:13px;display:flex;align-items:center;gap:8px}
+.zg h3 i{width:10px;height:10px;border-radius:50%;background:var(--c);flex:0 0 auto;box-shadow:0 0 0 1px rgba(255,255,255,.25)}
+.zg h3 span{margin-left:auto;color:var(--dim);font:500 12px Oswald,sans-serif;font-variant-numeric:tabular-nums}
+.zk{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.zk .no{aspect-ratio:4/5;border-radius:6px;border:1px dashed var(--line);display:grid;place-items:center;color:var(--faint);font:500 14px Oswald,sans-serif}
+.zbar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:6px}
+.zbar i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--green),var(--blue))}
+.cd-big{width:100%;border-radius:10px;display:block;box-shadow:0 0 0 3px var(--c,var(--line))}
+@keyframes gspin{to{transform:rotate(360deg)}}
+@keyframes gbreathe{50%{transform:scale(.95)}}
+@keyframes gburst{from{transform:scale(1);opacity:.9}to{transform:scale(2.4);opacity:0}}
+@keyframes gpop{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.g-ring,.g-logo img,.g-many button{animation:none}.g-many button{opacity:1;transform:none}.g-card,.g-logo{transition:none}}
+
 /* 下のタブ */
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:rgba(14,14,14,.96);border-top:1px solid var(--line);
   padding-bottom:env(safe-area-inset-bottom,0px);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
@@ -361,6 +408,10 @@ footer a{color:var(--dim)}
     <h2><span class="en">SUPPORTED BY</span>協賛</h2>
     <div class="spons" id="spons"></div>
     <p class="note">SMF 2026 は、協賛のみなさまの応援で開催しています。<a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a>でも紹介しています。</p>
+
+    <h2><span class="en">RELATION</span>協力店</h2>
+    <div class="lineup" id="shops" style="margin-top:0"></div>
+    <p class="note">三軒茶屋の協力店のみなさまです。お店の紹介は<a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a>で。</p>
   </section>
 
   <!-- タイムテーブル -->
@@ -369,9 +420,7 @@ footer a{color:var(--dim)}
     <a class="artists" style="margin:0 0 12px" href="https://sangenjaya-mf.com/#artists" target="_blank" rel="noopener"><span><b>出演アーティストを見る</b><small>プロフィールは公式サイトで</small></span><span class="en">ARTISTS ↗</span></a>
     <div class="chips" id="filters" role="group" aria-label="絞り込み"></div>
     <div class="gantt" id="gantt"></div>
-    <div class="legend">
-      <span style="--c:var(--day)">DAY</span><span style="--c:var(--cross)">CROSSOVER</span><span style="--c:var(--night)">NIGHT</span><span style="--c:var(--special)">SPECIAL LIVE</span>
-    </div>
+    <p class="note" style="margin-top:8px">帯とバッジの色は、会場ごとのカラーです（公式サイトの会場MAP・アーティスト紹介と同じ色）。</p>
     <h2><span class="en">VENUES</span>会場</h2>
     <div class="cards" id="cards"></div>
     <p class="note" id="src"></p>
@@ -385,28 +434,28 @@ footer a{color:var(--dim)}
   <section class="tab" id="tab-loop" aria-labelledby="t-loop">
     <img class="loophead" src="img/loop-header.jpg" alt="SANCHA NIGHT LOOP" onerror="this.hidden=true">
     <div class="daishi" id="daishi"><p class="note" style="margin:0">あなたの台紙を読み込んでいます…</p></div>
-    <h2><span class="en">NIGHT LOOP</span>夜の協力店をめぐるスタンプラリー</h2>
+    <h2><span class="en">NIGHT LOOP</span>夜の5会場をめぐるスタンプラリー</h2>
     <div class="facts">
       <div><small>パス</small><b>¥3,000</b></div>
       <div><small>達成</small><b>4<span style="font-size:13px"> / 5店</span></b></div>
       <div><small>スタンプの時間</small><b style="font-size:14px;white-space:nowrap">13:00〜翌5:00</b></div>
     </div>
-    <p class="note">パスは紙のリストバンドで、本部と事前のチケットサイトで買えます。紙の台紙はなく、LINEの台紙を使います。</p>
+    <p class="note">パスは紙のリストバンドです。当日は NTT SQUARE・SMFオフィシャルBAR・対象の5会場で、事前はチケットサイト（ZAIKO・11/6 23:59まで）で買えます。SPECIAL LIVE のチケットにはパスが付いています。スタンプはLINEの台紙にたまります。</p>
 
     <h2><span class="en">HOW TO</span>めぐり方</h2>
     <ol class="howto">
       <li><span>LINEで「#ラリー」を送って、台紙と「わたしのQR」を出す<small>下のボタンで、文字が入った状態でトークが開きます</small></span></li>
-      <li><span>協力店でドリンクを受け取るとき、リストバンドとQRをスタッフに見せる<small>スタッフが自分のスマホで読むと、スタンプが押されます</small></span></li>
+      <li><span>対象の会場でドリンクを受け取るとき、リストバンドとQRをスタッフに見せる<small>スタッフが自分のスマホで読むと、スタンプが押されます。対象の会場では公式ドリンク「三茶ハイ」を1杯無料でお出しします（各店お一人さま1杯まで）</small></span></li>
       <li><span>5店のうち4店でスタンプが揃うと達成<small>台紙は「#ラリー」で開き直すと新しくなります</small></span></li>
-      <li><span>達成の特典は、オリジナルTシャツ<small>当日ではなく後日、FRIENDS bar &amp; lounge でお渡しします。受け取りの期間は決まり次第お知らせします</small></span></li>
+      <li><span>達成すると、抽選で40名にコラボTシャツ<small>AZUL BY MOUSSY × santafe × SMF。外れた方には SMF オリジナルタオル。サイズ・受け取り方法は後日お知らせします</small></span></li>
     </ol>
     <div style="margin-top:12px"><a class="btn primary wide" id="loopBtn" href="#">LINEで台紙を開く</a></div>
     <button class="share" type="button" data-share="loop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>一緒にまわる人を誘う</button>
     <a class="artists" style="border-left-color:var(--green)" href="https://line.me/ti/g2/lRKR0aHfsNUc7gQEdGyDQA8EBjC8boY8_I3HCQ" data-line="https://line.me/ti/g2/lRKR0aHfsNUc7gQEdGyDQA8EBjC8boY8_I3HCQ"><span><b>一緒にまわろう・ハシゴ仲間</b><small>オープンチャット。当日の待ち合わせや「今からまわる人」探しに</small></span><span class="en" style="color:var(--green)">OPEN CHAT ↗</span></a>
 
-    <h2><span class="en">STORES</span>協力店</h2>
+    <h2><span class="en">VENUES</span>対象の5会場</h2>
     <div class="stores" id="stores"></div>
-    <p class="note">夜の会場は20歳未満の方は入場できません。お酒を飲んだあとの運転はしないでください。</p>
+    <p class="note">ピザニスタ・エンニスタ、BORRACHOS の AFTER PARTY（21:30〜）は対象外です。リストバンドの譲渡・貸し借り・再発行はできません。夜の会場は20歳未満の方は入場できません。お酒を飲んだあとの運転はしないでください。</p>
 
     <p class="note">会場で会った人とQRで遊ぶ「縁日のご縁」は、下の［縁日］から。</p>
   </section>
@@ -415,39 +464,48 @@ footer a{color:var(--dim)}
   <!-- 縁日のご縁 -->
   <section class="tab" id="tab-ennichi" aria-labelledby="t-ennichi">
     <h2><span class="en">EN-NICHI</span>縁日のご縁</h2>
-    <div class="quest" style="background:linear-gradient(180deg,#121A08,#141414 60%);border-color:#2C3A14">
-      <div class="q-k" style="color:var(--green)">MEET &amp; GACHA</div>
-      <div class="q-boss">会場で会った人と、QRでご縁をためす</div>
-      <p class="q-sub" style="margin:0">話した相手とQRを読み合うと、3人に1人くらいで「ご縁あり」。ガチャを1回引けて、出たキャラは図鑑に集まります。</p>
-      <div class="facts" style="margin-top:14px">
-        <div><small>ご縁あり</small><b>約1/3</b></div>
-        <div><small>キャラ</small><b>全19種</b></div>
-        <div><small>遊べる期間</small><b style="font-size:14px;white-space:nowrap">いま〜11/8</b></div>
+    <div class="gacha" id="gacha">
+      <div class="g-stage">
+        <div class="g-logo"><span class="g-ring"></span><img src="img/smf-logo.png" alt=""></div>
+        <div class="g-card" id="gCard"><img id="gImg" alt=""></div>
       </div>
+      <div class="g-steps" id="gSteps"><i></i><i></i><i></i></div>
+      <div class="g-msg" id="gMsg" aria-live="polite">今日のご縁は、だれと・どこと？</div>
+      <div class="g-many" id="gMany" hidden></div>
+      <div class="g-btns">
+        <button class="btn primary wide" type="button" id="gPull">ご縁を引く</button>
+        <button class="btn wide" type="button" id="gAll" hidden>まとめて引く</button>
+      </div>
+      <div class="g-left" id="gLeft">読み込んでいます…</div>
     </div>
+    <button class="share" type="button" id="enScan" style="border-style:solid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M4 12h16"/></svg>会った人のQRを読む（2人とも1回ずつ引けます）</button>
+
+    <h2 id="zukanTop"><span class="en">COLLECTION</span>ご縁の図鑑</h2>
+    <div class="daishi" style="margin-top:0">
+      <div class="hd"><b id="zGot">0</b><span id="zTotal">/ 149枚</span><em id="zLeftTag"></em></div>
+      <div class="zbar"><i id="zBar" style="width:0"></i></div>
+      <div class="chips" id="zFilter" role="group" aria-label="図鑑の絞り込み" style="margin-top:12px"></div>
+      <div id="zukan"><p class="note" style="margin:10px 0 0">LINEで開くと、ここにあなたの図鑑が出ます。</p></div>
+    </div>
+
     <h2><span class="en">HOW TO</span>遊び方</h2>
     <ol class="howto">
-      <li><span>見せる人は、当日ガイドのホームのいちばん上の「わたしのQR」を出す</span></li>
-      <li><span>話した相手とおたがいOKなら、どちらか1人が下の［相手のQRを読む］で読む<small>結果はこの画面にその場で出ます。LINEのトークに送る必要はありません</small></span></li>
-      <li><span>「ご縁あり」なら2人ともガチャを1回。読まれた側は、ホームの［ガチャを引く］で引けます。はずれでも「出会いの印」がたまります</span></li>
-      <li><span>出たキャラは「#図鑑」で見られる<small>ノーマル8・レア6・激レア4・大当たり1。スタッフや協力店の人とのご縁は、レアが出やすくなります</small></span></li>
+      <li><span>［ご縁を引く］を押すと、出演者・協力店・協賛のだれか（どこか）とのご縁が1枚出る<small>ハズレはありません。輪の色が、そのご縁の色です（出演者は会場の色、協賛は白、協力店はグレー）</small></span></li>
+      <li><span>引けるのは、はじめに10回。次の日から毎日1回<small>引かなかった分は貯まります。まとめて引くこともできます</small></span></li>
+      <li><span>会場で会った人とおたがいOKなら、どちらか1人が相手の「わたしのQR」を読む<small>2人とも1回ずつ引けます。読んだ人はその場で、読まれた人はこの画面の［ご縁を引く］で。見せるQRはホームのいちばん上にあります</small></span></li>
+      <li><span>出たカードは図鑑に集まる<small>カードを押すと、会場やお店の場所を見られます。当日は、ご縁のあった出演者やお店をたずねてみてください</small></span></li>
     </ol>
-    <div class="c-foot" style="flex-wrap:wrap">
-      <a class="btn primary" id="enScan" href="#">相手のQRを読む</a>
-      <a class="btn" id="enOpen" href="#">LINEでご縁を開く</a>
-      <a class="btn" id="enBook" href="#">図鑑を見る</a>
-    </div>
     <h2><span class="en">SAFE</span>安心のための決まり</h2>
     <div class="empty" style="border-style:solid;color:var(--text)">
       <ul style="margin:0;padding-left:1.2em;display:grid;gap:4px;font-size:13px">
-        <li>BOTは名前も連絡先も出しません。分かるのは、ご縁があったかどうかだけ</li>
-        <li>QRは10分で切れます。写真を回して、会わずに合わせることはできません</li>
+        <li>QRを読み合っても、名前や連絡先は相手に出ません</li>
+        <li>QRは10分で切れます。写真を回して、会わずに引くことはできません</li>
         <li>同じ2人は1回だけ。自分のQRは読めません</li>
-        <li>休みたいときは「#ご縁 やめる」。人に読まれても合わせません（「#ご縁 参加」で戻る）</li>
-        <li>ガチャは画面の中のキャラだけで、景品や割引はありません</li>
+        <li>休みたいときは、LINEのトークで「#ご縁 やめる」。人に読まれてもご縁を結びません（「#ご縁 参加」で戻る）</li>
+        <li>カードは画面の中だけで、景品や割引はありません</li>
       </ul>
     </div>
-    <p class="note">QRを読み合うのは、おたがいがOKのときだけにしてください。</p>
+    <p class="note">QRを読み合うのは、おたがいがOKのときだけにしてください。縁日のご縁は 11月8日（日）まで。</p>
   </section>
 
   <!-- おひねりクエスト -->
@@ -464,8 +522,8 @@ footer a{color:var(--dim)}
   </section>
 
   <footer>
-    最新のお知らせは <a href="https://www.instagram.com/smf_sanyuikai/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">当日ガイド v1.7</span>
+    最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
+    <br><span id="ver">当日ガイド v2.0</span>
   </footer>
 </main>
 
@@ -492,6 +550,9 @@ const RECRUIT = true; // ボランティアスタッフ募集のカードを出�
 const CONFIG = { LIFF_ID: '2011757428-QGPFSEDi', GAS_URL: 'https://script.google.com/macros/s/AKfycbwNu0dmIaRvZva1bhMtjrEJ-8yXBjInQIC6ULOT0zPoR6GgO6ZYrXHAYzOhX-6uz69v/exec', OA_ID: '@995akvig', MAP_IMAGE: '' };
 const EVENT_DAY = '2026-11-07';
 const BAND = { DAY: ['DAY', '--day'], CROSSOVER: ['CROSSOVER', '--cross'], NIGHT: ['NIGHT', '--night'], SPECIAL: ['SPECIAL LIVE', '--special'] };
+/* 会場カラー（venues.json の color＝地色・ink＝のせる文字）。無いときだけ時間帯の色 */
+const vcol = v => v.color || `var(${BAND[v.band][1]})`;
+const vcss = v => `--c:${vcol(v)};--ink:${v.ink || '#0A0A0A'}`;
 const T0 = 11 * 60, T1 = 29 * 60;           // 11:00〜翌5:00（分）
 const $ = s => document.querySelector(s);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -571,7 +632,7 @@ function loadLiff() {
 }
 const inLine = () => !!(window.liff && liff.isInClient && liff.isInClient());
 function qrSvg(text) { const q = qrcode(0, 'M'); q.addData(text); q.make(); return q.createSvgTag({ cellSize: 6, margin: 3, scalable: true }); }
-function wallet(html) { $('#wcard').innerHTML = html; renderDaishi(); renderCrew(); renderDonate(); }
+function wallet(html) { $('#wcard').innerHTML = html; renderDaishi(); renderCrew(); renderDonate(); renderGoen(); }
 function renderMe() {
   const d = ME;
   renderDaishi(); renderCrew(); renderDonate();
@@ -579,11 +640,18 @@ function renderMe() {
   const before = t0 && now < t0;
   const dots = (d.spots || []).map(x => `<i class="${x.on ? 'on' : ''}" title="${esc(x.name)}"></i>`).join('');
   wallet(`<div class="lbl"><b>わたしのQR</b>${d.sample ? '<span class="sample">サンプル表示</span>' : ''}　お店のスタッフにも、ご縁の相手にも</div>
-    ${d.caps ? `<button class="btn primary wide" type="button" onclick="pullGacha()" style="margin:0 0 10px">ご縁のガチャを引く（${d.caps}）</button>` : ''}
+    ${d.goen && d.goen.left ? `<button class="btn primary wide" type="button" onclick="showTab('ennichi')" style="margin:0 0 10px">ご縁を引く（あと${d.goen.left}回）</button>` : !d.goen && d.caps ? `<button class="btn primary wide" type="button" onclick="pullGacha()" style="margin:0 0 10px">ご縁のガチャを引く（${d.caps}）</button>` : ''}
     <div class="qr" role="img" aria-label="わたしのQR">${qrSvg(d.qr)}</div>
     <div class="cd">${esc(d.code)}</div>
-    <div class="prog">${d.done ? '<b>達成！</b> Tシャツの受け取りは［台紙］から' : `スタンプ <b>${d.got} / ${d.goal}</b>店 ${dots}`}</div>
+    <div class="prog">${d.done ? '<b>達成！</b> 特典の受け取り方法は後日お知らせします' : `スタンプ <b>${d.got} / ${d.goal}</b>店 ${dots}`}</div>
     <div class="lbl">${before ? 'ご縁はいまから、スタンプは 11/7（土）13:00 から。' : ''}QRは開いているあいだ自動で新しくなります（${esc(fmtClock(new Date()))} 更新）</div>`);
+}
+/* ---------- 協力店（公式サイトと同じ並び。data/shops.json。店名だけ） ---------- */
+async function renderShops() {
+  const el = $('#shops'); if (!el) return;
+  let d = null; try { d = await (await fetch('data/shops.json', { cache: 'no-store' })).json(); } catch (e) { d = null; }
+  if (!d || !d.shops || !d.shops.length) { el.previousElementSibling.hidden = true; el.nextElementSibling.hidden = true; el.hidden = true; return; }
+  el.innerHTML = d.shops.map(n => `<span>${esc(n)}</span>`).join('');
 }
 /* ---------- 協賛（公式サイトと同じロゴ。data/sponsors.json） ---------- */
 async function renderSponsors() {
@@ -707,7 +775,7 @@ function renderDaishi() {
   el.innerHTML = `<div class="hd"><b>${d.got}</b><span>/ ${d.goal}店</span>${d.done ? '<em class="done">達成！</em>' : `<em>あと${Math.max(d.goal - d.got, 0)}店</em>`}</div>
     <div class="cells">${cells}</div>
     ${d.qr && !d.done ? `<div class="wcard" style="margin-top:12px"><div class="lbl"><b>お店でこのQRを見せる</b>　スタッフが読むとスタンプが押されます</div><div class="qr" style="width:min(48vw,200px)">${qrSvg(d.qr)}</div><div class="cd">${esc(d.code)}</div></div>` : ''}
-    <p class="note">${d.done ? 'Tシャツの受け取りは、LINEの台紙（「#ラリー」）のQRをFRIENDSで見せてください。' : 'スタンプは、お店のスタッフがあなたのQR（ホームのいちばん上）を読んで押します。押したあとは、開き直すと新しくなります。'}${d.sample ? '（サンプル表示）' : ''}</p>`;
+    <p class="note">${d.done ? '達成おめでとうございます。特典（抽選でコラボTシャツ／外れた方にオリジナルタオル）の受け取り方法は、後日お知らせします。' : 'スタンプは、お店のスタッフがあなたのQR（ホームのいちばん上）を読んで押します。押したあとは、開き直すと新しくなります。'}${d.sample ? '（サンプル表示）' : ''}</p>`;
 }
 const fmtClock = d => d.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Tokyo' });
 async function loadMe(force) {
@@ -759,6 +827,7 @@ async function scanQr() {
     if (!/^[#＃♯]押す/.test(text.trim()) || !CONFIG.GAS_URL || !liff.isLoggedIn()) return openLine(v); // SMFのほかのQR：送る文字が入ったトークが開く
     sheet('<div class="busy">読みとりました。確かめています…</div>');
     const d = await postApi('scan', { v: v });
+    if (d && d.ok && d.drawn && d.drawn.length) { closeSheet(); if (ME && d.goen) ME.goen = d.goen; ME_AT = 0; showTab('ennichi'); playGoen(d.drawn, 'ご縁を結びました。あなたのご縁は…'); return; }
     if (d && d.ok) { sheet(cardsHtml(d.cards) + `<button class="btn primary wide" type="button" onclick="closeSheet()">閉じる</button><button class="btn wide" type="button" onclick="scanQr()">続けて読む</button>`); loadMe(true); return; }
     const why = d && d.error === 'too many' ? '続けて読みすぎています。少し時間をおいてください。' : d && d.error === 'closed' ? 'いまはスタンプラリーと縁日のご縁を行っていません。' : 'いまはここで確かめられませんでした。LINEのトークに送って確かめます。';
     return sheet(`<p class="msg" style="margin:0">${why}</p>${d && (d.error === 'too many' || d.error === 'closed') ? '' : `<a class="btn primary wide" href="${esc(v)}" data-line="${esc(v)}">LINEのトークで送る</a>`}<button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
@@ -772,11 +841,133 @@ async function pullGacha() {
   if (d && d.ok) { if (ME) ME.caps = d.caps || 0; sheet(cardsHtml(d.cards) + `<button class="btn primary wide" type="button" onclick="closeSheet();loadMe(true)">閉じる</button>`); return; }
   sheet(`<p class="msg" style="margin:0">${d && d.error === 'none' ? '未開封のカプセルはありません。ご縁があると引けます。' : 'いまは開けられませんでした。LINEのトークで「#ラリー」を開くと引けます。'}</p><button class="btn wide" type="button" onclick="closeSheet();loadMe(true)">閉じる</button>`);
 }
+/* ---------- 縁日のご縁：ガチャと図鑑（v2.0。GAS の warifu.gs v1.0・miniapp_api.gs v0.9） ---------- */
+let CARDS = [], CARD = {}, G_BUSY = false, Z_FILTER = 'all', G_NEW = {};
+const GV = { D1: ['NTT SQUARE', '#234DA0', '青'], L: ["三軒茶屋HEAVEN'S DOOR", '#E60025', '赤'], N4: ['BORRACHOS', '#F89C22', 'オレンジ'], N3: ['梅ちゃんbar 32016', '#32B540', '緑'],
+  N1: ['FRIENDS bar & lounge', '#E24593', 'ピンク'], N2: ["Niwar's SANGENJAYA", '#5DB5E8', '水色'], N5: ['DJ BAR 天狗食堂', '#6C58B1', '紫'], D3: ['SMFオフィシャルBAR', '#8DC21F', '黄緑'], D2: ['企業ブース会場', '#8DC21F', '黄緑'] };
+const GKIND = { artist: '出演者', shop: '協力店', sponsor: '協賛' };
+const gWait = ms => new Promise(r => setTimeout(r, ms));
+const gQuick = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+const gCol = c => c.kind === 'artist' && GV[c.venue] ? [GV[c.venue][1], GV[c.venue][2]] : c.kind === 'sponsor' ? ['#FFFFFF', '白'] : ['#BEBEBE', 'グレー'];
+const gWhere = c => c.kind === 'artist' ? (GV[c.venue] || [''])[0] : c.kind === 'sponsor' ? (c.place && GV[c.place] ? 'ブース：' + GV[c.place][0] : 'SMF 2026 協賛') : '三軒茶屋の協力店';
+const gImg = (c, thumb) => `cards/${thumb ? 't/' : ''}${encodeURIComponent(c.id)}.jpg`;
+async function loadCards() {
+  try { const d = await (await fetch('data/cards.json', { cache: 'no-store' })).json(); CARDS = d.cards || []; } catch (e) { CARDS = []; }
+  CARD = {}; CARDS.forEach(c => { CARD[c.id] = c; });
+  renderGoen();
+}
+function goenOf() { return ME && !ME.sample ? ME.goen || null : null; }
+function renderGoen() {
+  const pull = $('#gPull'); if (!pull) return;
+  const g = goenOf(), all = $('#gAll'), left = $('#gLeft');
+  if (!ME || ME.sample) { pull.textContent = 'LINEで開いて引く'; all.hidden = true; left.textContent = 'LINEで開くと、ご縁を引けます。はじめに10回、次の日から毎日1回。'; }
+  else if (!g) { pull.textContent = 'ご縁を引く'; pull.disabled = true; all.hidden = true; left.textContent = 'いまは準備中です。少し待ってから開き直してください。'; }
+  else {
+    if (!G_BUSY) { pull.disabled = !g.left; pull.textContent = g.left ? 'ご縁を引く' : '今日の分は引きました'; }
+    const n = Math.min(g.left, g.bulk || 10);
+    all.hidden = !(g.left >= 2); all.textContent = `まとめて引く（${n}枚）`; if (!G_BUSY) all.disabled = false;
+    left.textContent = !g.open ? '縁日のご縁は終了しました。たくさんのご縁を、ありがとうございました。'
+      : g.left ? `いま引けるのは あと ${g.left} 回（毎日1回・引かなかった分は貯まります）` : '次の1回は、あした。会場で会った人とQRを読み合うと、その場で引けます。';
+  }
+  renderZukan();
+}
+function gReset() { const el = $('#gacha'); el.classList.remove('s-spin', 's-hit', 's-card', 's-many'); document.querySelectorAll('#gSteps i').forEach(i => i.classList.remove('on')); $('#gMany').hidden = true; $('#gMany').innerHTML = ''; }
+function gPreload(src) { return new Promise(r => { const im = new Image(); im.onload = im.onerror = () => r(); im.src = src; setTimeout(r, 2500); }); }
+/** 引いたカードを、輪の演出で出す（1枚＝大きく／2枚以上＝輪は1回で、並べて出す） */
+async function playGoen(cards, lead) {
+  const el = $('#gacha'), q = gQuick(); if (!el || !cards || !cards.length) return;
+  G_BUSY = true; $('#gPull').disabled = true; $('#gAll').disabled = true;
+  if (el.classList.contains('s-card') || el.classList.contains('s-many')) { gReset(); await gWait(q ? 0 : 300); }
+  cards = cards.map(c => Object.assign({}, CARD[c.id] || {}, c));
+  cards.forEach(c => { if (c.isNew) G_NEW[c.id] = 1; });
+  const one = cards.length === 1, c0 = cards[0], col = one ? gCol(c0) : ['#FFFFFF', ''];
+  el.style.setProperty('--hit', col[0]);
+  el.classList.add('s-spin'); $('#gMsg').textContent = lead || 'ご縁を探しています…';
+  const pre = one ? gPreload(gImg(c0)) : Promise.all(cards.map(c => gPreload(gImg(c, true))));
+  for (const d of document.querySelectorAll('#gSteps i')) { await gWait(q ? 0 : 460); d.classList.add('on'); }
+  await Promise.all([pre, gWait(q ? 0 : 380)]);
+  el.classList.remove('s-spin'); el.classList.add('s-hit');
+  $('#gMsg').innerHTML = one ? `<b>${esc(col[1])}のご縁！</b>` : `<b>${cards.length}枚のご縁！</b>`;
+  try { if (navigator.vibrate) navigator.vibrate(40); } catch (e) { /* 震えない端末 */ }
+  await gWait(q ? 0 : 720);
+  if (one) {
+    const im = $('#gImg'); im.src = gImg(c0); im.alt = c0.name; $('#gCard').onclick = () => cardDetail(c0.id);
+    el.classList.add('s-card');
+    $('#gMsg').innerHTML = `<b>${esc(c0.name)}</b>${esc(GKIND[c0.kind] || '')}｜${esc(gWhere(c0))}${c0.isNew === false ? '（もう持っているカード）' : ''}`;
+  } else {
+    el.classList.remove('s-hit'); el.classList.add('s-many'); // 輪をしまって、カードを並べる
+    const m = $('#gMany'); m.hidden = false;
+    m.innerHTML = cards.map((c, i) => `<button type="button" data-card="${esc(c.id)}" style="--c:${gCol(c)[0]};animation-delay:${q ? 0 : i * 70}ms" aria-label="${esc(c.name)}"><img src="${esc(gImg(c, true))}" alt="">${c.isNew === false ? '' : '<span class="new">NEW</span>'}</button>`).join('');
+    const k = { artist: 0, shop: 0, sponsor: 0 }; cards.forEach(c => { k[c.kind] = (k[c.kind] || 0) + 1; });
+    $('#gMsg').innerHTML = `<b>${cards.length}枚のご縁</b>出演者 ${k.artist}・協力店 ${k.shop}・協賛 ${k.sponsor}　カードを押すと大きく見られます`;
+  }
+  await gWait(q ? 0 : 450);
+  G_BUSY = false; renderGoen();
+}
+async function pullGoen(n) {
+  if (G_BUSY) return;
+  if (!(await loadLiff()) || !liff.isLoggedIn() || !CONFIG.GAS_URL) { if (CONFIG.LIFF_ID) openLine(APP_URL() + '?tab=ennichi'); return; }
+  const g = goenOf(); if (!g || !g.left) return renderGoen();
+  G_BUSY = true; $('#gPull').disabled = true; $('#gAll').disabled = true;
+  const el = $('#gacha'); if (el.classList.contains('s-card') || el.classList.contains('s-many')) gReset();
+  el.classList.add('s-spin'); $('#gMsg').textContent = 'ご縁を探しています…';
+  const d = await postApi('pull', { n: n });
+  G_BUSY = false;
+  if (d && d.ok && d.cards && d.cards.length) { if (ME) { ME.goen = d.goen || ME.goen; ME.caps = d.goen ? d.goen.left : 0; } ME_AT = 0; return playGoen(d.cards); }
+  gReset(); if (d && d.goen && ME) ME.goen = d.goen;
+  $('#gMsg').textContent = d && d.error === 'none' ? 'いま引ける回数はありません。' : d && d.error === 'closed' ? '縁日のご縁は、いまは行っていません。' : d && d.error === 'too many' ? '続けて引きすぎています。少し時間をおいてください。' : 'いまは引けませんでした。少し待って、もう一度お試しください。';
+  renderGoen();
+}
+/** 図鑑：出演者は会場ごと（会場の色）、協力店、協賛 */
+function renderZukan() {
+  const box = $('#zukan'); if (!box) return;
+  const g = goenOf(), have = {}; (g && g.mine || []).forEach(id => { have[id] = 1; });
+  const total = CARDS.length || (g && g.total) || 149, got = CARDS.length ? CARDS.filter(c => have[c.id]).length : (g ? g.got : 0);
+  $('#zGot').textContent = got; $('#zTotal').textContent = `/ ${total}枚`; $('#zBar').style.width = (total ? got / total * 100 : 0).toFixed(1) + '%';
+  $('#zLeftTag').textContent = g && g.left ? `あと${g.left}回 引けます` : '';
+  const F = [['all', 'すべて'], ['artist', '出演者'], ['shop', '協力店'], ['sponsor', '協賛'], ['mine', '持っている']];
+  $('#zFilter').innerHTML = F.map(([k, l]) => `<button class="chip" type="button" data-z="${k}" aria-pressed="${Z_FILTER === k}">${l}</button>`).join('');
+  if (!CARDS.length) { box.innerHTML = '<p class="note" style="margin:10px 0 0">図鑑を読み込めませんでした。開き直してください。</p>'; return; }
+  if (!g) { box.innerHTML = '<p class="note" style="margin:10px 0 0">LINEで開くと、ここにあなたの図鑑が出ます。</p>'; return; }
+  const groups = ['D1', 'L', 'N4', 'N3', 'N1', 'N2', 'N5'].map(v => ({ k: 'artist', title: GV[v][0], c: GV[v][1], list: CARDS.filter(c => c.kind === 'artist' && c.venue === v) }))
+    .concat([{ k: 'shop', title: '協力店', c: '#BEBEBE', list: CARDS.filter(c => c.kind === 'shop') }, { k: 'sponsor', title: '協賛', c: '#FFFFFF', list: CARDS.filter(c => c.kind === 'sponsor') }]);
+  box.innerHTML = groups.filter(x => Z_FILTER === 'all' || Z_FILTER === 'mine' || Z_FILTER === x.k).map(x => {
+    const mine = x.list.filter(c => have[c.id]); if (Z_FILTER === 'mine' && !mine.length) return '';
+    const cells = (Z_FILTER === 'mine' ? mine : x.list).map(c => have[c.id]
+      ? `<button type="button" data-card="${esc(c.id)}" style="--c:${x.c}" aria-label="${esc(c.name)}"><img src="${esc(gImg(c, true))}" alt="" loading="lazy">${G_NEW[c.id] ? '<span class="new">NEW</span>' : ''}</button>`
+      : '<div class="no" aria-hidden="true">?</div>').join('');
+    return `<div class="zg" style="--c:${x.c}"><h3><i></i>${esc(x.title)}<span>${mine.length} / ${x.list.length}</span></h3><div class="zk">${cells}</div></div>`;
+  }).join('') || '<p class="note" style="margin:10px 0 0">まだカードがありません。上の［ご縁を引く］から。</p>';
+}
+/** カードを大きく見る。出演者は会場へ、協力店は地図へ */
+function cardDetail(id) {
+  const c = CARD[id]; if (!c) return;
+  const col = gCol(c);
+  const vcode = c.kind === 'artist' ? c.venue : c.place;
+  const go = vcode && VENUES.some(v => v.code === vcode) ? `<button class="btn primary wide" type="button" onclick="goVenue('${esc(vcode)}')">${c.kind === 'artist' ? '会場と時間を見る' : 'ブースの会場を見る'}</button>`
+    : c.kind === 'shop' ? `<a class="btn primary wide" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.name + ' 三軒茶屋')}" target="_blank" rel="noopener">地図で開く ↗</a>` : '';
+  sheet(`<img class="cd-big" style="--c:${col[0]}" src="${esc(gImg(c))}" alt="${esc(c.name)}"><div class="rc" style="margin-top:10px"><div class="b"><div class="k">${esc(col[1])}のご縁 ・ ${esc(GKIND[c.kind] || '')}</div><h3>${esc(c.name)}</h3><p>${esc(gWhere(c))}</p></div></div>${go}<button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
+}
+function goVenue(code) {
+  closeSheet(); FILTER = 'ALL'; showTab('time'); renderFilters(); renderTimetable();
+  const i = VENUES.findIndex(v => v.code === code), el = document.getElementById('v' + i);
+  if (el) setTimeout(() => { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1400); }, 80);
+}
+function bindGoen() {
+  $('#gPull').onclick = () => { if (!ME || ME.sample) { if (CONFIG.LIFF_ID) openLine(APP_URL() + '?tab=ennichi'); return; } pullGoen(1); };
+  $('#gAll').onclick = () => { const g = goenOf(); if (g) pullGoen(Math.min(g.left, g.bulk || 10)); };
+  document.addEventListener('click', e => {
+    const z = e.target.closest('[data-z]'); if (z) { Z_FILTER = z.dataset.z; return renderZukan(); }
+    const b = e.target.closest('[data-card]'); if (b) cardDetail(b.dataset.card);
+  });
+  loadCards();
+}
+
 function bindWallet() {
   const on = (id, fn) => { const a = $(id); a.onclick = e => { e.preventDefault(); fn(); }; };
   on('#actScan', scanQr);
   on('#actCard', () => { showTab('loop'); loadMe(true); });
-  on('#actBook', () => openLine(oaMsg('#図鑑')));
+  on('#actBook', () => { showTab('ennichi'); const z = $('#zukanTop'); if (z) setTimeout(() => z.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60); });
   on('#actQuest', () => showTab('quest'));
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') loadMe(); });
   setInterval(() => { if (document.visibilityState === 'visible' && $('#tab-home').classList.contains('on')) loadMe(); }, 60000);
@@ -833,14 +1024,13 @@ function renderLoop() {
   const m = eventMinutes(), live = m >= T0 && m < T1;
   $('#stores').innerHTML = VENUES.filter(v => v.loop).map(v => {
     const open = live && isOpen(v, m);
-    return `<a class="store" href="${mapUrl(v)}" target="_blank" rel="noopener" style="--c:var(${BAND[v.band][1]})">
+    return `<a class="store" href="${mapUrl(v)}" target="_blank" rel="noopener" style="${vcss(v)}">
       <span class="code">${esc(v.code)}</span>
       <span class="t">${esc(v.name)}<small>${esc(hm(min(v.start)))}〜${esc(hm(min(v.end)))}${v.genre ? '　' + esc(v.genre) : ''}</small></span>
       ${live ? `<span class="open${open ? ' live' : ''}">${open ? '営業中' : '時間外'}</span>` : '<span aria-hidden="true">↗</span>'}</a>`;
   }).join('') || '<div class="empty">協力店の情報は準備中です。</div>';
   const lb = $('#loopBtn'); lb.href = oaMsg('#ラリー'); lb.dataset.line = lb.href;
-  [['#enOpen', oaMsg('#ご縁')], ['#enBook', oaMsg('#図鑑')]].forEach(([id, u]) => { const a = $(id); a.href = u; a.dataset.line = u; });
-  { const a = $('#enScan'); a.href = '#'; a.onclick = e => { e.preventDefault(); scanQr(); }; }
+  { const a = $('#enScan'); if (a) a.onclick = e => { e.preventDefault(); scanQr(); }; }
 }
 
 const mapUrl = v => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(v.address + ' ' + v.name);
@@ -864,7 +1054,7 @@ function renderStatus() {
 
 /* ---------- タイムテーブル ---------- */
 function renderFilters() {
-  const items = [['ALL', 'すべて', '']].concat(Object.keys(BAND).map(k => [k, BAND[k][0], BAND[k][1]])).concat([['LOOP', 'NIGHT LOOP', '--pink']]);
+  const items = [['ALL', 'すべて', '']].concat(Object.keys(BAND).map(k => [k, BAND[k][0], ''])).concat([['LOOP', 'NIGHT LOOP', '']]);
   $('#filters').innerHTML = items.map(([k, label, c]) =>
     `<button class="chip" data-f="${k}" aria-pressed="${FILTER === k}">${c ? `<span class="sw" style="background:var(${c})"></span>` : ''}${esc(label)}</button>`).join('');
   $('#filters').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; FILTER = b.dataset.f; renderFilters(); renderTimetable(); };
@@ -880,8 +1070,8 @@ function renderTimetable() {
   const nowTag = m >= T0 && m <= T1 ? `<b class="nowtag" style="left:${pct(m)}">NOW ${hm(m)}</b>` : '';
   let html = `<div class="g-axis"><div></div><div class="ticks">${ticks.map(h => `<span style="left:${pct(h * 60)}">${h >= 24 ? h - 24 : h}</span>`).join('')}${nowTag}</div></div>`;
   VENUES.forEach((v, i) => {
-    const s = min(v.start), e = min(v.end), c = BAND[v.band][1];
-    const bar = s != null ? `<i class="g-bar" style="left:${pct(s)};width:calc(${pct(e)} - ${pct(s)});background:var(${c})"></i>` : `<span class="g-tbd">時間は調整中</span>`;
+    const s = min(v.start), e = min(v.end), c = vcol(v);
+    const bar = s != null ? `<i class="g-bar" style="left:${pct(s)};width:calc(${pct(e)} - ${pct(s)});background:${c}"></i>` : `<span class="g-tbd">時間は調整中</span>`;
     html += `<div class="g-row${match(v) ? '' : ' dim'}" data-i="${i}" title="${esc(v.name)}"><div class="g-name"><b>${esc(v.code)}</b>${esc(v.short || v.name)}</div><div class="g-track">${grid}${bar}${nowLine}</div></div>`;
   });
   $('#gantt').innerHTML = html;
@@ -894,7 +1084,7 @@ function card(v, i, m) {
   const time = v.start ? `${v.start}〜${hm(min(v.end))}` : (v.note || '調整中');
   const live = isOpen(v, m);
   const sets = (v.sets || []).length ? `<div class="sets">${v.sets.map(s => `<div><time>${esc(s.time)}</time><span>${esc(s.artist)}</span></div>`).join('')}</div>` : '';
-  return `<article class="card" id="v${i}" style="--c:var(${c})">
+  return `<article class="card" id="v${i}" style="${vcss(v)}">
     <div class="c-head"><div class="code">${esc(v.code)}</div>
       <div class="c-title"><h3>${esc(v.name)}${v.loop ? '<span class="badge">NIGHT LOOP</span>' : ''}</h3><p>${esc(v.sub)}・${esc(BAND[v.band][0])}</p></div>
       <span class="open${live ? ' live' : ''}">${live ? '開催中' : esc(time)}</span></div>
@@ -912,7 +1102,7 @@ function renderMap() {
     : `<div class="empty">会場MAPは準備中です。いまは、下の一覧から地図アプリで開けます。</div>`;
   const seen = {};
   $('#plist').innerHTML = VENUES.filter(v => !seen[v.address] && (seen[v.address] = 1)).map(v =>
-    `<a class="prow" href="${mapUrl(v)}" target="_blank" rel="noopener" style="--c:var(${BAND[v.band][1]});text-decoration:none">
+    `<a class="prow" href="${mapUrl(v)}" target="_blank" rel="noopener" style="${vcss(v)};text-decoration:none">
       <span class="code">${esc(v.code)}</span><span class="t">${esc(v.name)}<small>${esc(v.address)}</small></span><span aria-hidden="true">↗</span></a>`).join('');
 }
 
@@ -973,7 +1163,7 @@ function showTab(name) {
   document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
   window.scrollTo(0, 0);
   if (name === 'quest') loadQuest();
-  if (name === 'loop' || name === 'home' || name === 'quest') loadMe();
+  if (name === 'loop' || name === 'home' || name === 'quest' || name === 'ennichi') loadMe();
   try { history.replaceState(null, '', '#' + name); } catch (e) { /* 表示は変わる */ }
 }
 document.querySelector('nav.tabs').onclick = e => { const b = e.target.closest('button'); if (b) showTab(b.dataset.tab); };
@@ -981,14 +1171,15 @@ document.querySelector('nav.tabs').onclick = e => { const b = e.target.closest('
 /* ---------- はじめ ---------- */
 async function boot() {
   try { VENUES = (await (await fetch('data/venues.json', { cache: 'no-store' })).json()).venues; } catch (e) { VENUES = window.VENUES_INLINE || []; }
-  try { $('#src').textContent = '出どころ：公式サイト sangenjaya-mf.com（2026-09-27時点）。変更があればこの画面を更新します。'; } catch (e) { }
-  renderHome(); renderLoop(); renderSponsors(); renderFilters(); renderTimetable(); renderMap(); renderStatus();
+  VENUES.sort((a, b) => { const x = min(a.start), y = min(b.start); return (x == null ? 9999 : x) - (y == null ? 9999 : y); }); // 開演時間の早い順（同じ時刻は venues.json の並びのまま）
+  try { $('#src').textContent = '出どころ：公式サイト sangenjaya-mf.com（2026-10-10時点）。変更があればこの画面を更新します。'; } catch (e) { }
+  renderHome(); renderLoop(); renderSponsors(); renderShops(); renderFilters(); renderTimetable(); renderMap(); renderStatus();
   const qs = new URLSearchParams(location.search), st = qs.get('liff.state');
   const first = qs.get('tab') || (st ? new URLSearchParams(st.replace(/^[^?]*\?/, '')).get('tab') : '') || (location.hash || '').replace('#', '');
   if (['home', 'time', 'loop', 'ennichi', 'quest'].indexOf(first) >= 0) showTab(first); else if (first === 'map') showTab('time');
   setInterval(() => { renderStatus(); renderTimetable(); renderLoop(); }, 60000);
   setInterval(() => { if ($('#tab-quest').classList.contains('on')) loadQuest(); }, 30000);
-  bindWallet(); bindVoice();
+  bindWallet(); bindVoice(); bindGoen();
 }
 boot();
 </script>
