@@ -361,6 +361,9 @@ details.crew .in{padding:0 14px 14px;display:grid;gap:12px}
 
 /* NIGHT LOOP */
 .loophead{width:100%;max-width:100%;aspect-ratio:2/1;object-fit:cover;border-radius:var(--r);border:1px solid var(--line);display:block;margin-top:16px;background:var(--panel)}
+/* 公式サイトの同じ章へのリンク（見出しの右。v3.7） */
+h2 .sitelk{float:right;font:500 11px "Zen Kaku Gothic New",sans-serif;letter-spacing:.02em;color:var(--dim);text-decoration:none;margin-top:6px;padding:2px 0 2px 8px}
+h2 .sitelk:after{content:" →"}
 /* チケット（ZAIKO）への入口（v3.4）。販売の期限を過ぎたら、ボタンを「販売は終了しました」に変える */
 .tk{margin-top:14px;border:1px solid #E60025;border-radius:16px;background:linear-gradient(180deg,#1A0A0D,#0E0E0E);padding:14px}
 .tk .hd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.tk .hd b{font:700 19px Oswald,"Zen Kaku Gothic New",sans-serif;letter-spacing:.06em}.tk .hd span{font-size:12px;color:#FF8A96;font-weight:700}
@@ -540,7 +543,7 @@ footer a{color:var(--dim)}
       </form>
     </div>
 
-    <h2><span class="en">HOW TO ENJOY</span>SMFの楽しみ方</h2>
+    <h2 id="sec-howto"><span class="en">HOW TO ENJOY</span>SMFの楽しみ方</h2>
     <p class="hte-lead">SMFはひとつの会場で完結するフェスではありません。三軒茶屋の街そのものが会場です。時間帯によって開いている場所と楽しみ方が変わります。決められた順番はありません。</p>
     <div class="hte" id="hte"></div>
     <div class="money">
@@ -563,34 +566,34 @@ footer a{color:var(--dim)}
 
     <button class="pzstrip" type="button" onclick="showTab('loop');setTimeout(()=>{const t=document.getElementById('sanchahigh');if(t)t.scrollIntoView({behavior:'smooth',block:'start'})},250)"><img src="img/sanchahigh.webp" alt="" loading="lazy"><span><b>1800レポサド「三茶ハイ」</b><small>すずらん通りで、昼から深夜まで。ピザニスタ／エンニスタ（周遊とは別の企画）</small></span></button>
 
-    <h2><span class="en">ARCHIVE</span>これまでのSMF</h2>
+    <h2 id="sec-archive"><span class="en">ARCHIVE</span>これまでのSMF</h2>
     <p class="note" style="margin:0 0 10px">2025年9月20日・21日、三軒茶屋。ヤグラのステージから、茶沢通りのマーケット、夜のフロアまで。押すと再生します（音が出ます）。</p>
     <div class="arc" id="arc"></div>
 
-    <h2><span class="en">SPONSORSHIP</span>協賛</h2>
+    <h2 id="sec-sponsor"><span class="en">SPONSORSHIP</span>協賛</h2>
     <div class="spons" id="spons"></div>
     <p class="note">2026年の協賛が決まった企業・ブランドです。SMF 2026 は、協賛のみなさまの応援で開催しています。ロゴを押すと、各社のサイトが開きます。</p>
 
-    <h2><span class="en">RELATIONSHIP</span>協力店</h2>
+    <h2 id="sec-shops"><span class="en">RELATIONSHIP</span>協力店</h2>
     <p class="note" style="margin:0 0 10px">SMF2026 に協力いただいている三軒茶屋のお店、<span id="shopsN">31</span>店。お店を押すと、Instagram と地図を開けます。</p>
     <div class="rel" id="shops"></div>
-    <h2><span class="en">AREA MAP</span>エリアマップ</h2>
+    <h2 id="sec-areamap"><span class="en">AREA MAP</span>エリアマップ</h2>
     <p class="note" style="margin:0 0 10px">主会場9か所と、まちなかの協力店31店（白い番号）。ピンや番号を押すと、くわしい情報が出ます（地図は横に動かせます）。番号は上の協力店の番号と同じです。</p>
     <div class="amap" data-amap></div>
   </section>
 
   <!-- タイムテーブル -->
   <section class="tab" id="tab-time" aria-labelledby="t-time">
-    <h2><span class="en">TIMETABLE</span>時間と会場</h2>
+    <h2 id="sec-timetable"><span class="en">TIMETABLE</span>時間と会場</h2>
     <a class="artists" style="margin:0 0 12px" href="https://sangenjaya-mf.com/#artists" target="_blank" rel="noopener"><span><b>出演アーティストを見る</b><small>プロフィールは公式サイトで</small></span><span class="en">ARTISTS ↗</span></a>
     <div class="chips" id="filters" role="group" aria-label="絞り込み"></div>
     <div class="gantt" id="gantt"></div>
     <p class="note" style="margin-top:8px">帯とバッジの色は、会場ごとのカラーです（公式サイトの会場MAP・アーティスト紹介と同じ色）。</p>
-    <h2><span class="en">VENUES</span>会場</h2>
+    <h2 id="sec-venues"><span class="en">VENUES</span>会場</h2>
     <div class="cards" id="cards"></div>
     <p class="note" id="src"></p>
 
-    <h2><span class="en">MAP</span>会場MAP</h2>
+    <h2 id="sec-map"><span class="en">MAP</span>会場MAP</h2>
     <p class="note" style="margin:0 0 10px">三軒茶屋駅を中心に、主会場9か所が徒歩圏に並びます。ピンを押すと会場の情報、白い番号を押すと協力店の情報が出ます。</p>
     <div class="amap" data-amap id="map"></div>
     <div class="plist" id="plist"></div>
@@ -600,7 +603,7 @@ footer a{color:var(--dim)}
   <section class="tab" id="tab-loop" aria-labelledby="t-loop">
     <img class="loophead" src="img/loop-header.jpg" alt="SANCHA NIGHT LOOP" onerror="this.hidden=true">
     <div class="daishi" id="daishi"><p class="note" style="margin:0">あなたの台紙を読み込んでいます…</p></div>
-    <h2><span class="en">NIGHT LOOP</span>夜の5会場をめぐるスタンプラリー</h2>
+    <h2 id="sec-loop"><span class="en">NIGHT LOOP</span>夜の5会場をめぐるスタンプラリー</h2>
     <div class="facts">
       <div><small>パス</small><b>¥3,000</b></div>
       <div><small>達成</small><b>4<span style="font-size:13px"> / 5店</span></b></div>
@@ -619,7 +622,7 @@ footer a{color:var(--dim)}
     <button class="share" type="button" data-share="loop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>一緒にまわる人を誘う</button>
     <a class="artists" style="border-left-color:var(--green)" href="https://line.me/ti/g2/lRKR0aHfsNUc7gQEdGyDQA8EBjC8boY8_I3HCQ" data-line="https://line.me/ti/g2/lRKR0aHfsNUc7gQEdGyDQA8EBjC8boY8_I3HCQ"><span><b>一緒にまわろう・ハシゴ仲間</b><small>オープンチャット。当日の待ち合わせや「今からまわる人」探しに</small></span><span class="en" style="color:var(--green)">OPEN CHAT ↗</span></a>
 
-    <h2><span class="en">DRINK</span>公式ドリンク</h2>
+    <h2 id="sec-drink"><span class="en">DRINK</span>公式ドリンク</h2>
     <div class="drink" style="margin-top:0">
       <img src="img/drink-sanchahigh.jpg" alt="三茶ハイ SANCHA HIGH / 1800 レポサド" loading="lazy">
       <div class="in">
@@ -631,7 +634,7 @@ footer a{color:var(--dim)}
       </div>
     </div>
 
-    <h2><span class="en">VENUES</span>対象の5会場</h2>
+    <h2 id="sec-loopvenues"><span class="en">VENUES</span>対象の5会場</h2>
     <div class="stores" id="stores"></div>
     <p class="note">ピザニスタ・エンニスタ、BORRACHOS の AFTER PARTY（21:30〜）は対象外です。リストバンドの譲渡・貸し借り・再発行はできません。夜の会場は20歳未満の方は入場できません。お酒を飲んだあとの運転はしないでください。</p>
 
@@ -728,7 +731,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">SMF 2026 アプリ v3.6</span>
+    <br><span id="ver">SMF 2026 アプリ v3.7</span>
   </footer>
 </main>
 
@@ -778,6 +781,26 @@ function eventMinutes() {
 }
 function isOpen(v, m) { const s = min(v.start), e = min(v.end); return s != null && e != null && m >= s && m < e; }
 
+/* ---------- 公式サイトとの行き来（v3.7） ----------
+   サイト → アプリ：https://miniapp.line.me/<LIFF ID>?tab=loop&go=entry のように、タブ（tab）と場所（go）を付けて開く
+   アプリ → サイト：見出しの右の「公式サイト」から、サイトの同じ章（#loop など）へ */
+const SITE = 'https://sangenjaya-mf.com/';
+const SITE_SEC = { 'sec-howto': 'howto', 'sec-archive': 'archive', 'sec-sponsor': 'sponsor', 'sec-shops': 'relationship', 'sec-areamap': 'map', 'sec-timetable': 'artists', 'sec-venues': 'venues', 'sec-map': 'access', 'sec-loop': 'loop' };
+const GO = { qr: ['home', 'wallet'], ticket: ['home', 'ticket'], howto: ['home', 'sec-howto'], archive: ['home', 'sec-archive'], sponsor: ['home', 'sec-sponsor'], shops: ['home', 'sec-shops'], areamap: ['home', 'sec-areamap'], voice: ['home', 'voice'],
+  timetable: ['time', 'sec-timetable'], venues: ['time', 'sec-venues'], map: ['time', 'sec-map'],
+  daishi: ['loop', 'daishi'], entry: ['loop', 'daishi'], drink: ['loop', 'sec-drink'], loopvenues: ['loop', 'sec-loopvenues'], sanchahigh: ['loop', 'sanchahigh'],
+  gacha: ['ennichi', 'gacha'], collection: ['ennichi', 'zukanTop'], quest: ['quest', ''] };
+function renderSiteLinks() {
+  Object.keys(SITE_SEC).forEach(id => { const h = document.getElementById(id); if (!h || h.querySelector('.sitelk')) return;
+    const a = document.createElement('a'); a.className = 'sitelk'; a.href = SITE + '#' + SITE_SEC[id]; a.target = '_blank'; a.rel = 'noopener'; a.textContent = '公式サイト'; h.appendChild(a); });
+}
+function goTo(key) {
+  const g = GO[key]; if (!g) return false;
+  if (key === 'entry') WANT_ENTRY = true;
+  showTab(g[0]);
+  if (g[1] && key !== 'entry') { const jump = () => { const t = document.getElementById(g[1]); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }; setTimeout(jump, 350); setTimeout(jump, 1400); /* 絵が出て高さが変わったあとに、もう一度 */ }
+  return true;
+}
 /* ---------- チケット（ZAIKO）。販売の期限を過ぎたら、入口を閉じる（v3.4） ---------- */
 const TICKET = { url: 'https://sangenjaya-mf.zaiko.io/ja/e/smaf-2026', until: '2026-11-06T23:59:59+09:00' };
 const ticketOpen = () => Date.now() <= new Date(TICKET.until).getTime();
@@ -1586,8 +1609,13 @@ async function boot() {
   renderHome(); renderHowto(); renderArchive(); renderLoop(); renderSponsors(); renderShops(); renderFilters(); renderTimetable(); renderMap(); renderStatus();
   const qs = new URLSearchParams(location.search), st = qs.get('liff.state');
   const first = qs.get('tab') || (st ? new URLSearchParams(st.replace(/^[^?]*\?/, '')).get('tab') : '') || (location.hash || '').replace('#', '');
-  if (first === 'loop') WANT_ENTRY = true;
-  if (['home', 'time', 'loop', 'ennichi', 'quest'].indexOf(first) >= 0) showTab(first); else if (first === 'map') showTab('time');
+  const goKey = qs.get('go') || (st ? new URLSearchParams(st.replace(/^[^?]*\?/, '')).get('go') : '') || '';
+  renderSiteLinks();
+  if (goKey && goTo(goKey)) { /* 公式サイトなどから、場所を指定して開いた（v3.7） */ }
+  else {
+    if (first === 'loop') WANT_ENTRY = true;
+    if (['home', 'time', 'loop', 'ennichi', 'quest'].indexOf(first) >= 0) showTab(first); else if (first === 'map') showTab('time');
+  }
   setInterval(() => { renderStatus(); renderTimetable(); renderLoop(); }, 60000);
   setInterval(() => { if ($('#tab-quest').classList.contains('on')) loadQuest(); }, 30000);
   bindWallet(); bindVoice(); bindGoen(); bindEntry(); renderTicket();
