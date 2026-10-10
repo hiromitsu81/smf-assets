@@ -74,7 +74,7 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 /* 会場のカード */
 .cards{display:grid;gap:12px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px;scroll-margin-top:90px}
-.card.flash{outline:2px solid var(--pink)}
+.card.flash,.entry.flash{outline:2px solid var(--pink)}
 .c-head{display:flex;gap:10px;align-items:flex-start}
 .code{flex:0 0 auto;min-width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font:700 16px Oswald,sans-serif;color:var(--ink,#0A0A0A);background:var(--c)}
 .card{border-left:6px solid var(--c,var(--line))}
@@ -634,7 +634,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">当日ガイド v2.7</span>
+    <br><span id="ver">当日ガイド v2.7.1</span>
   </footer>
 </main>
 
@@ -913,9 +913,9 @@ function renderDaishi() {
   el.innerHTML = `<div class="hd"><b>${d.got}</b><span>/ ${d.goal}店</span>${d.done ? '<em class="done">達成！</em>' : `<em>あと${Math.max(d.goal - d.got, 0)}店</em>`}</div>
     <div class="cells">${cells}</div>
     ${d.qr && !d.done ? `<div class="wcard" style="margin-top:12px"><div class="lbl"><b>お店でこのQRを見せる</b>　スタッフが読むとスタンプが押されます</div><div class="qr" style="width:min(48vw,200px)">${qrSvg(d.qr)}</div><div class="cd">${esc(d.code)}</div></div>` : ''}
-    ${prizeHtml(d)}
-    ${d.done ? entryHtml(d) : ''}
+    ${d.done ? entryHtml(d) + prizeHtml(d) : prizeHtml(d)}
     <p class="note">${d.done ? '達成おめでとうございます。' : 'スタンプは、お店のスタッフがあなたのQR（ホームのいちばん上）を読んで押します。押したあとは、開き直すと新しくなります。'}${d.sample ? '（サンプル表示）' : ''}</p>`;
+  if (WANT_ENTRY && d.done && !d.sample) { const bx = el.querySelector('.entry'); if (bx) { WANT_ENTRY = false; setTimeout(() => { bx.scrollIntoView({ behavior: 'smooth', block: 'center' }); bx.classList.add('flash'); setTimeout(() => bx.classList.remove('flash'), 1400); }, 250); } }
 }
 /* ---------- 達成特典のTシャツを、達成の前から見せる（v2.7。絵はサイトの NIGHT LOOP と同じ背面の絵） ---------- */
 const PRIZE_IMG = 'img/prize-tee.webp', PRIZE_NAME = 'AZUL BY MOUSSY × santafe × SMF';
@@ -1428,13 +1428,16 @@ function renderQuest(d, sample) {
 const SAMPLE_OUEN = { sample: true, title: 'SMF おひねりクエスト', total: 0, people: 0, stage: { i: 0, name: '三茶の門番', goal: 100000, left: 100000, hpPct: 100, clear: false }, bosses: [{ name: '三茶の門番', goal: 100000 }], ranking: [], updated: new Date().toISOString() };
 
 /* ---------- タブ ---------- */
+let CUR_TAB = 'home', WANT_ENTRY = false;   // WANT_ENTRY：LINEの達成カードの［応募］から来たとき、応募の箱まで送る（1回だけ）
 function showTab(name) {
   document.querySelectorAll('section.tab').forEach(s => s.classList.toggle('on', s.id === 'tab-' + name));
   document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
   window.scrollTo(0, 0);
   if (name === 'quest') loadQuest();
   if (name === 'loop' || name === 'home' || name === 'quest' || name === 'ennichi') loadMe();
-  try { history.replaceState(null, '', '#' + name); } catch (e) { /* 表示は変わる */ }
+  // v2.7.1：URL（#タブ名）を書き換えるのは、LIFF の初期化が終わってから。先に書き換えると、LINE が付けたログインの情報が消えて、台紙が出ないことがある
+  CUR_TAB = name;
+  loadLiff().then(() => { try { history.replaceState(null, '', location.pathname + location.search + '#' + CUR_TAB); } catch (e) { /* 表示は変わる */ } });
   if (AMAP_MID) setTimeout(AMAP_MID, 30);
   document.querySelectorAll('#arc video').forEach(x => { x.pause(); x.parentNode.classList.remove('on'); });
 }
@@ -1448,6 +1451,7 @@ async function boot() {
   renderHome(); renderHowto(); renderArchive(); renderLoop(); renderSponsors(); renderShops(); renderFilters(); renderTimetable(); renderMap(); renderStatus();
   const qs = new URLSearchParams(location.search), st = qs.get('liff.state');
   const first = qs.get('tab') || (st ? new URLSearchParams(st.replace(/^[^?]*\?/, '')).get('tab') : '') || (location.hash || '').replace('#', '');
+  if (first === 'loop') WANT_ENTRY = true;
   if (['home', 'time', 'loop', 'ennichi', 'quest'].indexOf(first) >= 0) showTab(first); else if (first === 'map') showTab('time');
   setInterval(() => { renderStatus(); renderTimetable(); renderLoop(); }, 60000);
   setInterval(() => { if ($('#tab-quest').classList.contains('on')) loadQuest(); }, 30000);
