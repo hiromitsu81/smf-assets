@@ -247,7 +247,9 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .prizebig{display:block;width:100%;background:#fff;border-radius:14px;margin:4px 0 12px}
 .entry h3{margin:0;font-size:16px}.entry p{margin:0;font-size:13.5px;color:#D6D6D6}.entry .sm{font-size:11.5px;color:var(--dim)}
 .entry form{display:grid;gap:8px;margin-top:4px}.entry label{font-size:12.5px;color:var(--dim)}
-.entry input{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid var(--line);background:#1B1B1B;color:#fff;font-size:16px}
+.entry input,.entry select{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid var(--line);background:#1B1B1B;color:#fff;font-size:16px}
+.entry select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,#999 50%),linear-gradient(135deg,#999 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%;background-size:6px 6px;background-repeat:no-repeat}
+.entry .opt{margin-top:6px;padding-top:10px;border-top:1px dashed var(--line);display:grid;gap:8px}.entry .opt>b{font-size:12.5px}.entry label small{color:var(--pink);margin-left:6px}
 .entry details summary{font-size:12.5px;color:var(--dim);cursor:pointer}
 /* ---- v2.3：公式サイトと同じメインビジュアル・How To Enjoy・エリアマップ ---- */
 .mv{position:relative;overflow:hidden;border-radius:var(--r);border:1px solid var(--line);margin-bottom:14px;padding:18px 16px 14px;background:#0A0A0A}
@@ -557,7 +559,7 @@ footer a{color:var(--dim)}
       <li><span>LINEで「#ラリー」を送って、台紙と「わたしのQR」を出す<small>下のボタンで、文字が入った状態でトークが開きます</small></span></li>
       <li><span>対象の会場でドリンクを受け取るとき、リストバンドとQRをスタッフに見せる<small>スタッフが自分のスマホで読むと、スタンプが押されます。対象の会場では公式ドリンク「三茶ハイ」を1杯無料でお出しします（各店お一人さま1杯まで）</small></span></li>
       <li><span>5店のうち4店でスタンプが揃うと達成<small>台紙は「#ラリー」で開き直すと新しくなります</small></span></li>
-      <li><span>達成すると、抽選で40名にコラボTシャツ<small>AZUL BY MOUSSY × santafe × SMF。外れた方には SMF オリジナルタオル。達成したら、この画面のいちばん上の台紙からメールアドレスを入れて応募します。結果はメールでお知らせし、抽選のあと FRIENDS で受け取ります</small></span></li>
+      <li><span>達成すると、抽選で40名にコラボTシャツ<small>AZUL BY MOUSSY × santafe × SMF。外れた方には SMF オリジナルタオル。達成したら、この画面のいちばん上の台紙から、ニックネームとメールアドレスを入れて応募します（LINEのトークからも応募できます）。結果はメールでお知らせし、抽選のあと FRIENDS で受け取ります</small></span></li>
     </ol>
     <div style="margin-top:12px"><a class="btn primary wide" id="loopBtn" href="#">LINEで台紙を開く</a></div>
     <button class="share" type="button" data-share="loop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>一緒にまわる人を誘う</button>
@@ -634,7 +636,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">当日ガイド v2.7.1</span>
+    <br><span id="ver">当日ガイド v2.8</span>
   </footer>
 </main>
 
@@ -943,11 +945,18 @@ function entryHtml(d) {
   if (e.got) return box('特典を受け取りました', '<p>ご参加ありがとうございました。</p>', '--green');
   if (e.result === '当選') return box('当選しました！', `<p>コラボTシャツ（AZUL BY MOUSSY × santafe × SMF）が当たりました。</p>${pick}`);
   if (e.result === '落選') return box('抽選の結果', `<p>今回は Tシャツは外れました。SMF オリジナルタオルを差し上げます。</p>${pick}`, '--blue');
-  const form = (label, btn) => `<form id="entryForm" novalidate><label for="entryMail">${label}</label><input id="entryMail" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" placeholder="example@mail.com" required>
+  // v2.8：ニックネーム（必須。受け渡しのときに呼ぶ）と、かんたんなアンケート（任意）。選択肢は GAS（RALLY.LOTTERY.SURVEY）から来る
+  const ask = e.ask || {}, nmax = e.nickMax || 20;
+  const sel = k => ask[k] && ask[k].options && ask[k].options.length ? `<label for="entry_${k}">${esc(ask[k].label)}</label><select id="entry_${k}" name="${k}"><option value="">選ばない</option>${ask[k].options.map(o => `<option${e[k] === o ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>` : '';
+  const opt = ['age', 'area', 'how'].map(sel).join('');
+  const form = (label, btn) => `<form id="entryForm" novalidate>
+      <label for="entryNick">ニックネーム<small>必須</small></label><input id="entryNick" name="nick" type="text" maxlength="${nmax}" autocomplete="nickname" placeholder="例）タロー" value="${esc(e.nick || '')}" required>
+      <label for="entryMail">${label}<small>必須</small></label><input id="entryMail" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" placeholder="example@mail.com" required>
+      ${opt ? `<div class="opt"><b>よければ教えてください（任意）</b>${opt}</div>` : ''}
       <button class="btn primary wide" type="submit" id="entrySend">${btn}</button></form>
-      <p class="sm">メールアドレスは、抽選結果のお知らせにだけ使います。ほかの人には見えません。</p>`;
-  if (e.entered) return box('抽選に応募済みです', `<p>お知らせ先：<b>${esc(e.mail)}</b><br>結果は、応募の締め切り（${esc(mdJa(e.to))}）のあと、メールでお知らせします。受け取りは抽選のあと、${esc(e.place || 'FRIENDS')}で。</p>
-      ${e.open ? `<details><summary>メールアドレスを入れ直す</summary>${form('新しいメールアドレス', '入れ直す')}</details>` : ''}`, '--green');
+      <p class="sm">ニックネームは、FRIENDS で特典を受け取るときにお呼びします（本名は書かないでください）。メールアドレスは、抽選結果のお知らせにだけ使います。どちらも、ほかの人には見えません。アンケートは、次回のSMFの参考にします。</p>`;
+  if (e.entered) return box('抽選に応募済みです', `<p>ニックネーム：<b>${esc(e.nick || '（まだ入っていません。下から入れてください）')}</b><br>お知らせ先：<b>${esc(e.mail)}</b><br>結果は、応募の締め切り（${esc(mdJa(e.to))}）のあと、メールでお知らせします。受け取りは抽選のあと、${esc(e.place || 'FRIENDS')}で。</p>
+      ${e.open ? `<details${e.nick ? '' : ' open'}><summary>応募の内容を直す（ニックネーム・メールアドレス・アンケート）</summary>${form('メールアドレス（もう一度入れてください）', '直す')}</details><a class="btn wide" href="#" onclick="showTab('home');setTimeout(()=>{const v=document.getElementById('voice');if(v)v.scrollIntoView({behavior:'smooth',block:'start'})},200);return false">イベントのアンケートにも答える（1分・匿名）</a>` : ''}`, '--green');
   if (!e.open) return box('抽選の応募は締め切りました', `<p>応募の期限（${esc(mdJa(e.to))}）を過ぎました。</p>`, '--line');
   return box(`コラボTシャツの抽選に応募する`, `<p>抽選で<b>${e.winners || 40}名</b>にコラボTシャツ（AZUL BY MOUSSY × santafe × SMF）。外れた方には SMF オリジナルタオル。<br>応募の締め切り：<b>${esc(mdJa(e.to))}</b>　結果はメールでお知らせします。</p>${form('結果をお知らせするメールアドレス', '応募する')}`);
 }
@@ -955,14 +964,16 @@ function bindEntry() {
   document.addEventListener('submit', async ev => {
     const f = ev.target; if (!f || f.id !== 'entryForm') return;
     ev.preventDefault();
-    const mail = f.elements.email.value.trim(), b = f.querySelector('button');
+    const mail = f.elements.email.value.trim(), nick = f.elements.nick.value.replace(/\s+/g, ' ').trim(), b = f.querySelector('button');
+    const val = k => (f.elements[k] ? f.elements[k].value : '');
+    if (!nick) { toast('ニックネームを入れてください'); f.elements.nick.focus(); return; }
     if (!/^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/.test(mail)) { toast('メールアドレスを確かめてください'); f.elements.email.focus(); return; }
     if (!(await loadLiff()) || !liff.isLoggedIn() || !CONFIG.GAS_URL) return toast('LINEで開くと応募できます');
     const lbl = b.textContent; b.disabled = true; b.textContent = '送っています…';
-    const d = await postApi('entry', { email: mail });
+    const d = await postApi('entry', { email: mail, nick: nick, age: val('age'), area: val('area'), how: val('how') });
     if (d && d.ok) { if (ME) { ME.entry = d; ME.done = true; } renderDaishi(); toast('応募しました'); return; }
     b.disabled = false; b.textContent = lbl;
-    toast(d && d.error === 'mail' ? 'メールアドレスを確かめてください' : d && d.error === 'notdone' ? 'スタンプが4店そろうと応募できます' : d && (d.error === 'closed' || d.error === 'drawn') ? '応募は締め切りました' : d && d.error === 'too many' ? '少し時間をおいてから送ってください' : d && d.error === 'login' ? 'LINEのログインを確かめられませんでした' : '送れませんでした。もう一度お試しください');
+    toast(d && d.error === 'mail' ? 'メールアドレスを確かめてください' : d && d.error === 'nick' ? 'ニックネームを入れてください' : d && d.error === 'notdone' ? 'スタンプが4店そろうと応募できます' : d && (d.error === 'closed' || d.error === 'drawn') ? '応募は締め切りました' : d && d.error === 'too many' ? '少し時間をおいてから送ってください' : d && d.error === 'login' ? 'LINEのログインを確かめられませんでした' : '送れませんでした。もう一度お試しください');
   });
 }
 /* ---------- BORRACHOS AFTER PARTY 入口の抽選（v2.2。入口のQR＝この画面のURL＋?after=合言葉。GAS の after.gs） ---------- */
