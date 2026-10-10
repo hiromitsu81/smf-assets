@@ -508,7 +508,7 @@ footer a{color:var(--dim)}
 
     <h2><span class="en">SPONSORSHIP</span>協賛</h2>
     <div class="spons" id="spons"></div>
-    <p class="note">2026年の協賛が決まった企業・ブランドです。SMF 2026 は、協賛のみなさまの応援で開催しています。</p>
+    <p class="note">2026年の協賛が決まった企業・ブランドです。SMF 2026 は、協賛のみなさまの応援で開催しています。ロゴを押すと、各社のサイトが開きます。</p>
 
     <h2><span class="en">RELATIONSHIP</span>協力店</h2>
     <p class="note" style="margin:0 0 10px">SMF2026 に協力いただいている三軒茶屋のお店、<span id="shopsN">31</span>店。お店を押すと、Instagram と地図を開けます。</p>
@@ -629,7 +629,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">当日ガイド v2.5</span>
+    <br><span id="ver">当日ガイド v2.6</span>
   </footer>
 </main>
 
@@ -1137,7 +1137,7 @@ function cardDetail(id) {
     : c.kind === 'shop' ? shopLinks(SHOPS.find(s => 'sh-' + String(s.no).padStart(2, '0') === c.id) || { name: c.name }) : '';
   const webLabel = u => /linktr\.ee|lit\.link/.test(u) ? 'リンク集' : /music\.apple\.com/.test(u) ? 'Apple Music' : /spotify\.com/.test(u) ? 'Spotify' : /soundcloud\.com/.test(u) ? 'SoundCloud' : '公式サイト';
   const ext = (u, l) => /^https:\/\//.test(u || '') ? `<a class="btn wide" href="${esc(u)}" target="_blank" rel="noopener">${l} ↗</a>` : '';
-  const links = c.kind === 'artist' ? ext(c.ig, 'Instagram') + ext(c.yt, 'YouTube') + ext(c.web, webLabel(c.web || '')) : ''; // 出演者のリンク（data/cards.json。届いている分だけ）
+  const links = c.kind === 'artist' || c.kind === 'sponsor' ? ext(c.ig, 'Instagram') + ext(c.yt, 'YouTube') + ext(c.web, webLabel(c.web || '')) : ''; // 出演者・協賛のリンク（data/cards.json。決まっている分だけ）
   sheet(`<img class="cd-big" style="--c:${col[0]}" src="${esc(gImg(c))}" alt="${esc(c.name)}"><div class="rc" style="margin-top:10px"><div class="b"><div class="k">${esc(col[1])}のご縁 ・ ${esc(GKIND[c.kind] || '')}</div><h3>${esc(c.name)}</h3><p>${esc(gWhere(c))}</p></div></div>${go}${links}<button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
 }
 function goVenue(code) {
