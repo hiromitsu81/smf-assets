@@ -413,7 +413,7 @@ details.crew .in{padding:0 14px 14px;display:grid;gap:12px}
 .store .t{flex:1;min-width:0;font-size:14px;line-height:1.35;font-weight:700}
 .store .t small{display:block;color:var(--dim);font-size:11.5px;font-weight:500;font-variant-numeric:tabular-nums}
 
-/* 縁日のご縁：ガチャ（Harmonizer のロード画面と同じ、ロゴのまわりを3色の輪が回る動き）と図鑑 */
+/* 縁日のご縁：ガチャ（Harmonizer のロード画面と同じ、ロゴのまわりを3色の輪が回る動き）とMyコレクション */
 .gacha{--hit:#fff;display:flex;flex-direction:column;align-items:center;gap:12px;padding:18px 14px 16px;border-radius:var(--r);border:1px solid var(--line);
   background:radial-gradient(120% 60% at 50% 30%,#1b1f2b 0%,transparent 65%),var(--panel);overflow:hidden}
 .g-stage{position:relative;width:min(64vw,250px);aspect-ratio:4/5;display:grid;place-items:center}
@@ -501,7 +501,7 @@ footer a{color:var(--dim)}
       <nav class="wact" aria-label="よく使う">
         <a href="#" id="actScan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M4 12h16"/></svg>相手のQRを<br>読む</a>
         <a href="#" id="actCard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><circle cx="15.5" cy="10" r="1.6"/><circle cx="8.5" cy="15" r="1.6"/><circle cx="15.5" cy="15" r="1.6"/></svg>台紙<br>（ラリー）</a>
-        <a href="#" id="actBook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 4.5h10a3 3 0 0 1 3 3v12H8a3 3 0 0 1-3-3z"/><path d="M5 16.5a3 3 0 0 1 3-3h10"/></svg>ご縁の<br>図鑑</a>
+        <a href="#" id="actBook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 4.5h10a3 3 0 0 1 3 3v12H8a3 3 0 0 1-3-3z"/><path d="M5 16.5a3 3 0 0 1 3-3h10"/></svg>My<br>コレクション</a>
         <a href="#quest" id="actQuest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M8 4h8l-1 3H9z"/><path d="M7 7h10a4 4 0 0 1 0 8H7a4 4 0 0 1 0-8z"/><path d="M9 15l-1 5h8l-1-5"/></svg>おひねり<br>クエスト</a>
       </nav>
     </div>
@@ -684,12 +684,12 @@ footer a{color:var(--dim)}
     </div>
     <button class="share" type="button" id="enScan" style="border-style:solid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M4 12h16"/></svg>会った人のQRを読む（2人とも1回ずつ引けます）</button>
 
-    <h2 id="zukanTop"><span class="en">COLLECTION</span>ご縁の図鑑</h2>
+    <h2 id="zukanTop"><span class="en">COLLECTION</span>Myコレクション</h2>
     <div class="daishi" style="margin-top:0">
       <div class="hd"><b id="zGot">0</b><span id="zTotal">/ 149枚</span><em id="zLeftTag"></em></div>
       <div class="zbar"><i id="zBar" style="width:0"></i></div>
-      <div class="chips" id="zFilter" role="group" aria-label="図鑑の絞り込み" style="margin-top:12px"></div>
-      <div id="zukan"><p class="note" style="margin:10px 0 0">LINEで開くと、ここにあなたの図鑑が出ます。</p></div>
+      <div class="chips" id="zFilter" role="group" aria-label="Myコレクションの絞り込み" style="margin-top:12px"></div>
+      <div id="zukan"><p class="note" style="margin:10px 0 0">LINEで開くと、ここにあなたのコレクションが出ます。</p></div>
     </div>
 
     <h2><span class="en">HOW TO</span>遊び方</h2>
@@ -697,7 +697,7 @@ footer a{color:var(--dim)}
       <li><span>［ご縁を引く］を押すと、ARTISTS（出演者）・SPONSORSHIP（協賛）・RELATIONSHIP（協力店）のどれかとのご縁が1枚出る<small>ハズレはありません。輪の色が、そのご縁の色です（ARTISTS は会場の色、SPONSORSHIP は白、RELATIONSHIP はグレー）</small></span></li>
       <li><span>引けるのは、はじめに10回。次の日から毎日1回<small>引かなかった分は貯まります。まとめて引くこともできます</small></span></li>
       <li><span>会場で会った人とおたがいOKなら、どちらか1人が相手の「わたしのQR」を読む<small>2人とも1回ずつ引けます。読んだ人はその場で、読まれた人はこの画面の［ご縁を引く］で。見せるQRはホームのいちばん上にあります</small></span></li>
-      <li><span>出たカードは図鑑に集まる<small>カードを押すと、会場やお店の場所を見られます。当日は、ご縁のあった出演者やお店をたずねてみてください</small></span></li>
+      <li><span>出たカードはMyコレクションに集まる<small>カードを押すと、会場やお店の場所を見られます。当日は、ご縁のあった出演者やお店をたずねてみてください</small></span></li>
     </ol>
     <h2><span class="en">SAFE</span>安心のための決まり</h2>
     <div class="empty" style="border-style:solid;color:var(--text)">
@@ -728,7 +728,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">SMF 2026 アプリ v3.5</span>
+    <br><span id="ver">SMF 2026 アプリ v3.6</span>
   </footer>
 </main>
 
@@ -810,7 +810,7 @@ document.addEventListener('click', e => {
 /* v3.3 の来場者メニュー（8つ）と同じ入口。送る文字は BOT の決まった言葉 */
 const FEATS = [
   { c: '--pink', t: 'SANCHA NIGHT LOOP', d: '夜の協力店をめぐるスタンプラリー。台紙と「わたしのQR」を出します', cmd: '#ラリー', go: '台紙を開く' },
-  { c: '--green', t: '縁日のご縁', d: '会場で会った人とQRを読み合って、ご縁を集める図鑑。名前や連絡先は出ません', cmd: '#ご縁', go: 'ご縁を開く' },
+  { c: '--green', t: '縁日のご縁', d: '会場で会った人とQRを読み合って、ご縁を集めるコレクション。名前や連絡先は出ません', cmd: '#ご縁', go: 'ご縁を開く' },
   { c: '--pink', t: 'おひねりクエスト', d: 'SMFへの応援（おひねり）。みんなの合計でボスを倒していきます', cmd: '#おひねり', go: 'おひねりを投げる' },
   { c: '--blue', t: 'SMF選手権', d: 'SMFと三茶のクイズ。何問答えられるか挑戦', cmd: '#SMF選手権', go: 'クイズを始める' },
   { c: '--green', t: '参加グループ', d: 'オープンチャット（SMF全体・一緒にまわろう）と、入っているグループ', cmd: '#参加グループ', go: 'LINEで見る' },
@@ -1186,7 +1186,7 @@ async function pullGacha() {
   if (d && d.ok) { if (ME) ME.caps = d.caps || 0; sheet(cardsHtml(d.cards) + `<button class="btn primary wide" type="button" onclick="closeSheet();loadMe(true)">閉じる</button>`); return; }
   sheet(`<p class="msg" style="margin:0">${d && d.error === 'none' ? '未開封のカプセルはありません。ご縁があると引けます。' : 'いまは開けられませんでした。少し待ってから、もう一度お試しください。'}</p><button class="btn wide" type="button" onclick="closeSheet();loadMe(true)">閉じる</button>`);
 }
-/* ---------- 縁日のご縁：ガチャと図鑑（v2.0。GAS の warifu.gs v1.1・miniapp_api.gs v1.0） ---------- */
+/* ---------- 縁日のご縁：ガチャとMyコレクション（v2.0。GAS の warifu.gs v1.1・miniapp_api.gs v1.0） ---------- */
 let CARDS = [], CARD = {}, G_BUSY = false, Z_FILTER = 'all', G_NEW = {};
 const GV = { D1: ['NTT SQUARE', '#234DA0', '青'], L: ["三軒茶屋HEAVEN'S DOOR", '#E60025', '赤'], N4: ['BORRACHOS', '#F89C22', 'オレンジ'], N3: ['梅ちゃんbar 32016', '#32B540', '緑'],
   N1: ['FRIENDS bar & lounge', '#E24593', 'ピンク'], N2: ["Niwar's SANGENJAYA", '#5DB5E8', '水色'], N5: ['DJ BAR 天狗食堂', '#6C58B1', '紫'], D3: ['SMFオフィシャルBAR', '#8DC21F', '黄緑'], D2: ['企業ブース会場', '#8DC21F', '黄緑'] };
@@ -1263,7 +1263,7 @@ async function pullGoen(n) {
   $('#gMsg').textContent = d && d.error === 'none' ? 'いま引ける回数はありません。' : d && d.error === 'closed' ? '縁日のご縁は、いまは行っていません。' : d && d.error === 'too many' ? '続けて引きすぎています。少し時間をおいてください。' : 'いまは引けませんでした。少し待って、もう一度お試しください。';
   renderGoen();
 }
-/** 図鑑：公式サイトと同じ並び。ARTISTS（会場ごと・会場の色）→ SPONSORSHIP → RELATIONSHIP */
+/** Myコレクション：公式サイトと同じ並び。ARTISTS（会場ごと・会場の色）→ SPONSORSHIP → RELATIONSHIP */
 function renderZukan() {
   const box = $('#zukan'); if (!box) return;
   const g = goenOf(), have = {}; (g && g.mine || []).forEach(id => { have[id] = 1; });
@@ -1272,8 +1272,8 @@ function renderZukan() {
   $('#zLeftTag').textContent = g && g.left ? `あと${g.left}回 引けます` : '';
   const F = [['all', 'すべて'], ['artist', 'ARTISTS'], ['sponsor', 'SPONSORSHIP'], ['shop', 'RELATIONSHIP'], ['mine', '持っている']];
   $('#zFilter').innerHTML = F.map(([k, l]) => `<button class="chip" type="button" data-z="${k}" aria-pressed="${Z_FILTER === k}">${l}</button>`).join('');
-  if (!CARDS.length) { box.innerHTML = '<p class="note" style="margin:10px 0 0">図鑑を読み込めませんでした。開き直してください。</p>'; return; }
-  if (!g) { box.innerHTML = '<p class="note" style="margin:10px 0 0">LINEで開くと、ここにあなたの図鑑が出ます。</p>'; return; }
+  if (!CARDS.length) { box.innerHTML = '<p class="note" style="margin:10px 0 0">Myコレクションを読み込めませんでした。開き直してください。</p>'; return; }
+  if (!g) { box.innerHTML = '<p class="note" style="margin:10px 0 0">LINEで開くと、ここにあなたのコレクションが出ます。</p>'; return; }
   const groups = ['D1', 'L', 'N4', 'N3', 'N1', 'N2', 'N5'].map(v => ({ k: 'artist', title: GV[v][0], c: GV[v][1], list: CARDS.filter(c => c.kind === 'artist' && c.venue === v) }))
     .concat([{ k: 'sponsor', title: 'SPONSORSHIP（協賛）', c: '#FFFFFF', list: CARDS.filter(c => c.kind === 'sponsor') }, { k: 'shop', title: 'RELATIONSHIP（協力店）', c: '#BEBEBE', list: CARDS.filter(c => c.kind === 'shop') }]);
   box.innerHTML = groups.filter(x => Z_FILTER === 'all' || Z_FILTER === 'mine' || Z_FILTER === x.k).map(x => {
