@@ -309,11 +309,11 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 @keyframes pinflash{0%,100%{stroke-width:2;opacity:1}50%{stroke-width:6;opacity:.45}}
 .mapbox{border-radius:var(--r);overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
 .mapbox svg{min-width:660px}
-.mapbox a.rdot{cursor:pointer}.mapbox a.rdot circle{fill:#F5F5F3;stroke:rgba(0,0,0,.5);stroke-width:1}.mapbox a.rdot:hover circle,.mapbox a.rdot:focus circle{fill:#F2C744;stroke:#fff;stroke-width:2}
-.mapbox .rdot text{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;fill:#141414;font-weight:700;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.mapbox a.rdot{cursor:pointer}.mapbox a.rdot circle{fill:#D8232A;stroke:rgba(255,255,255,.9);stroke-width:1.2}.mapbox a.rdot:hover circle,.mapbox a.rdot:focus circle{fill:#FF6B74;stroke:#fff;stroke-width:2.4}
+.mapbox .rdot text{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;fill:#FFFFFF;font-weight:700;text-anchor:middle;dominant-baseline:central;pointer-events:none}
 .mapleg{display:flex;flex-wrap:wrap;gap:6px 12px;margin:8px 0 0;font-size:11px;color:var(--dim)}
 .mapleg b{display:inline-block;border:1.4px solid #fff;border-radius:8px;padding:0 5px;font-size:10px;color:#fff;margin-right:4px}
-.mapleg i{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-2px;margin-right:4px}.mapleg i.lp{border:2.5px solid #F2C744}.mapleg i.re{background:#F5F5F3}
+.mapleg i{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-2px;margin-right:4px}.mapleg i.lp{border:2.5px solid #F2C744}.mapleg i.re{background:#D8232A}
 /* 協賛 */
 .spons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .spons a{background:#fff;border-radius:4px;aspect-ratio:3/2;display:grid;place-items:center;overflow:hidden;text-decoration:none}
@@ -323,7 +323,7 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .rel button{all:unset;display:grid;gap:5px;cursor:pointer;min-width:0}
 .rel .lg{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:#fff}
 .rel .lg img{width:100%;height:100%;object-fit:cover;display:block}
-.rel .lg i{position:absolute;left:4px;top:4px;min-width:20px;height:20px;border-radius:10px;background:#6F6F6F;color:#fff;font:700 11px/20px Oswald,sans-serif;font-style:normal;text-align:center;padding:0 5px}
+.rel .lg i{position:absolute;left:4px;top:4px;min-width:20px;height:20px;border-radius:10px;background:#D8232A;color:#fff;font:700 11px/20px Oswald,sans-serif;font-style:normal;text-align:center;padding:0 5px}
 .rel b{font-size:11px;line-height:1.3;font-weight:700;text-align:center;overflow-wrap:anywhere}
 .rel button:active .lg{transform:scale(.97)}
 .spons span{color:#111;font-size:10.5px;font-weight:700;text-align:center;line-height:1.2;overflow:hidden;max-height:100%}
@@ -575,10 +575,10 @@ footer a{color:var(--dim)}
     <p class="note">2026年の協賛が決まった企業・ブランドです。SMF 2026 は、協賛のみなさまの応援で開催しています。ロゴを押すと、各社のサイトが開きます。</p>
 
     <h2 id="sec-shops"><span class="en">RELATIONSHIP</span>協力店</h2>
-    <p class="note" style="margin:0 0 10px">SMF2026 に協力いただいている三軒茶屋のお店、<span id="shopsN">31</span>店。お店を押すと、Instagram と地図を開けます。</p>
+    <p class="note" style="margin:0 0 10px">SMF2026 に協力いただいている三軒茶屋のお店、<span id="shopsN">31</span>店。お店を押すと、Instagram と地図を開けます。番号はパンフレット・AREA MAP・公式サイトと同じです。</p>
     <div class="rel" id="shops"></div>
     <h2 id="sec-areamap"><span class="en">AREA MAP</span>エリアマップ</h2>
-    <p class="note" style="margin:0 0 10px">主会場9か所と、まちなかの協力店31店（白い番号）。ピンや番号を押すと、くわしい情報が出ます（地図は横に動かせます）。番号は上の協力店の番号と同じです。</p>
+    <p class="note" style="margin:0 0 10px">主会場9か所と、まちなかの協力店31店（赤い番号）。ピンや番号を押すと、くわしい情報が出ます（地図は横に動かせます）。番号はパンフレット・公式サイトと同じです。</p>
     <div class="amap" data-amap></div>
   </section>
 
@@ -594,7 +594,7 @@ footer a{color:var(--dim)}
     <p class="note" id="src"></p>
 
     <h2 id="sec-map"><span class="en">MAP</span>会場MAP</h2>
-    <p class="note" style="margin:0 0 10px">三軒茶屋駅を中心に、主会場9か所が徒歩圏に並びます。ピンを押すと会場の情報、白い番号を押すと協力店の情報が出ます。</p>
+    <p class="note" style="margin:0 0 10px">三軒茶屋駅を中心に、主会場9か所が徒歩圏に並びます。ピンを押すと会場の情報、赤い番号を押すと協力店の情報が出ます。</p>
     <div class="amap" data-amap id="map"></div>
     <div class="plist" id="plist"></div>
   </section>
@@ -616,7 +616,7 @@ footer a{color:var(--dim)}
       <li><span>LINEで「#ラリー」を送って、台紙と「わたしのQR」を出す<small>下のボタンで、文字が入った状態でトークが開きます</small></span></li>
       <li><span>対象の会場でドリンクを受け取るとき、リストバンドとQRをスタッフに見せる<small>スタッフが自分のスマホで読むと、スタンプが押されます。対象の会場では公式ドリンク「三茶ハイ」を1杯無料でお出しします（各店お一人さま1杯まで）</small></span></li>
       <li><span>5店のうち4店でスタンプが揃うと達成<small>台紙は、この画面を開き直すと新しくなります</small></span></li>
-      <li><span>達成すると、抽選で40名にコラボTシャツ<small>AZUL BY MOUSSY × santafe × SMF。外れた方には SMF オリジナルタオル。達成したら、この画面のいちばん上の台紙から、ニックネーム・メールアドレス・Tシャツの希望サイズを入れて応募します（LINEのトークからも応募できます）。当選のTシャツは、FRIENDS で受け取るか、郵送で受け取るかを選べます。紙の台紙（シールラリー）でそろえた方は、お店で台紙を見せて応募用のQRを読むか、郵送で応募できます</small><small style="color:var(--pink)">応募方法：令和8年11月30日（月）までに、4会場ぶんのシールを貼ったこの台紙を、上の欄にご記入のうえ下記まで郵送してください。抽選で40名さまに AZUL BY MOUSSY × santafe × SMF のコラボTシャツをお送りします。郵送先：〒154-0024 東京都世田谷区三軒茶屋2-14-21 2F FRIENDS bar &amp; lounge『SMF Tシャツプレゼント受付』</small></span></li>
+      <li><span>達成すると、抽選で40名にコラボTシャツ<small>AZUL BY MOUSSY × santafe × SMF。外れた方には SMF オリジナルタオル。達成したら、この画面のいちばん上の台紙から、ニックネーム・メールアドレス・Tシャツの希望サイズを入れて応募します（LINEのトークからも応募できます）。当選のTシャツは、FRIENDS で受け取るか、郵送で受け取るかを選べます。紙の台紙（スタンプラリー）でそろえた方は、お店で台紙を見せて応募用のQRを読むか、郵送で応募できます</small><small style="color:var(--pink)">応募方法：令和8年11月30日（月）までに、4会場ぶんのスタンプを集めたこのパンフレット（周遊台紙）を、上の欄にご記入のうえ下記まで郵送してください。抽選で40名さまに AZUL BY MOUSSY × santafe × SMF のコラボTシャツをお送りします。郵送先：〒154-0024 東京都世田谷区三軒茶屋2-14-21 2F FRIENDS bar &amp; lounge『SMF Tシャツプレゼント受付』</small></span></li>
     </ol>
     <div style="margin-top:12px"><a class="btn primary wide" id="loopBtn" href="#">わたしの台紙を見る</a></div>
     <button class="share" type="button" data-share="loop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>一緒にまわる人を誘う</button>
@@ -636,7 +636,7 @@ footer a{color:var(--dim)}
 
     <h2 id="sec-loopvenues"><span class="en">VENUES</span>対象の5会場</h2>
     <div class="stores" id="stores"></div>
-    <p class="note">ピザニスタ・エンニスタ、BORRACHOS の AFTER PARTY（21:30〜）は対象外です。リストバンドの譲渡・貸し借り・再発行はできません。夜の会場は20歳未満の方は入場できません。お酒を飲んだあとの運転はしないでください。</p>
+    <p class="note">ピザニスタ・エンニスタ、BORRACHOS の AFTER HOURS（21:00〜）は対象外です。リストバンドの譲渡・貸し借り・再発行はできません。夜の会場は20歳未満の方は入場できません。お酒を飲んだあとの運転はしないでください。</p>
 
     <div class="pz" id="sanchahigh">
       <span class="pz-x">周遊とは別の企画です</span>
@@ -1123,13 +1123,13 @@ function bindEntry() {
     toast(d && d.error === 'mail' ? 'メールアドレスを確かめてください' : d && d.error === 'nick' ? 'ニックネームを入れてください' : d && d.error === 'size' ? 'Tシャツの希望サイズを選んでください' : d && d.error === 'addr' ? 'お届け先（お名前・郵便番号・住所）を確かめてください' : d && d.error === 'notdone' ? 'スタンプが4店そろうと応募できます' : d && (d.error === 'closed' || d.error === 'drawn') ? '応募は締め切りました' : d && d.error === 'too many' ? '少し時間をおいてから送ってください' : d && d.error === 'login' ? 'LINEのログインを確かめられませんでした' : '送れませんでした。もう一度お試しください');
   });
 }
-/* ---------- BORRACHOS AFTER PARTY 入口の抽選（v2.2。入口のQR＝この画面のURL＋?after=合言葉。GAS の after.gs） ---------- */
+/* ---------- BORRACHOS AFTER HOURS 入口の抽選（v2.2。入口のQR＝この画面のURL＋?after=合言葉。GAS の after.gs） ---------- */
 let AFTER_BUSY = false;
 async function runAfter(key) {
   if (AFTER_BUSY || !key) return; AFTER_BUSY = true;
   const close = `<button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`;
   const el = sheet(`<div class="gacha" id="aGacha" style="--hit:#F89C22;border:0;background:none;padding:6px 0 0"><div class="g-stage"><div class="g-logo"><span class="g-ring"></span><img src="img/smf-logo.png" alt=""></div></div>
-    <div class="g-steps" id="aSteps"><i></i><i></i><i></i></div><div class="g-msg" id="aMsg" aria-live="polite"><b>BORRACHOS AFTER PARTY</b>入口の抽選</div></div><div id="aFoot"></div>`);
+    <div class="g-steps" id="aSteps"><i></i><i></i><i></i></div><div class="g-msg" id="aMsg" aria-live="polite"><b>BORRACHOS AFTER HOURS</b>入口の抽選</div></div><div id="aFoot"></div>`);
   const g = $('#aGacha'), msg = $('#aMsg'), foot = $('#aFoot'), q = gQuick();
   const end = (html, f) => { g.classList.remove('s-spin'); msg.innerHTML = html; foot.innerHTML = (f || '') + close; AFTER_BUSY = false; };
   if (!(await loadLiff()) || !liff.isLoggedIn() || !CONFIG.GAS_URL) return end('<b>LINEで開いてください</b>入口のQRを、LINEのQRリーダーで読むと抽選できます。', `<a class="btn primary wide" href="${esc(APP_URL() + '?after=' + encodeURIComponent(key))}" data-line="${esc(APP_URL() + '?after=' + encodeURIComponent(key))}">LINEで開く</a>`);
@@ -1138,7 +1138,7 @@ async function runAfter(key) {
   for (const d of document.querySelectorAll('#aSteps i')) { await gWait(q ? 0 : 520); d.classList.add('on'); }
   const d = await req; await gWait(q ? 0 : 400);
   if (!$('#aGacha')) { AFTER_BUSY = false; return; } // 途中で閉じた
-  if (!d || d.error) return end(d && d.error === 'closed' ? '<b>まだ始まっていません</b>抽選は、アフターパーティ当日に入口で引けます。' : d && d.error === 'key' ? '<b>このQRでは抽選できません</b>BORRACHOS の入口に貼ってあるQRを読んでください。' : d && d.error === 'too many' ? '<b>少し時間をおいてください</b>' : d && d.error === 'login' ? '<b>LINEのログインを確かめられませんでした</b>開き直してください。' : '<b>いまは抽選できませんでした</b>少し待って、もう一度QRを読んでください。');
+  if (!d || d.error) return end(d && d.error === 'closed' ? '<b>まだ始まっていません</b>抽選は、AFTER HOURS 当日に入口で引けます。' : d && d.error === 'key' ? '<b>このQRでは抽選できません</b>BORRACHOS の入口に貼ってあるQRを読んでください。' : d && d.error === 'too many' ? '<b>少し時間をおいてください</b>' : d && d.error === 'login' ? '<b>LINEのログインを確かめられませんでした</b>開き直してください。' : '<b>いまは抽選できませんでした</b>少し待って、もう一度QRを読んでください。');
   g.style.setProperty('--hit', d.win ? '#F89C22' : '#8A8A8A'); g.classList.remove('s-spin'); g.classList.add('s-hit');
   try { if (navigator.vibrate) navigator.vibrate(d.win ? [60, 40, 120] : 40); } catch (e) { /* 震えない端末 */ }
   msg.innerHTML = `<b style="font-size:28px">${d.win ? '当たり！' : 'ハズレ'}</b>${esc(d.text || '')}<br><small style="color:var(--dim)">番号 ${esc(d.no || '')}　${esc(d.at || '')}${d.again ? '（もう引いてあります。1人1回です）' : ''}${d.test ? '（テスト）' : ''}</small>`;
@@ -1481,7 +1481,7 @@ async function renderAreaMap() {
   const boxes = document.querySelectorAll('[data-amap]'); if (!boxes.length) return;
   if (AMAP_SVG === null) { try { const r = await fetch('data/areamap.svg', { cache: 'no-store' }); AMAP_SVG = r.ok ? await r.text() : ''; } catch (e) { AMAP_SVG = ''; } }
   const ok = /^\s*<svg[\s>]/.test(AMAP_SVG);
-  const leg = `<div class="mapleg"><span><b>昼</b>11:00-18:00</span><span><b>夜</b>20:00-LATE</span><span><b>昼夜</b>通し</span><span><i class="lp"></i>SANCHA NIGHT LOOP 対象5会場</span><span><i class="re"></i>協力店31店</span></div>`;
+  const leg = `<div class="mapleg"><span><b>昼</b>11:00-18:00</span><span><b>夜</b>20:00-LATE</span><span><b>昼夜</b>通し</span><span><i class="lp"></i>SANCHA NIGHT LOOP 対象5会場</span><span><i class="re"></i>協力店31店（番号はパンフレット・公式サイトと同じ）</span></div>`;
   boxes.forEach(b => { b.innerHTML = ok ? `<div class="mapbox">${AMAP_SVG}</div>${leg}` : '<div class="empty">エリアマップを読み込めませんでした。下の一覧から地図アプリで開けます。</div>'; });
   const mid = () => document.querySelectorAll('.mapbox').forEach(m => { if (m.clientWidth && !m.dataset.mid) { m.scrollLeft = (m.scrollWidth - m.clientWidth) * 0.55; m.dataset.mid = 1; } }); // 横に動かせる。はじめは駅のあたりを真ん中に
   mid(); AMAP_MID = mid;
