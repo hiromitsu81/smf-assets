@@ -244,6 +244,7 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .prize img{display:block;width:112px;aspect-ratio:4/5;object-fit:cover;object-position:50% 12%;background:#EDEDEB;border-radius:10px}
 .prize small{display:block;font-family:var(--mono,monospace);font-size:10.5px;letter-spacing:.12em;color:var(--pink)}
 .prize b{display:block;font-size:15px;margin:2px 0 4px}.prize span{display:block;font-size:12px;color:#D6D6D6;line-height:1.5}.prize em{font-style:normal;color:var(--dim);font-size:11px}
+.sgabout{border:1px solid var(--line);border-radius:var(--r);padding:14px 14px 12px;margin:0 0 12px;background:linear-gradient(135deg,rgba(236,125,143,.08),rgba(141,194,31,.06),rgba(55,155,215,.08))}.sgabout p{margin:0}.sgl{font-size:14px;line-height:1.6}.sgd{font-size:12.5px;color:#D6D6D6;line-height:1.65;margin-top:8px!important}.sgd b{color:#fff;letter-spacing:.04em}.sgpts{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.sgpts li{border:1px solid var(--line);border-radius:10px;padding:8px 6px;text-align:center;font-size:11px;line-height:1.35;background:rgba(10,10,10,.4)}.sgpts b{display:block;font-size:12px;color:#fff}.sgpts small{display:block;color:var(--dim);font-size:10px;margin-top:2px}.sgn{font-size:11px;color:var(--dim);margin-top:8px!important}
 .gacha{position:relative}.g-sfx{position:absolute;top:10px;right:10px;z-index:3;font:inherit;font-size:11px;letter-spacing:.06em;padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(10,10,10,.6);color:#D6D6D6;cursor:pointer}.g-sfx[aria-pressed="false"]{color:var(--dim)}
 .prizebig{display:flex;flex:none;height:min(58vh,560px);overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:14px;margin:4px 0 6px;background:#EDEDEB}.prizebig::-webkit-scrollbar{display:none}.prizebig img{flex:0 0 100%;width:100%;height:100%;object-fit:contain;scroll-snap-align:start;display:block}.prizecap{margin:0 0 12px;font-size:11.5px;color:var(--dim);text-align:center}
 .entry h3{margin:0;font-size:16px}.entry p{margin:0;font-size:13.5px;color:#D6D6D6}.entry .sm{font-size:11.5px;color:var(--dim)}
@@ -666,13 +667,23 @@ footer a{color:var(--dim)}
       </div>
     </div>
 
-    <p class="note">会場で会った人とQRで遊ぶ「縁日のご縁」は、下の［縁日］から。</p>
+    <p class="note">ご縁のガチャ「三ガ茶」は、下の［縁日］から。</p>
   </section>
 
 
   <!-- 縁日のご縁 -->
   <section class="tab" id="tab-ennichi" aria-labelledby="t-ennichi">
-    <h2><span class="en">EN-NICHI</span>縁日のご縁</h2>
+    <h2><span class="en">SANGACHA-Discovery</span>三ガ茶（さんがちゃ）</h2>
+    <div class="sgabout">
+      <p class="sgl"><b>三ガ茶</b>は、三軒茶屋の<b>出演者・協力店・協賛</b>との「ご縁」をカードで引くガチャです。</p>
+      <p class="sgd"><b>Discovery</b>　ご縁から、新たな発見を。出てきた出演者のステージを見に行ったり、お店をたずねたり。当日の回り方のきっかけにしてください。</p>
+      <ul class="sgpts">
+        <li><b>はじめは10連</b>無料</li>
+        <li><b>次の日から毎日3結び</b><small>引かなかった分は貯まります</small></li>
+        <li><b>会った人とQRで+1</b><small>2人とも1回ずつ</small></li>
+      </ul>
+      <p class="sgn">カードは画面の中だけです（景品・割引はありません）。SMF 第三回記念。</p>
+    </div>
     <div class="gacha" id="gacha">
       <button class="g-sfx" type="button" id="gSfx" aria-pressed="true" aria-label="効果音">♪ 音あり</button>
       <div class="g-stage">
@@ -715,7 +726,7 @@ footer a{color:var(--dim)}
         <li>カードは画面の中だけで、景品や割引はありません</li>
       </ul>
     </div>
-    <p class="note">QRを読み合うのは、おたがいがOKのときだけにしてください。縁日のご縁は 11月8日（日）まで。</p>
+    <p class="note">QRを読み合うのは、おたがいがOKのときだけにしてください。三ガ茶は 11月8日（日）まで。</p>
   </section>
 
   <!-- おひねりクエスト -->
@@ -836,7 +847,7 @@ document.addEventListener('click', e => {
 /* v3.3 の来場者メニュー（8つ）と同じ入口。送る文字は BOT の決まった言葉 */
 const FEATS = [
   { c: '--pink', t: 'SANCHA NIGHT LOOP', d: '夜の協力店をめぐるスタンプラリー。台紙と「わたしのQR」を出します', cmd: '#ラリー', go: '台紙を開く' },
-  { c: '--green', t: '縁日のご縁', d: '会場で会った人とQRを読み合って、ご縁を集めるコレクション。名前や連絡先は出ません', cmd: '#ご縁', go: 'ご縁を開く' },
+  { c: '--green', t: '三ガ茶（さんがちゃ）', d: '出演者・協力店・協賛とのご縁をカードで引くガチャ。はじめは10連、次の日から毎日3結び', cmd: '#ご縁', go: 'ご縁を開く' },
   { c: '--pink', t: 'おひねりクエスト', d: 'SMFへの応援（おひねり）。みんなの合計でボスを倒していきます', cmd: '#おひねり', go: 'おひねりを投げる' },
   { c: '--blue', t: 'SMF選手権', d: 'SMFと三茶のクイズ。何問答えられるか挑戦', cmd: '#SMF選手権', go: 'クイズを始める' },
   { c: '--green', t: '参加グループ', d: 'オープンチャット（SMF全体・一緒にまわろう）と、入っているグループ', cmd: '#参加グループ', go: 'LINEで見る' },
@@ -1157,7 +1168,7 @@ async function loadMe(force) {
   }
   const ok = await loadLiff();
   if (!ok || !CONFIG.GAS_URL) {
-    return wallet(`<p class="msg">LINEで開くと、ここに<b>あなたのQR</b>が出ます。<br>スタンプラリーでも、縁日のご縁でも、このQRを見せるだけ。</p>
+    return wallet(`<p class="msg">LINEで開くと、ここに<b>あなたのQR</b>が出ます。<br>スタンプラリーでも、三ガ茶でも、このQRを見せるだけ。</p>
       <a class="btn primary" href="https://miniapp.line.me/${esc(CONFIG.LIFF_ID || '')}">LINEで開く</a>`);
   }
   if (!liff.isLoggedIn()) {
@@ -1169,7 +1180,7 @@ async function loadMe(force) {
   if (d && d.qr) { ME = d; ME_AT = Date.now(); return renderMe(); }
   if (ME) return renderMe(); // 前のQRを出したまま（10分は使える）
   if (d && d.error === 'login') return wallet(`<p class="msg">LINEのログインを確かめられませんでした。</p><button class="btn primary" type="button" onclick="location.reload()">もう一度</button>`);
-  if (d && d.error === 'closed') return wallet(`<p class="msg">スタンプラリーと縁日のご縁は、いまは行っていません。</p>`);
+  if (d && d.error === 'closed') return wallet(`<p class="msg">スタンプラリーと三ガ茶は、いまは行っていません。</p>`);
   wallet(`<p class="msg">いまQRを読み込めません。少し待ってから、開き直してください。</p><button class="btn" type="button" onclick="loadMe(true)">もう一度</button>`);
 }
 /* QRを読んだ結果を、ミニアプリの中に出す（v1.7。GAS の api=scan。トークに「#押す」を送ったときと同じ処理） */
@@ -1200,7 +1211,7 @@ async function scanQr() {
     const d = await postApi('scan', { v: v });
     if (d && d.ok && d.drawn && d.drawn.length) { closeSheet(); if (ME && d.goen) ME.goen = d.goen; ME_AT = 0; showTab('ennichi'); playGoen(d.drawn, 'ご縁を結びました。あなたのご縁は…'); return; }
     if (d && d.ok) { sheet(cardsHtml(d.cards) + `<button class="btn primary wide" type="button" onclick="closeSheet()">閉じる</button><button class="btn wide" type="button" onclick="scanQr()">続けて読む</button>`); loadMe(true); return; }
-    const why = d && d.error === 'too many' ? '続けて読みすぎています。少し時間をおいてください。' : d && d.error === 'closed' ? 'いまはスタンプラリーと縁日のご縁を行っていません。' : 'いまはここで確かめられませんでした。LINEのトークに送って確かめます。';
+    const why = d && d.error === 'too many' ? '続けて読みすぎています。少し時間をおいてください。' : d && d.error === 'closed' ? 'いまはスタンプラリーと三ガ茶を行っていません。' : 'いまはここで確かめられませんでした。LINEのトークに送って確かめます。';
     return sheet(`<p class="msg" style="margin:0">${why}</p>${d && (d.error === 'too many' || d.error === 'closed') ? '' : `<a class="btn primary wide" href="${esc(v)}" data-line="${esc(v)}">LINEのトークで送る</a>`}<button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
   }
   openLine('https://line.me/R/nv/QRCodeReader'); // LINEの外：LINEのQRリーダー
@@ -1237,7 +1248,7 @@ function renderGoen() {
     if (!G_BUSY) { pull.disabled = !g.left; pull.textContent = g.left ? 'ご縁を引く' : '今日の分は引きました'; }
     const n = Math.min(g.left, g.bulk || 10);
     all.hidden = !(g.left >= 2); all.textContent = `まとめて引く（${n}枚）`; if (!G_BUSY) all.disabled = false;
-    left.textContent = !g.open ? '縁日のご縁は終了しました。たくさんのご縁を、ありがとうございました。'
+    left.textContent = !g.open ? '三ガ茶は終了しました。たくさんのご縁を、ありがとうございました。'
       : g.left ? `いま引けるのは あと ${g.left} 回（毎日3回・引かなかった分は貯まります）` : '次の3回は、あした。会場で会った人とQRを読み合うと、その場で引けます。';
   }
   renderZukan();
@@ -1311,7 +1322,7 @@ async function pullGoen(n) {
   G_BUSY = false;
   if (d && d.ok && d.cards && d.cards.length) { if (ME) { ME.goen = d.goen || ME.goen; ME.caps = d.goen ? d.goen.left : 0; } ME_AT = 0; return playGoen(d.cards); }
   gReset(); if (d && d.goen && ME) ME.goen = d.goen;
-  $('#gMsg').textContent = d && d.error === 'none' ? 'いま引ける回数はありません。' : d && d.error === 'closed' ? '縁日のご縁は、いまは行っていません。' : d && d.error === 'too many' ? '続けて引きすぎています。少し時間をおいてください。' : 'いまは引けませんでした。少し待って、もう一度お試しください。';
+  $('#gMsg').textContent = d && d.error === 'none' ? 'いま引ける回数はありません。' : d && d.error === 'closed' ? '三ガ茶は、いまは行っていません。' : d && d.error === 'too many' ? '続けて引きすぎています。少し時間をおいてください。' : 'いまは引けませんでした。少し待って、もう一度お試しください。';
   renderGoen();
 }
 /** Myコレクション：公式サイトと同じ並び。ARTISTS（会場ごと・会場の色）→ SPONSORSHIP → RELATIONSHIP */
@@ -1402,7 +1413,7 @@ function shareMsg(kind) {
   }
   return { text: 'SMF 2026（11/7 三軒茶屋）一緒に行こう！', msg: flexCard('SMF 2026 一緒に行こう', {
     img: 'https://sangenjaya-mf.com/ogp_smf2026.png', ratio: '120:63', kicker: 'SANGENJAYA ART MUSIC FESTIVAL 2026', title: '11/7（土）三茶で一緒に遊ぼう', color: '#8DC21F',
-    lines: ['街じゅうの会場で、昼から翌朝まで', 'タイムテーブル・スタンプラリー・縁日のご縁'], btn: 'SMFアプリを開く', url: APP_URL() }) };
+    lines: ['街じゅうの会場で、昼から翌朝まで', 'タイムテーブル・スタンプラリー・三ガ茶'], btn: 'SMFアプリを開く', url: APP_URL() }) };
 }
 async function share(kind) {
   const m = shareMsg(kind);
