@@ -1398,7 +1398,7 @@ function renderLoop() {
     const open = live && isOpen(v, m);
     return `<a class="store" href="${mapUrl(v)}" target="_blank" rel="noopener" style="${vcss(v)}">
       <span class="code">${esc(v.code)}</span>
-      <span class="t">${esc(v.name)}<small>${esc(hm(min(v.start)))}〜${esc(hm(min(v.end)))}${v.genre ? '　' + esc(v.genre) : ''}</small></span>
+      <span class="t">${esc(v.name)}<small>${esc(hm(min(v.start)))}〜${esc(v.endLabel || hm(min(v.end)))}${v.genre ? '　' + esc(v.genre) : ''}</small></span>
       ${live ? `<span class="open${open ? ' live' : ''}">${open ? '営業中' : '時間外'}</span>` : '<span aria-hidden="true">↗</span>'}</a>`;
   }).join('') || '<div class="empty">協力店の情報は準備中です。</div>';
   const lb = $('#loopBtn'); lb.onclick = ev => { ev.preventDefault(); const t = $('#daishi'); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); };   // v3.0：台紙はこの画面の上（前は LINE のトークへ送っていた）
@@ -1453,7 +1453,7 @@ function renderTimetable() {
 }
 function card(v, i, m) {
   const c = BAND[v.band][1];
-  const time = v.start ? `${v.start}〜${hm(min(v.end))}` : (v.note || '調整中');
+  const time = v.start ? `${v.start}〜${v.endLabel || hm(min(v.end))}` : (v.note || '調整中');
   const live = isOpen(v, m);
   const sets = (v.sets || []).length ? `<div class="sets">${v.sets.map(s => `<div><time>${esc(s.time)}</time><span>${esc(s.artist)}</span></div>`).join('')}</div>` : '';
   return `<article class="card" id="v${i}" style="${vcss(v)}">
