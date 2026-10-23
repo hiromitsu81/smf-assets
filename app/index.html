@@ -478,6 +478,15 @@ footer a{color:var(--dim)}
 @media (max-width:360px){ .feats{grid-template-columns:1fr} }
 @media (min-width:600px){ .feats{grid-template-columns:1fr 1fr 1fr} .cards{grid-template-columns:1fr 1fr} .g-axis,.g-row{grid-template-columns:150px 1fr} }
 </style>
+<!-- GA4（v3.13）：公式サイトと同じプロパティ。どこから来て、どの画面を見て、三ガ茶を引いたか。個人を特定する情報は送らない -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QRZMM8YNV"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-6QRZMM8YNV', { app_name: 'SMFアプリ', in_line: /Line\//i.test(navigator.userAgent) ? 'yes' : 'no' });
+function ga(ev, p) { try { gtag('event', ev, p || {}); } catch (e) { /* 計測できなくても動きは変えない */ } }
+</script>
 </head>
 <body>
 <header>
@@ -748,7 +757,8 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">SMFアプリ v3.12</span>
+    <br><small style="opacity:.7">利用状況を知るために Google Analytics を使っています（名前などの個人情報は送りません）。</small>
+    <br><span id="ver">SMFアプリ v3.13</span>
   </footer>
 </main>
 
@@ -1242,6 +1252,14 @@ async function loadCards() {
   renderGoen();
 }
 function goenOf() { return ME && !ME.sample ? ME.goen || null : null; }
+/* ---------- 計測（v3.13）：チケット・STORES・公式サイトへのクリック ---------- */
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href]'); if (!a) return;
+  const h = a.href;
+  if (/zaiko\.io/.test(h)) ga('ticket_click', { label: 'app' });
+  else if (/stores\.jp/.test(h)) ga('shop_click', { label: 'app' });
+  else if (/sangenjaya-mf\.com/.test(h)) ga('site_click', { label: (a.textContent || '').trim().slice(0, 40) });
+}, true);
 /* ---------- 三ガ茶 10連無料の帯（v3.12）。まだ1枚も引いていない人にだけ、ホームの先頭と［縁日］の先頭に出す ---------- */
 function sgFresh() { const g = goenOf(); if (!ME) { try { return !(window.liff && liff.isInClient && liff.isInClient()); } catch (e) { return true; } } return ME.sample ? true : !!(g && g.open && g.left && !(g.mine && g.mine.length)); }
 function renderSgBanner() {
@@ -1250,6 +1268,7 @@ function renderSgBanner() {
 }
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-sgbn]'); if (!b) return;
+  ga('sangacha_banner_click', { place: b.dataset.sgbn });
   const g = goenOf();
   if (b.dataset.sgbn === 'home') { goTo('gacha'); return; }
   if (g && g.left && !G_BUSY) { pullGoen(Math.min(g.left, g.bulk || 10)); return; } // ［縁日］の帯：そのまま10連
@@ -1332,6 +1351,7 @@ async function pullGoen(n) {
   if (G_BUSY) return;
   if (!(await loadLiff()) || !liff.isLoggedIn() || !CONFIG.GAS_URL) { if (CONFIG.LIFF_ID) openLine(APP_URL() + '?tab=ennichi'); return; }
   const g = goenOf(); if (!g || !g.left) return renderGoen();
+  ga('gacha_pull', { count: Math.min(Number(n) || 1, g.left), first: !(g.mine && g.mine.length) ? 'yes' : 'no' });
   G_BUSY = true; $('#gPull').disabled = true; $('#gAll').disabled = true;
   const el = $('#gacha'); if (el.classList.contains('s-card') || el.classList.contains('s-many')) gReset();
   el.classList.add('s-spin'); $('#gMsg').textContent = 'ご縁を探しています…';
@@ -1645,6 +1665,7 @@ const SAMPLE_OUEN = { sample: true, title: 'SMF おひねりクエスト', total
 /* ---------- タブ ---------- */
 let CUR_TAB = 'home', WANT_ENTRY = false;   // WANT_ENTRY：LINEの達成カードの［応募］から来たとき、応募の箱まで送る（1回だけ）
 function showTab(name) {
+  ga('app_tab', { tab: name });
   document.querySelectorAll('section.tab').forEach(s => s.classList.toggle('on', s.id === 'tab-' + name));
   document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
   window.scrollTo(0, 0);
