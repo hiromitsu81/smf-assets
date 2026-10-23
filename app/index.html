@@ -244,7 +244,7 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .prize img{display:block;width:112px;aspect-ratio:4/5;object-fit:cover;object-position:50% 12%;background:#EDEDEB;border-radius:10px}
 .prize small{display:block;font-family:var(--mono,monospace);font-size:10.5px;letter-spacing:.12em;color:var(--pink)}
 .prize b{display:block;font-size:15px;margin:2px 0 4px}.prize span{display:block;font-size:12px;color:#D6D6D6;line-height:1.5}.prize em{font-style:normal;color:var(--dim);font-size:11px}
-.sgbn{display:block;width:100%;padding:0;margin:0 0 14px;border:0;background:none;cursor:pointer;border-radius:16px;overflow:hidden;-webkit-tap-highlight-color:transparent}.sgbn[hidden]{display:none}.sgbn img{display:block;width:100%;height:auto}.sgbn:active{transform:scale(.99)}
+.sgbn{display:block;width:100%;padding:0;margin:14px 0;border:0;background:none;cursor:pointer;border-radius:16px;overflow:hidden;-webkit-tap-highlight-color:transparent}.sgbn[hidden]{display:none}.sgbn img{display:block;width:100%;height:auto}.sgbn:active{transform:scale(.99)}
 .sgabout{border:1px solid var(--line);border-radius:var(--r);padding:14px 14px 12px;margin:0 0 12px;background:linear-gradient(135deg,rgba(236,125,143,.08),rgba(141,194,31,.06),rgba(55,155,215,.08))}.sgabout p{margin:0}.sgl{font-size:14px;line-height:1.6}.sgd{font-size:12.5px;color:#D6D6D6;line-height:1.65;margin-top:8px!important}.sgd b{color:#fff;letter-spacing:.04em}.sgpts{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.sgpts li{border:1px solid var(--line);border-radius:10px;padding:8px 6px;text-align:center;font-size:11px;line-height:1.35;background:rgba(10,10,10,.4)}.sgpts b{display:block;font-size:12px;color:#fff}.sgpts small{display:block;color:var(--dim);font-size:10px;margin-top:2px}.sgn{font-size:11px;color:var(--dim);margin-top:8px!important}
 .gacha{position:relative}.g-sfx{position:absolute;top:10px;right:10px;z-index:3;font:inherit;font-size:11px;letter-spacing:.06em;padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(10,10,10,.6);color:#D6D6D6;cursor:pointer}.g-sfx[aria-pressed="false"]{color:var(--dim)}
 .prizebig{display:flex;flex:none;height:min(58vh,560px);overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:14px;margin:4px 0 6px;background:#EDEDEB}.prizebig::-webkit-scrollbar{display:none}.prizebig img{flex:0 0 100%;width:100%;height:100%;object-fit:contain;scroll-snap-align:start;display:block}.prizecap{margin:0 0 12px;font-size:11.5px;color:var(--dim);text-align:center}
@@ -493,7 +493,6 @@ footer a{color:var(--dim)}
 
   <!-- ホーム：LINEでできることの入口（押すと公式アカウントのトークが開き、いまのカードが出る） -->
   <section class="tab on" id="tab-home" aria-labelledby="t-home">
-    <button class="sgbn" type="button" data-sgbn="home" hidden aria-label="SMF 第三回記念 三ガ茶 10連無料。いますぐ引く"><img src="img/sangacha-10ren.jpg" alt="" width="1200" height="800"></button>
     <div class="mv" aria-label="SANGENJAYA ART MUSIC FESTIVAL 2026">
       <div class="jp">三軒茶屋芸術音楽祭<span>第三回</span></div>
       <h1 class="ttl"><span class="i1">S</span>ANGENJAYA<br>ART <span class="i2">M</span>USIC <span class="i3">F</span>ESTIVAL</h1>
@@ -512,6 +511,7 @@ footer a{color:var(--dim)}
         <a href="#quest" id="actQuest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M8 4h8l-1 3H9z"/><path d="M7 7h10a4 4 0 0 1 0 8H7a4 4 0 0 1 0-8z"/><path d="M9 15l-1 5h8l-1-5"/></svg>おひねり<br>クエスト</a>
       </nav>
     </div>
+    <button class="sgbn" type="button" data-sgbn="home" hidden aria-label="SMF 第三回記念 三ガ茶 10連無料。いますぐ引く"><img loading="lazy" src="img/sangacha-10ren.jpg" alt="" width="1200" height="800"></button>
 
     <button class="share" type="button" data-share="invite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>友だちをSMFに誘う</button>
 
