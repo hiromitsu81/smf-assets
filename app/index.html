@@ -241,10 +241,10 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 /* 抽選の応募（v2.2） */
 .entry{--c:var(--pink);margin-top:12px;padding:14px;border-radius:14px;background:#0E0E0E;border:1px solid var(--line);border-left:6px solid var(--c);display:grid;gap:8px}
 .prize{margin-top:12px;display:grid;grid-template-columns:112px 1fr;gap:12px;align-items:center;width:100%;padding:10px;border-radius:14px;background:#0E0E0E;border:1px solid var(--line);color:inherit;font:inherit;text-align:left;cursor:pointer}
-.prize img{display:block;width:112px;aspect-ratio:1000/936;object-fit:contain;background:#fff;border-radius:10px}
+.prize img{display:block;width:112px;aspect-ratio:4/5;object-fit:cover;object-position:50% 12%;background:#EDEDEB;border-radius:10px}
 .prize small{display:block;font-family:var(--mono,monospace);font-size:10.5px;letter-spacing:.12em;color:var(--pink)}
 .prize b{display:block;font-size:15px;margin:2px 0 4px}.prize span{display:block;font-size:12px;color:#D6D6D6;line-height:1.5}.prize em{font-style:normal;color:var(--dim);font-size:11px}
-.prizebig{display:block;width:100%;background:#fff;border-radius:14px;margin:4px 0 12px}
+.prizebig{display:flex;flex:none;height:min(58vh,560px);overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:14px;margin:4px 0 6px;background:#EDEDEB}.prizebig::-webkit-scrollbar{display:none}.prizebig img{flex:0 0 100%;width:100%;height:100%;object-fit:contain;scroll-snap-align:start;display:block}.prizecap{margin:0 0 12px;font-size:11.5px;color:var(--dim);text-align:center}
 .entry h3{margin:0;font-size:16px}.entry p{margin:0;font-size:13.5px;color:#D6D6D6}.entry .sm{font-size:11.5px;color:var(--dim)}
 .entry form{display:grid;gap:8px;margin-top:4px}.entry label{font-size:12.5px;color:var(--dim)}
 .entry input,.entry select,.entry textarea{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid var(--line);background:#1B1B1B;color:#fff;font-size:16px}
@@ -1052,9 +1052,9 @@ function prizeHtml(d) {
     <div><small>達成特典 ／ 抽選で${n}名</small><b>コラボ T-SHIRTS</b><span>${PRIZE_NAME}<br>外れた方には SMF オリジナルタオル<br><em>${d && d.done ? '画像は背面' : `${(d && d.goal) || 4}店そろうと、ここから応募できます`}</em></span></div></button>`;
 }
 function prizeOpen(n) {
-  sheet(`<h3 style="margin:0 0 10px">達成特典 ／ コラボ T-SHIRTS</h3><img class="prizebig" src="${PRIZE_IMG}" alt="コラボTシャツ（背面）">
+  sheet(`<h3 style="margin:0 0 10px">達成特典 ／ コラボ T-SHIRTS</h3><div class="prizebig"><img src="${PRIZE_IMG}" alt="コラボTシャツ（背面）"><img src="img/prize-tee-front.webp" alt="コラボTシャツ（表面）" loading="lazy"></div><p class="prizecap">背面 ／ 横にめくると表面</p>
     <p style="margin:0 0 6px;font-size:14px"><b>${PRIZE_NAME}</b></p>
-    <p style="margin:0 0 14px;font-size:13px;color:#D6D6D6">協力店5店のうち4店でスタンプをそろえた方の中から、抽選で<b>${n}名</b>に。外れた方には SMF オリジナルタオルを差し上げます。応募はこの台紙から（11月30日まで）。結果はメールでお知らせします。当選のTシャツは、FRIENDS bar &amp; lounge で受け取るか、郵送かを選べます。<br><span style="color:var(--dim);font-size:11.5px">画像は背面です。</span></p>
+    <p style="margin:0 0 14px;font-size:13px;color:#D6D6D6">協力店5店のうち4店でスタンプをそろえた方の中から、抽選で<b>${n}名</b>に。外れた方には SMF オリジナルタオルを差し上げます。応募はこの台紙から（11月30日まで）。結果はメールでお知らせします。当選のTシャツは、FRIENDS bar &amp; lounge で受け取るか、郵送かを選べます。<br><span style="color:var(--dim);font-size:11.5px">画像は背面と表面です。</span></p>
     <button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
 }
 /* ---------- 抽選の応募（v2.2。GAS の rally.gs v0.5・miniapp_api.gs v1.0 の api=entry） ---------- */
