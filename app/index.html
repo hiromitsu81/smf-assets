@@ -1054,7 +1054,7 @@ function prizeHtml(d) {
     <div><small>達成特典 ／ 抽選で${n}名</small><b>コラボ T-SHIRTS</b><span>${PRIZE_NAME}<br>外れた方には SMF オリジナルタオル<br><em>${d && d.done ? '画像は背面' : `${(d && d.goal) || 4}店そろうと、ここから応募できます`}</em></span></div></button>`;
 }
 function prizeOpen(n) {
-  sheet(`<h3 style="margin:0 0 10px">達成特典 ／ コラボ T-SHIRTS</h3><div class="prizebig"><img src="${PRIZE_IMG}" alt="コラボTシャツ（背面）"><img src="img/prize-tee-front.webp" alt="コラボTシャツ（表面）" loading="lazy"></div><p class="prizecap">背面 ／ 横にめくると表面</p>
+  sheet(`<h3 style="margin:0 0 10px">達成特典 ／ コラボ T-SHIRTS</h3><div class="prizebig"><img src="${PRIZE_IMG}" alt="コラボTシャツ（背面）"><img src="img/prize-tee-front.webp" alt="コラボTシャツ（表面）" loading="lazy"><img src="img/prize-tee-flat.webp" alt="コラボTシャツ（平置き・表と背面）" loading="lazy"></div><p class="prizecap">背面 ／ 横にめくると表面・平置き</p>
     <p style="margin:0 0 6px;font-size:14px"><b>${PRIZE_NAME}</b></p>
     <p style="margin:0 0 14px;font-size:13px;color:#D6D6D6">協力店5店のうち4店でスタンプをそろえた方の中から、抽選で<b>${n}名</b>に。外れた方には SMF オリジナルタオルを差し上げます。応募はこの台紙から（11月30日まで）。結果はメールでお知らせします。当選のTシャツは、FRIENDS bar &amp; lounge で受け取るか、郵送かを選べます。<br><span style="color:var(--dim);font-size:11.5px">画像は背面と表面です。</span></p>
     <button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
