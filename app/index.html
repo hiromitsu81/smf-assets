@@ -701,7 +701,7 @@ footer a{color:var(--dim)}
     <h2><span class="en">HOW TO</span>遊び方</h2>
     <ol class="howto">
       <li><span>［ご縁を引く］を押すと、ARTISTS（出演者）・SPONSORSHIP（協賛）・RELATIONSHIP（協力店）のどれかとのご縁が1枚出る<small>ハズレはありません。輪の色が、そのご縁の色です（ARTISTS は会場の色、SPONSORSHIP は白、RELATIONSHIP はグレー）</small></span></li>
-      <li><span>引けるのは、はじめに10回。次の日から毎日1回<small>引かなかった分は貯まります。まとめて引くこともできます</small></span></li>
+      <li><span>引けるのは、はじめに10回。次の日から毎日3回<small>引かなかった分は貯まります。まとめて引くこともできます</small></span></li>
       <li><span>会場で会った人とおたがいOKなら、どちらか1人が相手の「わたしのQR」を読む<small>2人とも1回ずつ引けます。読んだ人はその場で、読まれた人はこの画面の［ご縁を引く］で。見せるQRはホームのいちばん上にあります</small></span></li>
       <li><span>出たカードはMyコレクションに集まる<small>カードを押すと、会場やお店の場所を見られます。当日は、ご縁のあった出演者やお店をたずねてみてください</small></span></li>
     </ol>
@@ -1231,14 +1231,14 @@ function goenOf() { return ME && !ME.sample ? ME.goen || null : null; }
 function renderGoen() {
   const pull = $('#gPull'); if (!pull) return;
   const g = goenOf(), all = $('#gAll'), left = $('#gLeft');
-  if (!ME || ME.sample) { pull.textContent = 'LINEで開いて引く'; all.hidden = true; left.textContent = 'LINEで開くと、ご縁を引けます。はじめに10回、次の日から毎日1回。'; }
+  if (!ME || ME.sample) { pull.textContent = 'LINEで開いて引く'; all.hidden = true; left.textContent = 'LINEで開くと、ご縁を引けます。はじめに10回、次の日から毎日3回。'; }
   else if (!g) { pull.textContent = 'ご縁を引く'; pull.disabled = true; all.hidden = true; left.textContent = 'いまは準備中です。少し待ってから開き直してください。'; }
   else {
     if (!G_BUSY) { pull.disabled = !g.left; pull.textContent = g.left ? 'ご縁を引く' : '今日の分は引きました'; }
     const n = Math.min(g.left, g.bulk || 10);
     all.hidden = !(g.left >= 2); all.textContent = `まとめて引く（${n}枚）`; if (!G_BUSY) all.disabled = false;
     left.textContent = !g.open ? '縁日のご縁は終了しました。たくさんのご縁を、ありがとうございました。'
-      : g.left ? `いま引けるのは あと ${g.left} 回（毎日1回・引かなかった分は貯まります）` : '次の1回は、あした。会場で会った人とQRを読み合うと、その場で引けます。';
+      : g.left ? `いま引けるのは あと ${g.left} 回（毎日3回・引かなかった分は貯まります）` : '次の3回は、あした。会場で会った人とQRを読み合うと、その場で引けます。';
   }
   renderZukan();
 }
