@@ -244,6 +244,7 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .prize img{display:block;width:112px;aspect-ratio:4/5;object-fit:cover;object-position:50% 12%;background:#EDEDEB;border-radius:10px}
 .prize small{display:block;font-family:var(--mono,monospace);font-size:10.5px;letter-spacing:.12em;color:var(--pink)}
 .prize b{display:block;font-size:15px;margin:2px 0 4px}.prize span{display:block;font-size:12px;color:#D6D6D6;line-height:1.5}.prize em{font-style:normal;color:var(--dim);font-size:11px}
+.sgbn{display:block;width:100%;padding:0;margin:0 0 14px;border:0;background:none;cursor:pointer;border-radius:16px;overflow:hidden;-webkit-tap-highlight-color:transparent}.sgbn[hidden]{display:none}.sgbn img{display:block;width:100%;height:auto}.sgbn:active{transform:scale(.99)}
 .sgabout{border:1px solid var(--line);border-radius:var(--r);padding:14px 14px 12px;margin:0 0 12px;background:linear-gradient(135deg,rgba(236,125,143,.08),rgba(141,194,31,.06),rgba(55,155,215,.08))}.sgabout p{margin:0}.sgl{font-size:14px;line-height:1.6}.sgd{font-size:12.5px;color:#D6D6D6;line-height:1.65;margin-top:8px!important}.sgd b{color:#fff;letter-spacing:.04em}.sgpts{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.sgpts li{border:1px solid var(--line);border-radius:10px;padding:8px 6px;text-align:center;font-size:11px;line-height:1.35;background:rgba(10,10,10,.4)}.sgpts b{display:block;font-size:12px;color:#fff}.sgpts small{display:block;color:var(--dim);font-size:10px;margin-top:2px}.sgn{font-size:11px;color:var(--dim);margin-top:8px!important}
 .gacha{position:relative}.g-sfx{position:absolute;top:10px;right:10px;z-index:3;font:inherit;font-size:11px;letter-spacing:.06em;padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(10,10,10,.6);color:#D6D6D6;cursor:pointer}.g-sfx[aria-pressed="false"]{color:var(--dim)}
 .prizebig{display:flex;flex:none;height:min(58vh,560px);overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:14px;margin:4px 0 6px;background:#EDEDEB}.prizebig::-webkit-scrollbar{display:none}.prizebig img{flex:0 0 100%;width:100%;height:100%;object-fit:contain;scroll-snap-align:start;display:block}.prizecap{margin:0 0 12px;font-size:11.5px;color:var(--dim);text-align:center}
@@ -492,6 +493,7 @@ footer a{color:var(--dim)}
 
   <!-- ホーム：LINEでできることの入口（押すと公式アカウントのトークが開き、いまのカードが出る） -->
   <section class="tab on" id="tab-home" aria-labelledby="t-home">
+    <button class="sgbn" type="button" data-sgbn="home" hidden aria-label="SMF 第三回記念 三ガ茶 10連無料。いますぐ引く"><img src="img/sangacha-10ren.jpg" alt="" width="1200" height="800"></button>
     <div class="mv" aria-label="SANGENJAYA ART MUSIC FESTIVAL 2026">
       <div class="jp">三軒茶屋芸術音楽祭<span>第三回</span></div>
       <h1 class="ttl"><span class="i1">S</span>ANGENJAYA<br>ART <span class="i2">M</span>USIC <span class="i3">F</span>ESTIVAL</h1>
@@ -667,19 +669,20 @@ footer a{color:var(--dim)}
       </div>
     </div>
 
-    <p class="note">ご縁のガチャ「三ガ茶」は、下の［縁日］から。</p>
+    <p class="note">「三ガ茶」は、下の［縁日］から。</p>
   </section>
 
 
   <!-- 縁日のご縁 -->
   <section class="tab" id="tab-ennichi" aria-labelledby="t-ennichi">
     <h2><span class="en">SANGACHA-Discovery</span>三ガ茶（さんがちゃ）</h2>
+    <button class="sgbn" type="button" data-sgbn="tab" hidden aria-label="SMF 第三回記念 三ガ茶 10連無料。いますぐ引く"><img src="img/sangacha-10ren.jpg" alt="" width="1200" height="800" loading="lazy"></button>
     <div class="sgabout">
       <p class="sgl"><b>三ガ茶</b>は、三軒茶屋の<b>出演者・協力店・協賛</b>との「ご縁」をカードで引くガチャです。</p>
       <p class="sgd"><b>Discovery</b>　ご縁から、新たな発見を。出てきた出演者のステージを見に行ったり、お店をたずねたり。当日の回り方のきっかけにしてください。</p>
       <ul class="sgpts">
         <li><b>はじめは10連</b>無料</li>
-        <li><b>毎日3回ガチャ</b><small>次の日から。引かなかった分は貯まります</small></li>
+        <li><b>毎日3回 三ガ茶</b><small>次の日から。引かなかった分は貯まります</small></li>
         <li><b>会った人とQRで+1</b><small>2人とも1回ずつ</small></li>
       </ul>
       <p class="sgn">カードは画面の中だけです（景品・割引はありません）。SMF 第三回記念。</p>
@@ -694,7 +697,7 @@ footer a{color:var(--dim)}
       <div class="g-msg" id="gMsg" aria-live="polite">今日のご縁は、だれと・どこと？</div>
       <div class="g-many" id="gMany" hidden></div>
       <div class="g-btns">
-        <button class="btn primary wide" type="button" id="gPull">ご縁を引く</button>
+        <button class="btn primary wide" type="button" id="gPull">三ガ茶を引く</button>
         <button class="btn wide" type="button" id="gAll" hidden>まとめて引く</button>
       </div>
       <div class="g-left" id="gLeft">読み込んでいます…</div>
@@ -711,7 +714,7 @@ footer a{color:var(--dim)}
 
     <h2><span class="en">HOW TO</span>遊び方</h2>
     <ol class="howto">
-      <li><span>［ご縁を引く］を押すと、ARTISTS（出演者）・SPONSORSHIP（協賛）・RELATIONSHIP（協力店）のどれかとのご縁が1枚出る<small>ハズレはありません。輪の色が、そのご縁の色です（ARTISTS は会場の色、SPONSORSHIP は白、RELATIONSHIP はグレー）</small></span></li>
+      <li><span>［三ガ茶を引く］を押すと、ARTISTS（出演者）・SPONSORSHIP（協賛）・RELATIONSHIP（協力店）のどれかとのご縁が1枚出る<small>ハズレはありません。輪の色が、そのご縁の色です（ARTISTS は会場の色、SPONSORSHIP は白、RELATIONSHIP はグレー）</small></span></li>
       <li><span>引けるのは、はじめに10回。次の日から毎日3回<small>引かなかった分は貯まります。まとめて引くこともできます</small></span></li>
       <li><span>会場で会った人とおたがいOKなら、どちらか1人が相手の「わたしのQR」を読む<small>2人とも1回ずつ引けます。読んだ人はその場で、読まれた人はこの画面の［ご縁を引く］で。見せるQRはホームのいちばん上にあります</small></span></li>
       <li><span>出たカードはMyコレクションに集まる<small>カードを押すと、会場やお店の場所を見られます。当日は、ご縁のあった出演者やお店をたずねてみてください</small></span></li>
@@ -745,7 +748,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">SMFアプリ v3.11</span>
+    <br><span id="ver">SMFアプリ v3.12</span>
   </footer>
 </main>
 
@@ -847,7 +850,7 @@ document.addEventListener('click', e => {
 /* v3.3 の来場者メニュー（8つ）と同じ入口。送る文字は BOT の決まった言葉 */
 const FEATS = [
   { c: '--pink', t: 'SANCHA NIGHT LOOP', d: '夜の協力店をめぐるスタンプラリー。台紙と「わたしのQR」を出します', cmd: '#ラリー', go: '台紙を開く' },
-  { c: '--green', t: '三ガ茶（さんがちゃ）', d: '出演者・協力店・協賛とのご縁をカードで引くガチャ。はじめは10連、次の日から毎日3回ガチャ', cmd: '#ご縁', go: 'ご縁を開く' },
+  { c: '--green', t: '三ガ茶（さんがちゃ）', d: '出演者・協力店・協賛とのご縁をカードで引くガチャ。はじめは10連、次の日から毎日3回', cmd: '#ご縁', go: 'ご縁を開く' },
   { c: '--pink', t: 'おひねりクエスト', d: 'SMFへの応援（おひねり）。みんなの合計でボスを倒していきます', cmd: '#おひねり', go: 'おひねりを投げる' },
   { c: '--blue', t: 'SMF選手権', d: 'SMFと三茶のクイズ。何問答えられるか挑戦', cmd: '#SMF選手権', go: 'クイズを始める' },
   { c: '--green', t: '参加グループ', d: 'オープンチャット（SMF全体・一緒にまわろう）と、入っているグループ', cmd: '#参加グループ', go: 'LINEで見る' },
@@ -890,7 +893,7 @@ function renderMe() {
   const before = t0 && now < t0;
   const dots = (d.spots || []).map(x => `<i class="${x.on ? 'on' : ''}" title="${esc(x.name)}"></i>`).join('');
   wallet(`<div class="lbl"><b>わたしのQR</b>${d.sample ? '<span class="sample">サンプル表示</span>' : ''}　お店のスタッフにも、ご縁の相手にも</div>
-    ${d.goen && d.goen.left ? `<button class="btn primary wide" type="button" onclick="showTab('ennichi')" style="margin:0 0 10px">ご縁を引く（あと${d.goen.left}回）</button>` : !d.goen && d.caps ? `<button class="btn primary wide" type="button" onclick="pullGacha()" style="margin:0 0 10px">ご縁のガチャを引く（${d.caps}）</button>` : ''}
+    ${d.goen && d.goen.left ? `<button class="btn primary wide" type="button" onclick="showTab('ennichi')" style="margin:0 0 10px">三ガ茶を引く（あと${d.goen.left}回）</button>` : !d.goen && d.caps ? `<button class="btn primary wide" type="button" onclick="pullGacha()" style="margin:0 0 10px">三ガ茶を引く（${d.caps}）</button>` : ''}
     <div class="qr" role="img" aria-label="わたしのQR">${qrSvg(d.qr)}</div>
     <div class="cd">${esc(d.code)}</div>
     <div class="prog">${d.done ? '<b>達成！</b> 特典の受け取り方法は後日お知らせします' : `スタンプ <b>${d.got} / ${d.goal}</b>店 ${dots}`}</div>
@@ -1239,19 +1242,33 @@ async function loadCards() {
   renderGoen();
 }
 function goenOf() { return ME && !ME.sample ? ME.goen || null : null; }
+/* ---------- 三ガ茶 10連無料の帯（v3.12）。まだ1枚も引いていない人にだけ、ホームの先頭と［縁日］の先頭に出す ---------- */
+function sgFresh() { const g = goenOf(); if (!ME) { try { return !(window.liff && liff.isInClient && liff.isInClient()); } catch (e) { return true; } } return ME.sample ? true : !!(g && g.open && g.left && !(g.mine && g.mine.length)); }
+function renderSgBanner() {
+  const on = sgFresh();
+  document.querySelectorAll('[data-sgbn]').forEach(b => { b.hidden = !on; });
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-sgbn]'); if (!b) return;
+  const g = goenOf();
+  if (b.dataset.sgbn === 'home') { goTo('gacha'); return; }
+  if (g && g.left && !G_BUSY) { pullGoen(Math.min(g.left, g.bulk || 10)); return; } // ［縁日］の帯：そのまま10連
+  const t = document.getElementById('gacha'); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 function renderGoen() {
   const pull = $('#gPull'); if (!pull) return;
   const g = goenOf(), all = $('#gAll'), left = $('#gLeft');
-  if (!ME || ME.sample) { pull.textContent = 'LINEで開いて引く'; all.hidden = true; left.textContent = 'LINEで開くと、ご縁を引けます。はじめに10回、次の日から毎日3回。'; }
-  else if (!g) { pull.textContent = 'ご縁を引く'; pull.disabled = true; all.hidden = true; left.textContent = 'いまは準備中です。少し待ってから開き直してください。'; }
+  if (!ME || ME.sample) { pull.textContent = 'LINEで開いて引く'; all.hidden = true; left.textContent = 'LINEで開くと、三ガ茶を引けます。はじめに10回、次の日から毎日3回。'; }
+  else if (!g) { pull.textContent = '三ガ茶を引く'; pull.disabled = true; all.hidden = true; left.textContent = 'いまは準備中です。少し待ってから開き直してください。'; }
   else {
-    if (!G_BUSY) { pull.disabled = !g.left; pull.textContent = g.left ? 'ご縁を引く' : '今日の分は引きました'; }
+    if (!G_BUSY) { pull.disabled = !g.left; pull.textContent = g.left ? '三ガ茶を引く' : '今日の分は引きました'; }
     const n = Math.min(g.left, g.bulk || 10);
     all.hidden = !(g.left >= 2); all.textContent = `まとめて引く（${n}枚）`; if (!G_BUSY) all.disabled = false;
     left.textContent = !g.open ? '三ガ茶は終了しました。たくさんのご縁を、ありがとうございました。'
       : g.left ? `いま引けるのは あと ${g.left} 回（毎日3回・引かなかった分は貯まります）` : '次の3回は、あした。会場で会った人とQRを読み合うと、その場で引けます。';
   }
   renderZukan();
+  renderSgBanner();
 }
 function gReset() { const el = $('#gacha'); el.classList.remove('s-spin', 's-hit', 's-card', 's-many'); document.querySelectorAll('#gSteps i').forEach(i => i.classList.remove('on')); $('#gMany').hidden = true; $('#gMany').innerHTML = ''; }
 function gPreload(src) { return new Promise(r => { const im = new Image(); im.onload = im.onerror = () => r(); im.src = src; setTimeout(r, 2500); }); }
@@ -1344,7 +1361,7 @@ function renderZukan() {
       ? `<button type="button" data-card="${esc(c.id)}" style="--c:${x.c}" aria-label="${esc(c.name)}"><img src="${esc(gImg(c, true))}" alt="" loading="lazy">${G_NEW[c.id] ? '<span class="new">NEW</span>' : ''}</button>`
       : '<div class="no" aria-hidden="true">?</div>').join('');
     return `<div class="zg" style="--c:${x.c}"><h3><i></i>${esc(x.title)}<span>${mine.length} / ${x.list.length}</span></h3><div class="zk">${cells}</div></div>`;
-  }).join('') || '<p class="note" style="margin:10px 0 0">まだカードがありません。上の［ご縁を引く］から。</p>';
+  }).join('') || '<p class="note" style="margin:10px 0 0">まだカードがありません。上の［三ガ茶を引く］から。</p>';
 }
 /** カードを大きく見る。出演者は会場へ、協力店は地図へ */
 function cardDetail(id) {
