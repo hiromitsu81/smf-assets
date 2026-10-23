@@ -244,6 +244,7 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .prize img{display:block;width:112px;aspect-ratio:4/5;object-fit:cover;object-position:50% 12%;background:#EDEDEB;border-radius:10px}
 .prize small{display:block;font-family:var(--mono,monospace);font-size:10.5px;letter-spacing:.12em;color:var(--pink)}
 .prize b{display:block;font-size:15px;margin:2px 0 4px}.prize span{display:block;font-size:12px;color:#D6D6D6;line-height:1.5}.prize em{font-style:normal;color:var(--dim);font-size:11px}
+.gacha{position:relative}.g-sfx{position:absolute;top:10px;right:10px;z-index:3;font:inherit;font-size:11px;letter-spacing:.06em;padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(10,10,10,.6);color:#D6D6D6;cursor:pointer}.g-sfx[aria-pressed="false"]{color:var(--dim)}
 .prizebig{display:flex;flex:none;height:min(58vh,560px);overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:14px;margin:4px 0 6px;background:#EDEDEB}.prizebig::-webkit-scrollbar{display:none}.prizebig img{flex:0 0 100%;width:100%;height:100%;object-fit:contain;scroll-snap-align:start;display:block}.prizecap{margin:0 0 12px;font-size:11.5px;color:var(--dim);text-align:center}
 .entry h3{margin:0;font-size:16px}.entry p{margin:0;font-size:13.5px;color:#D6D6D6}.entry .sm{font-size:11.5px;color:var(--dim)}
 .entry form{display:grid;gap:8px;margin-top:4px}.entry label{font-size:12.5px;color:var(--dim)}
@@ -673,6 +674,7 @@ footer a{color:var(--dim)}
   <section class="tab" id="tab-ennichi" aria-labelledby="t-ennichi">
     <h2><span class="en">EN-NICHI</span>縁日のご縁</h2>
     <div class="gacha" id="gacha">
+      <button class="g-sfx" type="button" id="gSfx" aria-pressed="true" aria-label="効果音">♪ 音あり</button>
       <div class="g-stage">
         <div class="g-logo"><span class="g-ring"></span><img src="img/smf-logo.png" alt=""></div>
         <div class="g-card" id="gCard"><img id="gImg" alt=""></div>
@@ -732,7 +734,7 @@ footer a{color:var(--dim)}
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
-    <br><span id="ver">SMFアプリ v3.10</span>
+    <br><span id="ver">SMFアプリ v3.11</span>
   </footer>
 </main>
 
@@ -1242,6 +1244,30 @@ function renderGoen() {
 }
 function gReset() { const el = $('#gacha'); el.classList.remove('s-spin', 's-hit', 's-card', 's-many'); document.querySelectorAll('#gSteps i').forEach(i => i.classList.remove('on')); $('#gMany').hidden = true; $('#gMany').innerHTML = ''; }
 function gPreload(src) { return new Promise(r => { const im = new Image(); im.onload = im.onerror = () => r(); im.src = src; setTimeout(r, 2500); }); }
+/* ---------- 効果音（v3.11）。Web Audio で短い音を作る。音声ファイルは使わない。押した人の操作のあとだけ鳴る ---------- */
+const SFX = (() => {
+  let ctx = null, on = true;
+  try { on = localStorage.getItem('smf_sfx') !== 'off'; } catch (e) { /* 保存できない端末は毎回「音あり」 */ }
+  const unlock = () => { try { if (!ctx) { const A = window.AudioContext || window.webkitAudioContext; if (A) ctx = new A(); } if (ctx && ctx.state === 'suspended') ctx.resume(); } catch (e) { ctx = null; } };
+  document.addEventListener('pointerdown', unlock, { capture: true, passive: true });
+  const tone = (f, t0, d, type, g, f2) => {
+    const o = ctx.createOscillator(), a = ctx.createGain(), s = ctx.currentTime + t0;
+    o.type = type || 'sine'; o.frequency.setValueAtTime(f, s); if (f2) o.frequency.exponentialRampToValueAtTime(f2, s + d);
+    a.gain.setValueAtTime(0.0001, s); a.gain.exponentialRampToValueAtTime(g || 0.12, s + 0.012); a.gain.exponentialRampToValueAtTime(0.0001, s + d);
+    o.connect(a).connect(ctx.destination); o.start(s); o.stop(s + d + 0.02);
+  };
+  const play = kind => {
+    if (!on || !ctx || ctx.state !== 'running') return;
+    try {
+      if (kind === 'tick') { tone(880, 0, 0.07, 'triangle', 0.08); }
+      else if (kind === 'hit') { [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => tone(f, i * 0.07, 0.42, 'triangle', 0.1)); tone(196, 0, 0.35, 'sine', 0.12, 98); }
+      else if (kind === 'card') { [1568, 2093, 2637].forEach((f, i) => tone(f, i * 0.05, 0.25, 'sine', 0.05)); }
+    } catch (e) { /* 鳴らなくても続ける */ }
+  };
+  const btn = () => { const b = $('#gSfx'); if (b) { b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.textContent = on ? '♪ 音あり' : '音なし'; } };
+  const toggle = () => { on = !on; try { localStorage.setItem('smf_sfx', on ? 'on' : 'off'); } catch (e) { /* 保存できなくても切り替える */ } btn(); if (on) { unlock(); play('tick'); } };
+  return { play, toggle, btn };
+})();
 /** 引いたカードを、輪の演出で出す（1枚＝大きく／2枚以上＝輪は1回で、並べて出す） */
 async function playGoen(cards, lead) {
   const el = $('#gacha'), q = gQuick(); if (!el || !cards || !cards.length) return;
@@ -1253,19 +1279,20 @@ async function playGoen(cards, lead) {
   el.style.setProperty('--hit', col[0]);
   el.classList.add('s-spin'); $('#gMsg').textContent = lead || 'ご縁を探しています…';
   const pre = one ? gPreload(gImg(c0)) : Promise.all(cards.map(c => gPreload(gImg(c, true))));
-  for (const d of document.querySelectorAll('#gSteps i')) { await gWait(q ? 0 : 460); d.classList.add('on'); }
+  for (const d of document.querySelectorAll('#gSteps i')) { await gWait(q ? 0 : 460); d.classList.add('on'); SFX.play('tick'); }
   await Promise.all([pre, gWait(q ? 0 : 380)]);
   el.classList.remove('s-spin'); el.classList.add('s-hit');
   $('#gMsg').innerHTML = one ? `<b>${esc(col[1])}のご縁！</b>` : `<b>${cards.length}枚のご縁！</b>`;
-  try { if (navigator.vibrate) navigator.vibrate(40); } catch (e) { /* 震えない端末 */ }
+  SFX.play('hit');
+  try { if (navigator.vibrate) navigator.vibrate([30, 40, 60]); } catch (e) { /* 震えない端末 */ }
   await gWait(q ? 0 : 720);
   if (one) {
     const im = $('#gImg'); im.src = gImg(c0); im.alt = c0.name; $('#gCard').onclick = () => cardDetail(c0.id);
-    el.classList.add('s-card');
+    el.classList.add('s-card'); SFX.play('card');
     $('#gMsg').innerHTML = `<b>${esc(c0.name)}</b>${esc(GKIND[c0.kind] || '')}｜${esc(gWhere(c0))}${c0.isNew === false ? '（もう持っているカード）' : ''}`;
   } else {
     el.classList.remove('s-hit'); el.classList.add('s-many'); // 輪をしまって、カードを並べる
-    const m = $('#gMany'); m.hidden = false;
+    const m = $('#gMany'); m.hidden = false; SFX.play('card');
     m.innerHTML = cards.map((c, i) => `<button type="button" data-card="${esc(c.id)}" style="--c:${gCol(c)[0]};animation-delay:${q ? 0 : i * 70}ms" aria-label="${esc(c.name)}"><img src="${esc(gImg(c, true))}" alt="">${c.isNew === false ? '' : '<span class="new">NEW</span>'}</button>`).join('');
     const k = { artist: 0, shop: 0, sponsor: 0 }; cards.forEach(c => { k[c.kind] = (k[c.kind] || 0) + 1; });
     $('#gMsg').innerHTML = `<b>${cards.length}枚のご縁</b>ARTISTS ${k.artist}・SPONSORSHIP ${k.sponsor}・RELATIONSHIP ${k.shop}　カードを押すと大きく見られます`;
@@ -1326,6 +1353,7 @@ function goVenue(code) {
   if (el) setTimeout(() => { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1400); }, 80);
 }
 function bindGoen() {
+  $('#gSfx').onclick = () => SFX.toggle(); SFX.btn();
   $('#gPull').onclick = () => { if (!ME || ME.sample) { if (CONFIG.LIFF_ID) openLine(APP_URL() + '?tab=ennichi'); return; } pullGoen(1); };
   $('#gAll').onclick = () => { const g = goenOf(); if (g) pullGoen(Math.min(g.left, g.bulk || 10)); };
   document.addEventListener('click', e => {
