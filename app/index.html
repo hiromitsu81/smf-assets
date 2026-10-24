@@ -335,6 +335,7 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 /* 友だちを誘う（シェアターゲットピッカー） */
 .share{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:10px;padding:12px;border-radius:999px;border:1px dashed var(--line);background:transparent;color:var(--text);font:inherit;font-size:14px;font-weight:700;cursor:pointer}
 .share svg{width:18px;height:18px;color:var(--green)}
+.oanudge{display:flex;align-items:center;gap:8px;margin:10px 0 0;padding:10px 12px;border:1px solid rgba(141,194,31,.45);border-radius:12px;background:rgba(141,194,31,.08)}.oanudge[hidden]{display:none}.oanudge a{flex:1;min-width:0;text-decoration:none;color:var(--text)}.oanudge b{display:block;font-size:14px;color:var(--green)}.oanudge b::after{content:" ＞"}.oanudge span{display:block;font-size:12px;color:var(--dim,#aaa);line-height:1.5}.oanudge button{flex:0 0 auto;background:none;border:0;color:var(--dim,#aaa);font-size:18px;padding:4px 6px;cursor:pointer}
 .toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:13px;font-weight:700;z-index:9;white-space:nowrap}
 
 /* ホーム */
@@ -713,6 +714,7 @@ function ga(ev, p) { try { gtag('event', ev, p || {}); } catch (e) { /* 計測�
       </div>
       <div class="g-left" id="gLeft">読み込んでいます…</div>
     </div>
+    <div class="oanudge" id="oaNudge" hidden><a href="#" id="oaAdd"><b>公式LINEを友だち追加</b><span>当日の変更やお知らせが、LINEのトークに届きます</span></a><button type="button" id="oaX" aria-label="閉じる">×</button></div>
     <button class="share" type="button" id="enScan" style="border-style:solid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M4 12h16"/></svg>会った人のQRを読む（2人とも1回ずつ引けます）</button>
 
     <h2 id="zukanTop"><span class="en">COLLECTION</span>Myコレクション</h2>
@@ -760,7 +762,7 @@ function ga(ev, p) { try { gtag('event', ev, p || {}); } catch (e) { /* 計測�
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
     <br><small style="opacity:.7">利用状況を知るために Google Analytics を使っています（名前などの個人情報は送りません）。</small>
-    <br><span id="ver">SMFアプリ v3.16</span>
+    <br><span id="ver">SMFアプリ v3.17</span>
   </footer>
 </main>
 
@@ -1360,7 +1362,7 @@ async function pullGoen(n) {
   el.classList.add('s-spin'); $('#gMsg').textContent = 'ご縁を探しています…';
   const d = await postApi('pull', { n: n });
   G_BUSY = false;
-  if (d && d.ok && d.cards && d.cards.length) { if (ME) { ME.goen = d.goen || ME.goen; ME.caps = d.goen ? d.goen.left : 0; } ME_AT = 0; return playGoen(d.cards); }
+  if (d && d.ok && d.cards && d.cards.length) { if (ME) { ME.goen = d.goen || ME.goen; ME.caps = d.goen ? d.goen.left : 0; } ME_AT = 0; return playGoen(d.cards).then(oaNudge); }
   gReset(); if (d && d.goen && ME) ME.goen = d.goen;
   $('#gMsg').textContent = d && d.error === 'none' ? 'いま引ける回数はありません。' : d && d.error === 'closed' ? '三ガ茶は、いまは行っていません。' : d && d.error === 'too many' ? '続けて引きすぎています。少し時間をおいてください。' : 'いまは引けませんでした。少し待って、もう一度お試しください。';
   renderGoen();
@@ -1411,7 +1413,7 @@ function bindGoen() {
     const z = e.target.closest('[data-z]'); if (z) { Z_FILTER = z.dataset.z; return renderZukan(); }
     const b = e.target.closest('[data-card]'); if (b) cardDetail(b.dataset.card);
   });
-  loadCards();
+  loadCards(); bindOa();
 }
 
 function bindWallet() {
@@ -1428,6 +1430,21 @@ function bindWallet() {
 /* ---------- 友だちを誘う：LINEの友だち・グループを選んでカードを送る（送るのは本人。通数は使わない） ---------- */
 const APP_URL = () => `https://miniapp.line.me/${CONFIG.LIFF_ID || '2011757428-QGPFSEDi'}`;
 const absUrl = f => new URL(f, location.href).href;
+/* ---------- 公式LINEの友だち追加（v3.17）。三ガ茶を引いたあと、まだ友だちでない人にだけ小さく出す。閉じたら3日は出さない ---------- */
+let OA_FRIEND = null;
+const oaLS = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } };
+async function oaNudge() {
+  const box = $('#oaNudge'); if (!box || !inLine() || !liff.getFriendship) return;
+  if (Date.now() < Number(oaLS('smf_oa_snooze') || 0)) return;
+  if (OA_FRIEND === null) { try { const r = await liff.getFriendship(); OA_FRIEND = !!(r && r.friendFlag); } catch (e) { return; } }
+  if (OA_FRIEND || !box.hidden) return;
+  box.hidden = false; ga('oa_nudge_view', {});
+}
+function bindOa() {
+  const box = $('#oaNudge'); if (!box) return;
+  $('#oaAdd').onclick = e => { e.preventDefault(); ga('oa_add_click', { label: 'gacha' }); box.hidden = true; OA_FRIEND = null; oaLS('smf_oa_snooze', String(Date.now() + 864e5)); openLine(`https://line.me/R/ti/p/${encodeURIComponent(oaId())}`); };
+  $('#oaX').onclick = () => { box.hidden = true; ga('oa_nudge_close', {}); oaLS('smf_oa_snooze', String(Date.now() + 3 * 864e5)); };
+}
 function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2600); }
 function flexCard(alt, o) {
   const T = (text, x) => Object.assign({ type: 'text', text: text, wrap: true, color: '#F5F5F5', size: 'sm' }, x || {});
