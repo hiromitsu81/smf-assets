@@ -529,7 +529,7 @@ function ga(ev, p) { try { gtag('event', ev, p || {}); } catch (e) { /* 計測�
       </div>
     </div>
 
-    <a class="artists" href="https://sangenjaya-mf.com/#artists" target="_blank" rel="noopener"><span><b>出演アーティストを見る</b><small>プロフィールは公式サイトで</small></span><span class="en">ARTISTS ↗</span></a>
+    <a class="artists" href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp#artists" target="_blank" rel="noopener"><span><b>出演アーティストを見る</b><small>プロフィールは公式サイトで</small></span><span class="en">ARTISTS ↗</span></a>
 
     <h2><span class="en">PLAY</span>LINEであそぶ・参加する</h2>
     <div class="feats" id="feats"></div>
@@ -601,7 +601,7 @@ function ga(ev, p) { try { gtag('event', ev, p || {}); } catch (e) { /* 計測�
   <!-- タイムテーブル -->
   <section class="tab" id="tab-time" aria-labelledby="t-time">
     <h2 id="sec-timetable"><span class="en">TIMETABLE</span>時間と会場</h2>
-    <a class="artists" style="margin:0 0 12px" href="https://sangenjaya-mf.com/#artists" target="_blank" rel="noopener"><span><b>出演アーティストを見る</b><small>プロフィールは公式サイトで</small></span><span class="en">ARTISTS ↗</span></a>
+    <a class="artists" style="margin:0 0 12px" href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp#artists" target="_blank" rel="noopener"><span><b>出演アーティストを見る</b><small>プロフィールは公式サイトで</small></span><span class="en">ARTISTS ↗</span></a>
     <div class="chips" id="filters" role="group" aria-label="絞り込み"></div>
     <div class="gantt" id="gantt"></div>
     <p class="note" style="margin-top:8px">帯とバッジの色は、会場ごとのカラーです（公式サイトの会場MAP・アーティスト紹介と同じ色）。</p>
@@ -758,9 +758,9 @@ function ga(ev, p) { try { gtag('event', ev, p || {}); } catch (e) { /* 計測�
   </section>
 
   <footer>
-    最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
+    最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
     <br><small style="opacity:.7">利用状況を知るために Google Analytics を使っています（名前などの個人情報は送りません）。</small>
-    <br><span id="ver">SMFアプリ v3.15</span>
+    <br><span id="ver">SMFアプリ v3.16</span>
   </footer>
 </main>
 
@@ -813,7 +813,7 @@ function isOpen(v, m) { const s = min(v.start), e = min(v.end); return s != null
 /* ---------- 公式サイトとの行き来（v3.7） ----------
    サイト → アプリ：https://miniapp.line.me/<LIFF ID>?tab=loop&go=entry のように、タブ（tab）と場所（go）を付けて開く
    アプリ → サイト：見出しの右の「公式サイト」から、サイトの同じ章（#loop など）へ */
-const SITE = 'https://sangenjaya-mf.com/';
+const SITE = 'https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp';
 const SITE_SEC = { 'sec-howto': 'howto', 'sec-archive': 'archive', 'sec-sponsor': 'sponsor', 'sec-shops': 'relationship', 'sec-areamap': 'map', 'sec-timetable': 'artists', 'sec-venues': 'venues', 'sec-map': 'access', 'sec-loop': 'loop' };
 const GO = { qr: ['home', 'wallet'], ticket: ['home', 'ticket'], howto: ['home', 'sec-howto'], archive: ['home', 'sec-archive'], sponsor: ['home', 'sec-sponsor'], shops: ['home', 'sec-shops'], areamap: ['home', 'sec-areamap'], voice: ['home', 'voice'],
   timetable: ['time', 'sec-timetable'], venues: ['time', 'sec-venues'], map: ['time', 'sec-map'],
@@ -868,7 +868,7 @@ const FEATS = [
   { c: '--green', t: '参加グループ', d: 'オープンチャット（SMF全体・一緒にまわろう）と、入っているグループ', cmd: '#参加グループ', go: 'LINEで見る' },
   { c: '--blue', t: '友だちをSMFに招待', d: 'あなた専用の紹介リンクを出します。LINEで友だちに送れます', cmd: '#友だちをSMFに招待', go: '招待リンクを出す' },
   { c: '--white', t: '使い方（来場者）', d: 'LINEでできることを、カードでまとめて見られます', cmd: '#使い方', go: '使い方を見る' },
-  { c: '--white', t: '公式サイト', d: '出演者・会場・チケットのくわしい情報', url: 'https://sangenjaya-mf.com/', go: 'サイトを開く' }
+  { c: '--white', t: '公式サイト', d: '出演者・会場・チケットのくわしい情報', url: 'https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp', go: 'サイトを開く' }
 ];
 const OPENCHAT_URL = 'https://line.me/ti/g2/w4a-G0_TXiAly6lLUN7XHOMrzyh-6T-6yR6fQg';
 function renderHome() {
@@ -1178,7 +1178,7 @@ const fmtClock = d => d.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '
 async function loadMe(force) {
   if (!force && ME && Date.now() - ME_AT < 4 * 60000) return; // ご縁のQRは10分で切れるので、4分ごとに作り直す
   if (!CONFIG.LIFF_ID && !CONFIG.GAS_URL) { // 見本（LINEにつながっていないとき）：サンプルのQR
-    ME = { sample: true, code: 'SAMPLE', qr: 'https://sangenjaya-mf.com/', goal: 4, got: 2, done: false, spots: [{ id: 'borrachos', name: 'BORRACHOS', on: true }, { id: 'friends', name: 'FRIENDS', on: true }, { id: 'niwars', name: "Niwar's", on: false }, { id: 'umechan', name: '梅ちゃん', on: false }, { id: 'tengu', name: '天狗食堂', on: false }], img: 'https://hiromitsu81.github.io/smf-assets/rally/', from: '2026-11-07T13:00:00+09:00' };
+    ME = { sample: true, code: 'SAMPLE', qr: 'https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp', goal: 4, got: 2, done: false, spots: [{ id: 'borrachos', name: 'BORRACHOS', on: true }, { id: 'friends', name: 'FRIENDS', on: true }, { id: 'niwars', name: "Niwar's", on: false }, { id: 'umechan', name: '梅ちゃん', on: false }, { id: 'tengu', name: '天狗食堂', on: false }], img: 'https://hiromitsu81.github.io/smf-assets/rally/', from: '2026-11-07T13:00:00+09:00' };
     return renderMe();
   }
   const ok = await loadLiff();
@@ -1540,7 +1540,7 @@ function card(v, i, m) {
       <div class="c-title"><h3>${esc(v.name)}${v.loop ? '<span class="badge">NIGHT LOOP</span>' : ''}</h3><p>${esc(v.sub)}・${esc(BAND[v.band][0])}</p></div>
       <span class="open${live ? ' live' : ''}">${live ? '開催中' : esc(time)}</span></div>
     <dl class="c-meta"><dt>時間</dt><dd>${esc(time)}</dd><dt>内容</dt><dd>${esc(v.genre)}</dd>${v.entry ? `<dt>入場</dt><dd>${esc(v.entry)}</dd>` : ''}<dt>場所</dt><dd>${esc(v.address)}</dd></dl>${v.code === 'L' ? `<a class="tkmini${ticketOpen() ? '' : ' off'}" href="${TICKET.url}" target="_blank" rel="noopener">チケットを購入する（ZAIKO）→</a>` : ''}
-    ${v.lineup.length ? `<div class="lineup">${v.lineup.map(a => `<a href="https://sangenjaya-mf.com/#artists" target="_blank" rel="noopener">${esc(a)}</a>`).join('')}</div><p class="note" style="margin-top:6px">出演者の紹介は<a href="https://sangenjaya-mf.com/#artists" target="_blank" rel="noopener">公式サイトのARTISTS</a>で。</p>` : `<p class="note">${esc(v.note || '出演者は発表をお待ちください')}</p>`}
+    ${v.lineup.length ? `<div class="lineup">${v.lineup.map(a => `<a href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp#artists" target="_blank" rel="noopener">${esc(a)}</a>`).join('')}</div><p class="note" style="margin-top:6px">出演者の紹介は<a href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp#artists" target="_blank" rel="noopener">公式サイトのARTISTS</a>で。</p>` : `<p class="note">${esc(v.note || '出演者は発表をお待ちください')}</p>`}
     ${sets || (v.lineup.length ? '<p class="note">出演時刻は発表後にここに出ます。</p>' : '')}
     <div class="c-foot"><a class="btn" href="${mapUrl(v)}" target="_blank" rel="noopener">地図で開く ↗</a></div>
   </article>`;
