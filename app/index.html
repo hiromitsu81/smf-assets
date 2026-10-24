@@ -244,7 +244,7 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .prize img{display:block;width:112px;aspect-ratio:4/5;object-fit:cover;object-position:50% 12%;background:#EDEDEB;border-radius:10px}
 .prize small{display:block;font-family:var(--mono,monospace);font-size:10.5px;letter-spacing:.12em;color:var(--pink)}
 .prize b{display:block;font-size:15px;margin:2px 0 4px}.prize span{display:block;font-size:12px;color:#D6D6D6;line-height:1.5}.prize em{font-style:normal;color:var(--dim);font-size:11px}
-.fbinv{background:#1877F2!important;color:#fff!important;border-color:#1877F2!important;text-decoration:none;flex-wrap:wrap}.fbinv svg{color:#fff!important;fill:#fff!important;stroke:none!important}.fbinv small{flex-basis:100%;text-align:center;font-size:11px;opacity:.85;font-weight:400}
+.fbinv{text-decoration:none;font-size:13px;font-weight:400;color:var(--dim,#aaa)!important;margin-top:6px}.fbinv svg{width:16px;height:16px;color:#5b8def!important;fill:#5b8def!important;stroke:none!important}
 .sgbn{display:block;width:100%;padding:0;margin:14px 0;border:0;background:none;cursor:pointer;border-radius:16px;overflow:hidden;-webkit-tap-highlight-color:transparent}.sgbn[hidden]{display:none}.sgbn img{display:block;width:100%;height:auto}.sgbn:active{transform:scale(.99)}
 .sgabout{border:1px solid var(--line);border-radius:var(--r);padding:14px 14px 12px;margin:0 0 12px;background:linear-gradient(135deg,rgba(236,125,143,.08),rgba(141,194,31,.06),rgba(55,155,215,.08))}.sgabout p{margin:0}.sgl{font-size:14px;line-height:1.6}.sgd{font-size:12.5px;color:#D6D6D6;line-height:1.65;margin-top:8px!important}.sgd b{color:#fff;letter-spacing:.04em}.sgpts{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.sgpts li{border:1px solid var(--line);border-radius:10px;padding:8px 6px;text-align:center;font-size:11px;line-height:1.35;background:rgba(10,10,10,.4)}.sgpts b{display:block;font-size:12px;color:#fff}.sgpts small{display:block;color:var(--dim);font-size:10px;margin-top:2px}.sgn{font-size:11px;color:var(--dim);margin-top:8px!important}
 .gacha{position:relative}.g-sfx{position:absolute;top:10px;right:10px;z-index:3;font:inherit;font-size:11px;letter-spacing:.06em;padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(10,10,10,.6);color:#D6D6D6;cursor:pointer}.g-sfx[aria-pressed="false"]{color:var(--dim)}
@@ -523,8 +523,8 @@ function ga(ev, p) { try { gtag('event', ev, p || {}); } catch (e) { /* 計測�
     </div>
     <button class="sgbn" type="button" data-sgbn="home" hidden aria-label="SMF 第三回記念 三ガ茶 10連無料。いますぐ引く"><img loading="lazy" src="img/sangacha-10ren.jpg" alt="" width="1200" height="800"></button>
 
-    <a class="share fbinv" href="https://www.facebook.com/events/1133174679232785" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.4 21v-7.6h2.6l.4-3h-3V8.5c0-.9.2-1.5 1.5-1.5h1.6V4.3c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.7v3h2.6V21z"/></svg>Facebookで友だちを誘う<small>イベントで「参加予定」→「招待」</small></a>
     <button class="share" type="button" data-share="invite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>友だちをSMFに誘う</button>
+    <a class="share fbinv" href="https://www.facebook.com/events/1133174679232785" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.4 21v-7.6h2.6l.4-3h-3V8.5c0-.9.2-1.5 1.5-1.5h1.6V4.3c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.7v3h2.6V21z"/></svg>Facebookイベントで友だちを誘う</a>
 
       </div>
     </div>
@@ -760,7 +760,7 @@ function ga(ev, p) { try { gtag('event', ev, p || {}); } catch (e) { /* 計測�
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
     <br><small style="opacity:.7">利用状況を知るために Google Analytics を使っています（名前などの個人情報は送りません）。</small>
-    <br><span id="ver">SMFアプリ v3.14</span>
+    <br><span id="ver">SMFアプリ v3.15</span>
   </footer>
 </main>
 
