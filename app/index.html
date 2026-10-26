@@ -594,7 +594,7 @@ function cv(type, name, id) { ga('content_view', { content_type: type, content_n
         <li><b>2部</b><em>¥6,000</em><small>18:40〜21:55</small></li>
         <li><b>1部・2部 通し券</b><em>¥10,000</em><small>13:30〜22:00</small></li>
       </ul>
-      <p class="sm"><span data-tk-state>前売は11月6日（金）23:59 まで（ZAIKO）</span>。当日券あり（前売と同額）。別途ドリンク代 ¥500（通し券は各部）。どの券にも SANCHA NIGHT LOOP のパスが付きます。</p>
+      <p class="sm"><span data-tk-state>前売は11月6日（金）23:59 まで（ZAIKO）</span>。当日（11/7）も ZAIKO で買えます（前売と同額。1部・通し券は13:29まで、2部は18:39まで）。別途ドリンク代 ¥500（通し券は各部）。どの券にも SANCHA NIGHT LOOP のパスが付きます。</p>
       <a class="buy" data-tk href="https://sangenjaya-mf.zaiko.io/ja/e/smaf-2026" target="_blank" rel="noopener">チケットを購入する<small>ZAIKO（外部サイト）へ移動します</small></a>
     </div>
     <a class="artists" id="sec-archive" style="margin-top:12px" href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp#howto" target="_blank" rel="noopener"><span><b>SMFの楽しみ方・これまでのSMF</b><small>フェスの紹介・過去の動画・よくある質問は公式サイトで</small></span><span class="en">SITE ↗</span></a>
@@ -763,7 +763,7 @@ function cv(type, name, id) { ga('content_view', { content_type: type, content_n
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
     <br><small style="opacity:.7">利用状況を知るために Google Analytics を使っています（名前などの個人情報は送りません）。</small>
-    <br><span id="ver">SMFアプリ v3.22</span>
+    <br><span id="ver">SMFアプリ v3.23</span>
   </footer>
 </main>
 
@@ -836,12 +836,12 @@ function goTo(key) {
   return true;
 }
 /* ---------- チケット（ZAIKO）。販売の期限を過ぎたら、入口を閉じる（v3.4） ---------- */
-const TICKET = { url: 'https://sangenjaya-mf.zaiko.io/ja/e/smaf-2026', until: '2026-11-06T23:59:59+09:00' };
-const ticketOpen = () => Date.now() <= new Date(TICKET.until).getTime();
+const TICKET = { url: 'https://sangenjaya-mf.zaiko.io/ja/e/smaf-2026', presale: '2026-11-06T23:59:59+09:00', until: '2026-11-07T18:39:59+09:00' }; // v3.23：当日も ZAIKO で売る（1部・通しは13:29、2部は18:39まで）
+const ticketOpen = () => nowJst().getTime() <= new Date(TICKET.until).getTime();
 function renderTicket() {
   const on = ticketOpen();
-  document.querySelectorAll('[data-tk]').forEach(a => { if (a.classList.contains('buy')) { a.classList.toggle('off', !on); if (!on) a.innerHTML = '前売は終了しました<small>当日券あり（前売と同額）</small>'; } else a.style.display = on ? '' : 'none'; });
-  document.querySelectorAll('[data-tk-state]').forEach(x => { x.textContent = on ? '前売は11月6日（金）23:59 まで（ZAIKO）' : '前売は終了しました'; });
+  document.querySelectorAll('[data-tk]').forEach(a => { if (a.classList.contains('buy')) { a.classList.toggle('off', !on); if (!on) a.innerHTML = 'チケットの販売は終了しました'; else if (nowJst().getTime() > new Date(TICKET.presale).getTime()) a.innerHTML = '当日券を購入する（ZAIKO）<small>前売と同額 ／ 1部・通し券は13:29まで、2部は18:39まで</small>'; } else a.style.display = on ? '' : 'none'; });
+  document.querySelectorAll('[data-tk-state]').forEach(x => { x.textContent = !on ? 'チケットの販売は終了しました' : nowJst().getTime() > new Date(TICKET.presale).getTime() ? '前売は終了。当日券を ZAIKO で販売中' : '前売は11月6日（金）23:59 まで（ZAIKO）'; });
 }
 /* ---------- 外へのリンク（LINEの中ならブラウザで開く） ---------- */
 function openExternal(url) {
