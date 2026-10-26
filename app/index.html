@@ -559,8 +559,6 @@ function cv(type, name, id) { ga('content_view', { content_type: type, content_n
       </div>
     </div>
 
-    <a class="artists" href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp#artists" target="_blank" rel="noopener"><span><b>出演アーティストを見る</b><small>プロフィールは公式サイトで</small></span><span class="en">ARTISTS ↗</span></a>
-
     <h2><span class="en">PLAY</span>LINEであそぶ・参加する</h2>
     <div class="feats" id="feats"></div>
     <p class="howline">押すと SMF の LINE のトークが開き、文字が入った状態になります。<b>そのまま送信</b>すると、カードが届きます。友だち追加がまだの方は <a href="#" id="addFriend">こちら</a> から。</p>
@@ -588,32 +586,18 @@ function cv(type, name, id) { ga('content_view', { content_type: type, content_n
       </form>
     </div>
 
-    <h2 id="sec-howto"><span class="en">HOW TO ENJOY</span>SMFの楽しみ方</h2>
-    <p class="hte-lead">SMFはひとつの会場で完結するフェスではありません。三軒茶屋の街そのものが会場です。時間帯によって開いている場所と楽しみ方が変わります。決められた順番はありません。</p>
-    <div class="hte" id="hte"></div>
-    <div class="money">
-      <div><div class="lab">入場は無料</div><div class="val"><span class="pill free">日中4会場</span><span class="pill free">夜のサブ会場5店</span><span class="pill free">街歩き</span>チケットも予約も要りません</div></div>
-      <div><div class="lab">事前に買うもの</div><div class="val"><span class="pill pay">SPECIAL LIVE ¥6,000〜</span><span class="pill pay">SANCHA NIGHT LOOP ¥3,000</span>この2つだけ。SPECIAL LIVE のチケットにはパスが付きます<br><a class="tkmini" data-tk href="https://sangenjaya-mf.zaiko.io/ja/e/smaf-2026" target="_blank" rel="noopener" style="margin-top:8px">ZAIKO でチケットを買う →</a></div></div>
-      <div><div class="lab">当日その場で</div><div class="val"><span class="pill">飲食・ドリンク</span><span class="pill">物販・グッズ</span>各会場・各店舗でのお支払い</div></div>
-    </div>
+    <h2 id="sec-howto"><span class="en">TICKET</span>料金とチケット</h2>
     <div class="tk" id="ticket">
-      <div class="hd"><b>TICKET</b><span data-tk-state>発売中 ／ 11月6日（金）23:59 まで</span></div>
-      <p>有料公演は、三軒茶屋HEAVEN'S DOOR の <b>SPECIAL LIVE</b> だけ。事前チケット制で、どの券にも <b>SANCHA NIGHT LOOP のパス</b>が付きます。</p>
+      <p style="margin:0">日中の4会場と夜の5店は<b>入場無料</b>。有料は三軒茶屋HEAVEN'S DOOR の <b>SPECIAL LIVE</b> だけです。</p>
       <ul>
-        <li><b>1部</b><em>¥6,000</em><small>13:30〜17:00 ／ 100枚限定</small></li>
-        <li><b>2部</b><em>¥6,000</em><small>18:40〜21:55 ／ 100枚限定</small></li>
-        <li><b>1部・2部 通し券</b><em>¥10,000</em><small>13:30〜22:00 ／ 50枚限定</small></li>
+        <li><b>1部</b><em>¥6,000</em><small>13:30〜17:00</small></li>
+        <li><b>2部</b><em>¥6,000</em><small>18:40〜21:55</small></li>
+        <li><b>1部・2部 通し券</b><em>¥10,000</em><small>13:30〜22:00</small></li>
       </ul>
+      <p class="sm"><span data-tk-state>前売は11月6日（金）23:59 まで（ZAIKO）</span>。当日券あり（前売と同額）。別途ドリンク代 ¥500（通し券は各部）。どの券にも SANCHA NIGHT LOOP のパスが付きます。</p>
       <a class="buy" data-tk href="https://sangenjaya-mf.zaiko.io/ja/e/smaf-2026" target="_blank" rel="noopener">チケットを購入する<small>ZAIKO（外部サイト）へ移動します</small></a>
-      <p class="sm">当日は別途ドリンク代 ¥500（通し券は各部）。各券種とも枚数に限りがあります。</p>
     </div>
-    <p class="note">BORRACHOS は20:30で営業を終えます。SANCHA NIGHT LOOP の達成を目指す方は、日中のうちに寄っておくのがおすすめです。</p>
-
-    <button class="pzstrip" type="button" onclick="showTab('loop');setTimeout(()=>{const t=document.getElementById('sanchahigh');if(t)t.scrollIntoView({behavior:'smooth',block:'start'})},250)"><img src="img/sanchahigh.webp" alt="" loading="lazy"><span><b>1800レポサド「三茶ハイ」</b><small>すずらん通りで、昼から深夜まで。ピザニスタ／エンニスタ（周遊とは別の企画）</small></span></button>
-
-    <h2 id="sec-archive"><span class="en">ARCHIVE</span>これまでのSMF</h2>
-    <p class="note" style="margin:0 0 10px">2025年9月20日・21日、三軒茶屋。ヤグラのステージから、茶沢通りのマーケット、夜のフロアまで。押すと再生します（音が出ます）。</p>
-    <div class="arc" id="arc"></div>
+    <a class="artists" id="sec-archive" style="margin-top:12px" href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp#howto" target="_blank" rel="noopener"><span><b>SMFの楽しみ方・これまでのSMF</b><small>フェスの紹介・過去の動画・よくある質問は公式サイトで</small></span><span class="en">SITE ↗</span></a>
 
     <h2 id="sec-sponsor"><span class="en">SPONSORSHIP</span>協賛</h2>
     <div class="spons" id="spons"></div>
@@ -622,10 +606,6 @@ function cv(type, name, id) { ga('content_view', { content_type: type, content_n
     <h2 id="sec-shops"><span class="en">RELATIONSHIP</span>協力店</h2>
     <p class="note" style="margin:0 0 10px">SMF2026 に協力いただいている三軒茶屋のお店、<span id="shopsN">31</span>店。お店を押すと、Instagram と地図を開けます。番号はパンフレット・AREA MAP・公式サイトと同じです。</p>
     <div class="rel" id="shops"></div>
-    <h2 id="sec-areamap"><span class="en">AREA MAP</span>エリアマップ</h2>
-    <p class="note" style="margin:0 0 10px">主会場9か所と、まちなかの協力店31店（赤い番号）。ピンや番号を押すと、くわしい情報が出ます（地図は横に動かせます）。番号はパンフレット・公式サイトと同じです。</p>
-    <p class="note" style="margin:0 0 10px">ピンに添えた「昼 / 夜 / 昼夜」は開いている時間帯です。世田谷通りの北が太子堂4・5丁目（D1・D2・N5・キャロットタワー）、世田谷通りと246に挟まれた三角地帯が三軒茶屋2丁目（D3・N1・N3）、246の南東が三軒茶屋1丁目（D4・N2・L・N4）。地図は模式図で、実際の距離とは一致しません。</p>
-    <div class="amap" data-amap></div>
   </section>
 
   <!-- タイムテーブル -->
@@ -656,14 +636,15 @@ function cv(type, name, id) { ga('content_view', { content_type: type, content_n
       <div><small>達成</small><b>4<span style="font-size:13px"> / 5店</span></b></div>
       <div><small>スタンプの時間</small><b style="font-size:14px;white-space:nowrap">13:00〜翌5:00</b></div>
     </div>
-    <p class="note">パスは紙のリストバンドです。LOOP店（対象の5店）、NTT SQUARE の本部、SMFオフィシャルBARで販売（現金のみ）。オンラインの<a href="https://smfonline.stores.jp/" target="_blank" rel="noopener" style="color:#FF8A96;font-weight:700">SMF SOCIAL FUNDING（STORES）</a>でも事前に買えて、当日 NTT SQUARE の本部で引き換えます。SPECIAL LIVE のチケット（ZAIKO・11/6 23:59まで）にも付いています。<a data-tk href="https://sangenjaya-mf.zaiko.io/ja/e/smaf-2026" target="_blank" rel="noopener" style="color:#FF8A96;font-weight:700">チケットを見る →</a> スタンプはLINEの台紙にたまります。</p>
+    <p class="note">パスは紙のリストバンド。LOOP店（対象の5店）・NTT SQUARE の本部・SMFオフィシャルBARで販売（現金のみ）。オンラインの<a href="https://smfonline.stores.jp/" target="_blank" rel="noopener" style="color:#FF8A96;font-weight:700">SMF SOCIAL FUNDING（STORES）</a>で買った方は、当日 NTT SQUARE の本部で引き換え。SPECIAL LIVE のチケットにも付いています。</p>
+    <p class="note">BORRACHOS は20:30まで（AFTER は対象外）。達成をめざす方は、早めの時間に寄っておくのがおすすめです。</p>
 
     <h2><span class="en">HOW TO</span>めぐり方</h2>
     <ol class="howto">
-      <li><span>LINEで「#ラリー」を送って、台紙と「わたしのQR」を出す<small>下のボタンで、文字が入った状態でトークが開きます</small></span></li>
-      <li><span>対象の会場でドリンクを受け取るとき、リストバンドとQRをスタッフに見せる<small>スタッフが自分のスマホで読むと、スタンプが押されます。対象の会場では公式ドリンク「三茶ハイ」を1杯無料でお出しします（各店お一人さま1杯まで）</small></span></li>
-      <li><span>5店のうち4店でスタンプが揃うと達成<small>台紙は、この画面を開き直すと新しくなります</small></span></li>
-      <li><span>達成すると、抽選で40名にコラボTシャツ<small>AZUL BY MOUSSY × santafe × SMF。外れた方には SMF オリジナルタオル。達成したら、この画面のいちばん上の台紙から、ニックネーム・メールアドレス・Tシャツの希望サイズを入れて応募します（LINEのトークからも応募できます）。当選のTシャツは、FRIENDS で受け取るか、郵送で受け取るかを選べます。紙の台紙（スタンプラリー）でそろえた方は、お店で台紙を見せて応募用のQRを読むか、郵送で応募できます</small><small style="color:var(--pink)">応募方法：令和8年11月30日（月）までに、4会場ぶんのスタンプを集めたこのパンフレット（周遊台紙）を、上の欄にご記入のうえ下記まで郵送してください。抽選で40名さまに AZUL BY MOUSSY × santafe × SMF のコラボTシャツをお送りします。郵送先：〒154-0024 東京都世田谷区三軒茶屋2-14-21 2F FRIENDS bar &amp; lounge『SMF Tシャツプレゼント受付』</small></span></li>
+      <li><span>この画面のいちばん上に、あなたの台紙と「わたしのQR」が出ます<small>紙の台紙（パンフレット）でも参加できます</small></span></li>
+      <li><span>対象の会場で、リストバンドとQR（または紙の台紙）をスタッフに見せる<small>スタッフがQRを読むとスタンプが押されます。公式ドリンク「三茶ハイ」を1杯無料（各店お一人さま1杯まで）</small></span></li>
+      <li><span>5店のうち4店でスタンプがそろうと達成</span></li>
+      <li><span>抽選で40名にコラボTシャツ（外れた方には SMF オリジナルタオル）<small>アプリの台紙から応募（LINEのトークからも可）。紙の台紙の方は、4店ぶんのスタンプを集めたパンフレットにお名前・ご住所を書いて、11月30日（月）必着で郵送：〒154-0024 東京都世田谷区三軒茶屋2-14-21 2F FRIENDS bar &amp; lounge『SMF Tシャツプレゼント受付』</small></span></li>
     </ol>
     <div style="margin-top:12px"><a class="btn primary wide" id="loopBtn" href="#">わたしの台紙を見る</a></div>
     <button class="share" type="button" data-share="loop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>一緒にまわる人を誘う</button>
@@ -674,10 +655,8 @@ function cv(type, name, id) { ga('content_view', { content_type: type, content_n
       <img src="img/drink-sanchahigh.jpg" alt="三茶ハイ SANCHA HIGH / 1800 レポサド" loading="lazy">
       <div class="in">
         <h3>公式ドリンク「三茶ハイ」</h3>
-        <p>プレミアムテキーラ「1800レポサド」を、ソーダとレモンで爽やかに仕上げた三軒茶屋オリジナルの一杯。樽熟成によるまろやかな味わいに、ソーダの軽快さとレモンのすっきりした風味をプラス。テキーラをショットで飲むイメージがある方にも、ゆっくり味わっていただきたいドリンクです。</p>
-        <p>ピザなどの食事のお供にも、音楽を楽しみながらの乾杯にも。パスをお持ちの方は、対象店舗で1杯ずつ無料です。</p>
+        <p>プレミアムテキーラ「1800レポサド」をソーダとレモンで仕上げた、三軒茶屋オリジナルの一杯。パスをお持ちの方は、対象の5店で1杯ずつ無料です。</p>
         <div class="sp"><span>協賛</span><img src="img/1800tequila.webp" alt="1800 TEQUILA" loading="lazy"><b>1800 レポサド</b></div>
-        <div class="cap">イメージ / 商品Coming soon</div>
       </div>
     </div>
 
@@ -687,16 +666,8 @@ function cv(type, name, id) { ga('content_view', { content_type: type, content_n
 
     <div class="pz" id="sanchahigh">
       <span class="pz-x">周遊とは別の企画です</span>
-      <img class="pz-logo" src="img/sanchahigh.webp" alt="SANCHA HIGH 三茶ハイ / 1800 TEQUILA Reposado" loading="lazy">
-      <h3>1800レポサド「三茶ハイ」<em>すずらん通りで、昼から深夜まで。</em></h3>
-      <p>2026年11月7日（土）、SMF当日のすずらん通りに、一日限りの1800レポサド・プロモーションが登場。舞台は「ピザニスタ」と、そのすぐ近くにあるBAR「エンニスタ」。1800レポサドを使った「三茶ハイ」を中心に、昼から深夜まで、時間帯に合わせた楽しみ方をご提案します。</p>
-      <p class="pz-note"><b>ピザニスタ・エンニスタは SANCHA NIGHT LOOP の対象会場ではありません。</b><br>周遊の「三茶ハイ 1杯無料」の対象外で、ドリンクは通常価格でのご提供です。リストバンドや周遊台紙がなくても、どなたでもお立ち寄りいただけます。</p>
-      <div class="pz-tl">
-        <div class="pz-s"><time>11:00 — 17:00</time><div><b>昼は、ピザニスタで一杯。</b><span>ピザニスタが一日限りの特別店舗に。特設ブースとともに、三茶ハイや1800レポサドを使ったオリジナルドリンクなどをお楽しみいただけます。SMFの会場巡りや、すずらん通りの散策の途中に、ぜひお立ち寄りください。</span></div></div>
-        <div class="pz-s"><time>18:00 —</time><div><b>夕方からは、ピザと三茶ハイ。</b><span>18:00からのピザニスタ通常営業でも、三茶ハイをご用意。ピザをはじめとした食事と一緒に、1800レポサドの味わいをお楽しみください。</span></div></div>
-        <div class="pz-s"><time>18:00 — 深夜</time><div><b>夜は、エンニスタへ。</b><span>18:00以降は、近隣のBAR「エンニスタ」でもプロモーションを展開。1800レポサドの装飾で彩られた店内で、三茶ハイを中心としたドリンクを深夜までお楽しみいただけます。</span></div></div>
-      </div>
-      <p>昼の一杯から、食事のお供、夜の乾杯まで。SMFの音楽と街を楽しみながら、すずらん通りでお気に入りの飲み方を見つけてください。</p>
+            <h3>1800レポサド「三茶ハイ」<em>すずらん通りで、昼から深夜まで。</em></h3>
+      <p class="pz-note"><b>SANCHA NIGHT LOOP の対象外です。</b>ドリンクは通常価格。リストバンドがなくても、どなたでも立ち寄れます。</p>
       <div class="pz-shops">
         <div class="pz-sh"><div class="lg"><img src="img/pizzanista.jpg" alt="PIZZANISTA SANGENJAYA TOKYO" loading="lazy"></div><div class="in">
           <h4>ピザニスタ 7<small>PIZZANISTA / SUZURAN-DORI</small></h4>
@@ -792,7 +763,7 @@ function cv(type, name, id) { ga('content_view', { content_type: type, content_n
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
     <br><small style="opacity:.7">利用状況を知るために Google Analytics を使っています（名前などの個人情報は送りません）。</small>
-    <br><span id="ver">SMFアプリ v3.19</span>
+    <br><span id="ver">SMFアプリ v3.20</span>
   </footer>
 </main>
 
@@ -848,8 +819,8 @@ function isOpen(v, m) { const s = min(v.start), e = min(v.end); return s != null
    サイト → アプリ：https://miniapp.line.me/<LIFF ID>?tab=loop&go=entry のように、タブ（tab）と場所（go）を付けて開く
    アプリ → サイト：見出しの右の「公式サイト」から、サイトの同じ章（#loop など）へ */
 const SITE = 'https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp';
-const SITE_SEC = { 'sec-howto': 'howto', 'sec-archive': 'archive', 'sec-sponsor': 'sponsor', 'sec-shops': 'relationship', 'sec-areamap': 'map', 'sec-timetable': 'artists', 'sec-venues': 'venues', 'sec-map': 'access', 'sec-loop': 'loop' };
-const GO = { qr: ['home', 'wallet'], ticket: ['home', 'ticket'], howto: ['home', 'sec-howto'], archive: ['home', 'sec-archive'], sponsor: ['home', 'sec-sponsor'], shops: ['home', 'sec-shops'], areamap: ['home', 'sec-areamap'], voice: ['home', 'voice'],
+const SITE_SEC = { 'sec-howto': 'ticket', 'sec-sponsor': 'sponsor', 'sec-shops': 'relationship', 'sec-timetable': 'artists', 'sec-venues': 'venues', 'sec-map': 'access', 'sec-loop': 'loop' };
+const GO = { qr: ['home', 'wallet'], ticket: ['home', 'ticket'], howto: ['home', 'sec-howto'], archive: ['home', 'sec-archive'], sponsor: ['home', 'sec-sponsor'], shops: ['home', 'sec-shops'], areamap: ['time', 'sec-map'], voice: ['home', 'voice'],
   timetable: ['time', 'sec-timetable'], venues: ['time', 'sec-venues'], map: ['time', 'sec-map'],
   daishi: ['loop', 'daishi'], entry: ['loop', 'daishi'], drink: ['loop', 'sec-drink'], loopvenues: ['loop', 'sec-loopvenues'], sanchahigh: ['loop', 'sanchahigh'],
   gacha: ['ennichi', 'gacha'], collection: ['ennichi', 'zukanTop'], quest: ['quest', ''] };
@@ -869,8 +840,8 @@ const TICKET = { url: 'https://sangenjaya-mf.zaiko.io/ja/e/smaf-2026', until: '2
 const ticketOpen = () => Date.now() <= new Date(TICKET.until).getTime();
 function renderTicket() {
   const on = ticketOpen();
-  document.querySelectorAll('[data-tk]').forEach(a => { if (a.classList.contains('buy')) { a.classList.toggle('off', !on); if (!on) a.innerHTML = '事前の販売は終了しました'; } else a.style.display = on ? '' : 'none'; });
-  document.querySelectorAll('[data-tk-state]').forEach(x => { x.textContent = on ? '発売中 ／ 11月6日（金）23:59 まで' : '事前の販売は終了しました'; });
+  document.querySelectorAll('[data-tk]').forEach(a => { if (a.classList.contains('buy')) { a.classList.toggle('off', !on); if (!on) a.innerHTML = '前売は終了しました<small>当日券あり（前売と同額）</small>'; } else a.style.display = on ? '' : 'none'; });
+  document.querySelectorAll('[data-tk-state]').forEach(x => { x.textContent = on ? '前売は11月6日（金）23:59 まで（ZAIKO）' : '前売は終了しました'; });
 }
 /* ---------- 外へのリンク（LINEの中ならブラウザで開く） ---------- */
 function openExternal(url) {
@@ -1540,7 +1511,7 @@ function renderLoop() {
   { const a = $('#enScan'); if (a) a.onclick = e => { e.preventDefault(); scanQr(); }; }
 }
 
-const mapUrl = v => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(v.address + ' ' + v.name);
+const mapUrl = v => v.mapUrl || 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(v.address + ' ' + v.name); // v3.20：住所検索で別の場所が出る会場は、サイトと同じ地図リンク
 
 /* ---------- 上の知らせ ---------- */
 function renderStatus() {
@@ -1626,7 +1597,7 @@ function card(v, i, m) {
       <div class="c-title"><h3>${esc(v.name)}${v.loop ? '<span class="badge">NIGHT LOOP</span>' : ''}</h3><p>${esc(v.sub)}・${esc(BAND[v.band][0])}</p></div>
       <span class="open${live ? ' live' : ''}">${live ? '開催中' : esc(time)}</span></div>
     <dl class="c-meta"><dt>時間</dt><dd>${esc(time)}</dd><dt>内容</dt><dd>${esc(v.genre)}</dd>${v.entry ? `<dt>入場</dt><dd>${esc(v.entry)}</dd>` : ''}<dt>場所</dt><dd>${esc(v.address)}</dd></dl>${v.code === 'L' ? `<a class="tkmini${ticketOpen() ? '' : ' off'}" href="${TICKET.url}" target="_blank" rel="noopener">チケットを購入する（ZAIKO）→</a>` : ''}
-    ${v.lineup.length ? `<div class="lineup">${v.lineup.map(a => `<a href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp#artists" target="_blank" rel="noopener">${esc(a)}</a>`).join('')}</div><p class="note" style="margin-top:6px">出演者の紹介は<a href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp#artists" target="_blank" rel="noopener">公式サイトのARTISTS</a>で。</p>` : `<p class="note">${esc(v.note || '出演者は発表をお待ちください')}</p>`}
+    ${(v.sets || []).length ? '' : v.lineup.length ? `<div class="lineup">${v.lineup.map(a => `<a href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp#artists" target="_blank" rel="noopener">${esc(a)}</a>`).join('')}</div><p class="note" style="margin-top:6px">出演者の紹介は<a href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp#artists" target="_blank" rel="noopener">公式サイトのARTISTS</a>で。</p>` : `<p class="note">${esc(v.note || '出演者は発表をお待ちください')}</p>`}
     ${sets}
     <div class="c-foot"><a class="btn" href="${mapUrl(v)}" target="_blank" rel="noopener">地図で開く ↗</a></div>
   </article>`;
