@@ -488,6 +488,9 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-6QRZMM8YNV', { app_name: 'SMFアプリ', in_line: /Line\//i.test(navigator.userAgent) ? 'yes' : 'no' });
 function ga(ev, p) { try { gtag('event', ev, p || {}); } catch (e) { /* 計測できなくても動きは変えない */ } }
+/* v3.18：見た画面とコンテンツを GA4 で数える。content_type＝種類、content_name＝名前、content_id＝ID */
+const TAB_NAME = { home: 'ホーム', time: '時間と会場', loop: 'NIGHT LOOP', ennichi: '縁日・三ガ茶', quest: 'おひねり' };
+function cv(type, name, id) { ga('content_view', { content_type: type, content_name: String(name || '').slice(0, 90), content_id: String(id == null ? '' : id).slice(0, 90) }); }
 </script>
 </head>
 <body>
@@ -762,7 +765,7 @@ function ga(ev, p) { try { gtag('event', ev, p || {}); } catch (e) { /* 計測�
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
     <br><small style="opacity:.7">利用状況を知るために Google Analytics を使っています（名前などの個人情報は送りません）。</small>
-    <br><span id="ver">SMFアプリ v3.17</span>
+    <br><span id="ver">SMFアプリ v3.18</span>
   </footer>
 </main>
 
@@ -929,6 +932,7 @@ function shopLinks(s) {
 }
 function shopDetail(no) {
   const s = SHOPS.find(x => String(x.no) === String(no)); if (!s) return;
+  cv('shop', s.name, s.no); // v3.18
   sheet(`${s.logo ? `<img class="cd-big" style="--c:#BEBEBE;background:#fff" src="${esc(s.logo)}" alt="${esc(s.name)}">` : ''}<div class="rc"><div class="b"><div class="k">RELATIONSHIP ・ 協力店 ${s.no}</div><h3>${esc(s.name)}</h3><p>三軒茶屋の協力店</p></div></div>${shopLinks(s)}<button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
 }
 document.addEventListener('click', e => { const b = e.target.closest('[data-shop]'); if (b) shopDetail(b.dataset.shop); });
@@ -1082,6 +1086,7 @@ function prizeHtml(d) {
     <div><small>達成特典 ／ 抽選で${n}名</small><b>コラボ T-SHIRTS</b><span>${PRIZE_NAME}<br>外れた方には SMF オリジナルタオル<br><em>${d && d.done ? '画像は背面' : `${(d && d.goal) || 4}店そろうと、ここから応募できます`}</em></span></div></button>`;
 }
 function prizeOpen(n) {
+  cv('prize', 'コラボTシャツ', 'tee'); // v3.18
   sheet(`<h3 style="margin:0 0 10px">達成特典 ／ コラボ T-SHIRTS</h3><div class="prizebig"><img src="${PRIZE_IMG}" alt="コラボTシャツ（背面）"><img src="img/prize-tee-front.webp" alt="コラボTシャツ（表面）" loading="lazy"><img src="img/prize-tee-flat.webp" alt="コラボTシャツ（平置き・表と背面）" loading="lazy"></div><p class="prizecap">背面 ／ 横にめくると表面・平置き</p>
     <p style="margin:0 0 6px;font-size:14px"><b>${PRIZE_NAME}</b></p>
     <p style="margin:0 0 14px;font-size:13px;color:#D6D6D6">協力店5店のうち4店でスタンプをそろえた方の中から、抽選で<b>${n}名</b>に。外れた方には SMF オリジナルタオルを差し上げます。応募はこの台紙から（11月30日まで）。結果はメールでお知らせします。当選のTシャツは、FRIENDS bar &amp; lounge で受け取るか、郵送かを選べます。<br><span style="color:var(--dim);font-size:11.5px">画像は背面と表面です。</span></p>
@@ -1391,6 +1396,7 @@ function renderZukan() {
 /** カードを大きく見る。出演者は会場へ、協力店は地図へ */
 function cardDetail(id) {
   const c = CARD[id]; if (!c) return;
+  cv('card_' + c.kind, c.name, c.id); // v3.18
   const col = gCol(c);
   const vcode = c.kind === 'artist' ? c.venue : c.place;
   const go = vcode && VENUES.some(v => v.code === vcode) ? `<button class="btn primary wide" type="button" onclick="goVenue('${esc(vcode)}')">${c.kind === 'artist' ? '会場と時間を見る' : 'ブースの会場を見る'}</button>`
@@ -1401,6 +1407,7 @@ function cardDetail(id) {
   sheet(`<img class="cd-big" style="--c:${col[0]}" src="${esc(gImg(c))}" alt="${esc(c.name)}"><div class="rc" style="margin-top:10px"><div class="b"><div class="k">${esc(col[1])}のご縁 ・ ${esc(GKIND[c.kind] || '')}</div><h3>${esc(c.name)}</h3><p>${esc(gWhere(c))}</p></div></div>${go}${links}<button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
 }
 function goVenue(code) {
+  { const v = VENUES.find(x => x.code === code); cv('venue', v ? v.name : code, code); } // v3.18
   closeSheet(); FILTER = 'ALL'; showTab('time'); renderFilters(); renderTimetable();
   const i = VENUES.findIndex(v => v.code === code), el = document.getElementById('v' + i);
   if (el) setTimeout(() => { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1400); }, 80);
@@ -1473,6 +1480,7 @@ function shareMsg(kind) {
     lines: ['街じゅうの会場で、昼から翌朝まで', 'タイムテーブル・スタンプラリー・三ガ茶'], btn: 'SMFアプリを開く', url: APP_URL() }) };
 }
 async function share(kind) {
+  cv('share', kind, kind); // v3.18
   const m = shareMsg(kind);
   const ok = await loadLiff();
   if (ok && liff.isApiAvailable && liff.isApiAvailable('shareTargetPicker')) {
@@ -1587,6 +1595,7 @@ function pinDetail(p) {
   document.querySelectorAll('.mapbox .pin.hi').forEach(x => x.classList.remove('hi'));
   document.querySelectorAll(`.mapbox .pin[data-c="${p.dataset.c}"]`).forEach(x => x.classList.add('hi'));
   const code = p.dataset.c, parts = code.split(/\s*[\/・]\s*/), v = VENUES.find(x => parts.indexOf(x.code) >= 0);
+  cv('map_pin', v ? v.name : (p.dataset.n || code), code); // v3.18
   const fill = (p.querySelector('circle:not(.loopmk):not(.pinring)') || {}).getAttribute ? p.querySelector('circle:not(.loopmk):not(.pinring)').getAttribute('fill') : '#fff';
   const addr = v ? v.address : (p.dataset.a || ''), murl = v ? mapUrl(v) : 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(addr);
   sheet(`<div class="rc" style="border-left:6px solid ${esc(fill)}"><div class="b"><div class="k">${esc(code)}${p.classList.contains('loop') ? ' ・ SANCHA NIGHT LOOP 対象' : ''}</div><h3>${esc(v ? v.name : p.dataset.n)}</h3><p>${esc(p.dataset.s || '')}</p><p>${esc(addr)}</p></div></div>
@@ -1614,7 +1623,7 @@ function renderArchive() {
     const box = e.target.closest('.arv'); if (!box) return;
     const v = box.querySelector('video');
     el.querySelectorAll('video').forEach(x => { if (x !== v) { x.pause(); x.parentNode.classList.remove('on'); } }); // 1本ずつ
-    if (v.paused) { const pr = v.play(); box.classList.add('on'); if (pr && pr.catch) pr.catch(() => box.classList.remove('on')); } else { v.pause(); box.classList.remove('on'); }
+    if (v.paused) { cv('video', (box.querySelector('.cap b') || {}).textContent || '', v.getAttribute('src')); const pr = v.play(); box.classList.add('on'); if (pr && pr.catch) pr.catch(() => box.classList.remove('on')); } else { v.pause(); box.classList.remove('on'); }
   };
 }
 function renderHowto() {
@@ -1686,6 +1695,7 @@ const SAMPLE_OUEN = { sample: true, title: 'SMF おひねりクエスト', total
 let CUR_TAB = 'home', WANT_ENTRY = false;   // WANT_ENTRY：LINEの達成カードの［応募］から来たとき、応募の箱まで送る（1回だけ）
 function showTab(name) {
   ga('app_tab', { tab: name });
+  ga('page_view', { page_title: 'SMFアプリ｜' + (TAB_NAME[name] || name), page_location: location.origin + location.pathname + '#' + name }); // v3.18：タブを画面として数える
   document.querySelectorAll('section.tab').forEach(s => s.classList.toggle('on', s.id === 'tab-' + name));
   document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
   window.scrollTo(0, 0);
