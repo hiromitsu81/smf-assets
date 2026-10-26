@@ -90,6 +90,32 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .lineup span,.lineup a{font-size:12px;padding:4px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);color:var(--text);text-decoration:none}
 .sets{margin-top:12px;border-top:1px dashed var(--line);padding-top:8px;font-size:13px}
 .sets div{display:flex;gap:10px} .sets time{font-family:Oswald,sans-serif;color:var(--dim);min-width:48px}
+/* v3.19：出演時刻（1組ずつ）・いま出演中 */
+.sets .ttr{display:grid;grid-template-columns:92px 1fr auto;gap:8px;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line)}
+.sets .ttr:last-child{border-bottom:0}
+.sets .ttr time{min-width:0;font-size:12px;white-space:nowrap}
+.sets .ttr .tta{font-weight:700;color:var(--text);background:none;border:0;padding:0;font:inherit;font-weight:700;text-align:left;cursor:pointer}
+.sets .ttr .tta.plain{cursor:default}
+.sets .ttr small{display:block;font-size:10px;color:var(--faint);font-weight:400;margin-top:2px}
+.sets .ttr .ttk{font-family:Oswald,sans-serif;font-size:10px;letter-spacing:.08em;color:var(--dim);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.sets .ttr.ttpast{opacity:.45}
+.sets .ttr.ttnow{background:color-mix(in srgb,var(--c,#E60025) 18%,transparent);border-radius:6px;padding:6px;margin:0 -6px}
+.sets .ttr.ttnow .ttk{background:var(--c,#E60025);color:var(--ink,#fff);border-color:transparent}
+.sets .ttr.ttnow time{color:var(--text);font-weight:700}
+.sets .ttsep{font-size:11px;color:var(--faint);padding:6px 0;border-bottom:1px solid var(--line);display:block}
+.vlogo{position:relative;flex:0 0 auto;width:44px;height:44px;border-radius:50%;background:#000;box-shadow:0 0 0 2px var(--c);display:block}
+.vlogo img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.vlogo i{position:absolute;right:-6px;bottom:-4px;font:700 9.5px/1 Oswald,sans-serif;font-style:normal;padding:2px 4px;border-radius:4px;background:var(--c);color:var(--ink,#0A0A0A)}
+.prow .vlogo,.store .vlogo{width:36px;height:36px}
+.vlogo.sm{width:30px;height:30px}.vlogo.sm i{font-size:8.5px;right:-7px;bottom:-5px}
+.g-name .vlogo{display:inline-block;width:16px;height:16px;vertical-align:-4px;margin-right:5px;box-shadow:0 0 0 1px var(--c)}.g-name .vlogo i{display:none}
+.nowbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;margin:0 0 12px}
+.nowbox .nb-h{font-family:Oswald,sans-serif;font-size:12px;letter-spacing:.14em;color:var(--dim);margin-bottom:4px}
+.nowbox .ttnb{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:baseline;padding:7px 0;border-top:1px solid var(--line);cursor:pointer}
+.nowbox .ttnb:first-of-type{border-top:0}
+.nowbox .ttnb .code{width:auto;height:auto;min-width:34px;text-align:center;line-height:1.6;font-family:Oswald,sans-serif;font-size:12px;font-weight:700;padding:1px 6px;border-radius:4px;background:var(--c);color:var(--ink)}
+.nowbox .ttnb b{font-size:14px}
+.nowbox .ttnb small{grid-column:2;font-size:11px;color:var(--dim)}
 .c-foot{display:flex;gap:8px;margin-top:12px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px;padding:9px 14px;font:inherit;font-size:13px;font-weight:700;text-decoration:none;border:1px solid var(--line);background:var(--panel2);color:var(--text);cursor:pointer}
 .btn.primary{background:var(--pink);border-color:var(--pink);color:#1A0A0D}
@@ -606,6 +632,7 @@ function cv(type, name, id) { ga('content_view', { content_type: type, content_n
   <section class="tab" id="tab-time" aria-labelledby="t-time">
     <h2 id="sec-timetable"><span class="en">TIMETABLE</span>時間と会場</h2>
     <a class="artists" style="margin:0 0 12px" href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp#artists" target="_blank" rel="noopener"><span><b>出演アーティストを見る</b><small>プロフィールは公式サイトで</small></span><span class="en">ARTISTS ↗</span></a>
+    <div class="nowbox" id="nowbox" hidden></div>
     <div class="chips" id="filters" role="group" aria-label="絞り込み"></div>
     <div class="gantt" id="gantt"></div>
     <p class="note" style="margin-top:8px">帯とバッジの色は、会場ごとのカラーです（公式サイトの会場MAP・アーティスト紹介と同じ色）。</p>
@@ -765,7 +792,7 @@ function cv(type, name, id) { ga('content_view', { content_type: type, content_n
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
     <br><small style="opacity:.7">利用状況を知るために Google Analytics を使っています（名前などの個人情報は送りません）。</small>
-    <br><span id="ver">SMFアプリ v3.18</span>
+    <br><span id="ver">SMFアプリ v3.19</span>
   </footer>
 </main>
 
@@ -795,6 +822,8 @@ const BAND = { DAY: ['DAY', '--day'], CROSSOVER: ['CROSSOVER', '--cross'], NIGHT
 /* 会場カラー（venues.json の color＝地色・ink＝のせる文字）。無いときだけ時間帯の色 */
 const vcol = v => v.color || `var(${BAND[v.band][1]})`;
 const vcss = v => `--c:${vcol(v)};--ink:${v.ink || '#0A0A0A'}`;
+/** v3.19：会場のしるし。ロゴがあれば丸いロゴ＋会場記号、なければ記号の四角 */
+const vmark = (v, cls = '') => v.logo ? `<span class="vlogo ${cls}"><img src="${esc(v.logo)}" alt="${esc(v.short || v.name)}" loading="lazy" onerror="this.parentNode.outerHTML='<span class=&quot;code&quot;>${esc(v.code)}</span>'"><i>${esc(v.code)}</i></span>` : `<span class="code">${esc(v.code)}</span>`;
 const T0 = 11 * 60, T1 = 29 * 60;           // 11:00〜翌5:00（分）
 const $ = s => document.querySelector(s);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -1258,6 +1287,7 @@ const gImg = (c, thumb) => `cards/${thumb ? 't/' : ''}${encodeURIComponent(c.id)
 async function loadCards() {
   try { const d = await (await fetch('data/cards.json', { cache: 'no-store' })).json(); CARDS = d.cards || []; } catch (e) { CARDS = []; }
   CARD = {}; CARDS.forEach(c => { CARD[c.id] = c; });
+  if (VENUES.length) renderTimetable(); // v3.19：出演者名からカードを開けるように
   renderGoen();
 }
 function goenOf() { return ME && !ME.sample ? ME.goen || null : null; }
@@ -1403,8 +1433,9 @@ function cardDetail(id) {
     : c.kind === 'shop' ? shopLinks(SHOPS.find(s => 'sh-' + String(s.no).padStart(2, '0') === c.id) || { name: c.name }) : '';
   const webLabel = u => /linktr\.ee|lit\.link/.test(u) ? 'リンク集' : /music\.apple\.com/.test(u) ? 'Apple Music' : /spotify\.com/.test(u) ? 'Spotify' : /soundcloud\.com/.test(u) ? 'SoundCloud' : '公式サイト';
   const ext = (u, l) => /^https:\/\//.test(u || '') ? `<a class="btn wide" href="${esc(u)}" target="_blank" rel="noopener">${l} ↗</a>` : '';
+  const when = c.kind === 'artist' ? VENUES.flatMap(v => (v.sets || []).filter(s => (s.cards || []).includes(c.id)).map(s => `${v.short || v.name}　${setTime(s)}${s.kind ? ' ' + s.kind : ''}`)) : []; // v3.19
   const links = c.kind === 'artist' || c.kind === 'sponsor' ? ext(c.ig, 'Instagram') + ext(c.yt, 'YouTube') + ext(c.web, webLabel(c.web || '')) : ''; // 出演者・協賛のリンク（data/cards.json。決まっている分だけ）
-  sheet(`<img class="cd-big" style="--c:${col[0]}" src="${esc(gImg(c))}" alt="${esc(c.name)}"><div class="rc" style="margin-top:10px"><div class="b"><div class="k">${esc(col[1])}のご縁 ・ ${esc(GKIND[c.kind] || '')}</div><h3>${esc(c.name)}</h3><p>${esc(gWhere(c))}</p></div></div>${go}${links}<button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
+  sheet(`<img class="cd-big" style="--c:${col[0]}" src="${esc(gImg(c))}" alt="${esc(c.name)}"><div class="rc" style="margin-top:10px"><div class="b"><div class="k">${esc(col[1])}のご縁 ・ ${esc(GKIND[c.kind] || '')}</div><h3>${esc(c.name)}</h3><p>${esc(gWhere(c))}</p>${when.length ? `<p style="font-family:Oswald,sans-serif;font-weight:700;margin-top:4px">${when.map(esc).join('<br>')}</p>` : ''}</div></div>${go}${links}<button class="btn wide" type="button" onclick="closeSheet()">閉じる</button>`);
 }
 function goVenue(code) {
   { const v = VENUES.find(x => x.code === code); cv('venue', v ? v.name : code, code); } // v3.18
@@ -1501,7 +1532,7 @@ function renderLoop() {
   $('#stores').innerHTML = VENUES.filter(v => v.loop).map(v => {
     const open = live && isOpen(v, m);
     return `<a class="store" href="${mapUrl(v)}" target="_blank" rel="noopener" style="${vcss(v)}">
-      <span class="code">${esc(v.code)}</span>
+      ${vmark(v)}
       <span class="t">${esc(v.name)}<small>${esc(hm(min(v.start)))}〜${esc(v.endLabel || hm(min(v.end)))}${v.genre ? '　' + esc(v.genre) : ''}</small></span>
       ${live ? `<span class="open${open ? ' live' : ''}">${open ? '営業中' : '時間外'}</span>` : '<span aria-hidden="true">↗</span>'}</a>`;
   }).join('') || '<div class="empty">協力店の情報は準備中です。</div>';
@@ -1548,25 +1579,55 @@ function renderTimetable() {
   VENUES.forEach((v, i) => {
     const s = min(v.start), e = min(v.end), c = vcol(v);
     const bar = s != null ? `<i class="g-bar" style="left:${pct(s)};width:calc(${pct(e)} - ${pct(s)});background:${c}"></i>` : `<span class="g-tbd">時間は調整中</span>`;
-    html += `<div class="g-row${match(v) ? '' : ' dim'}" data-i="${i}" title="${esc(v.name)}"><div class="g-name"><b>${esc(v.code)}</b>${esc(v.short || v.name)}</div><div class="g-track">${grid}${bar}${nowLine}</div></div>`;
+    html += `<div class="g-row${match(v) ? '' : ' dim'}" data-i="${i}" title="${esc(v.name)}"><div class="g-name">${v.logo ? vmark(v) : `<b>${esc(v.code)}</b>`}${esc(v.short || v.name)}</div><div class="g-track">${grid}${bar}${nowLine}</div></div>`;
   });
   $('#gantt').innerHTML = html;
   $('#gantt').onclick = e => { const r = e.target.closest('.g-row'); if (!r) return; const c = document.getElementById('v' + r.dataset.i); if (c) { c.scrollIntoView({ behavior: 'smooth', block: 'start' }); c.classList.add('flash'); setTimeout(() => c.classList.remove('flash'), 1400); } };
 
   $('#cards').innerHTML = VENUES.map((v, i) => match(v) ? card(v, i, m) : '').join('');
+  renderNow(m);
+}
+/* ---------- 出演時刻（v3.19。data/venues.json の sets：start・end・artist・kind・cards・floor、区切りは sep） ---------- */
+const hm0 = x => { const h = Math.floor(x / 60) % 24, mm = x % 60; return h + ':' + String(mm).padStart(2, '0'); };
+const setTime = s => s.start ? hm0(min(s.start)) + '–' + hm0(min(s.end)) : (s.time || '');
+function setRow(s, m) {
+  if (s.sep) return `<span class="ttsep">${esc(s.sep)}</span>`;
+  const a = min(s.start), b = min(s.end);
+  const st = a != null && m >= a && m < b ? ' ttnow' : a != null && m >= b ? ' ttpast' : '';
+  const id = (s.cards || []).find(x => CARD[x]);
+  const name = id ? `<button class="tta" type="button" onclick="cardDetail('${esc(id)}')">${esc(s.artist)}</button>` : `<span class="tta plain">${esc(s.artist)}</span>`;
+  return `<div class="ttr${st}"><time>${esc(setTime(s))}</time><span>${name}${s.floor ? `<small>${esc(s.floor)}</small>` : ''}</span>${s.kind ? `<span class="ttk">${esc(s.kind)}</span>` : ''}</div>`;
+}
+/** いま出演中（当日だけ出る）。会場ごとに「いま」と「次」 */
+function renderNow(m) {
+  const box = $('#nowbox'); if (!box) return;
+  if (m < T0 - 30 || m > T1) { box.hidden = true; return; }
+  const rows = [];
+  VENUES.forEach((v, i) => {
+    const sets = (v.sets || []).filter(s => s.start);
+    const now = sets.filter(s => m >= min(s.start) && m < min(s.end));
+    const next = sets.filter(s => min(s.start) > m).sort((x, y) => min(x.start) - min(y.start))[0];
+    if (!now.length && !(next && min(next.start) - m <= 60)) return;
+    const head = now.length ? now.map(s => esc(s.artist) + (s.floor ? `<span style="font-size:11px;color:var(--dim)">（${esc(s.floor)}）</span>` : '')).join('／') : `<span style="color:var(--dim);font-weight:400">まもなく</span> ${esc(next.artist)}`;
+    const sub = now.length ? `〜${hm0(Math.min(...now.map(s => min(s.end))))}${next ? `　次 ${hm0(min(next.start))} ${esc(next.artist)}` : ''}` : `${hm0(min(next.start))} から`;
+    rows.push(`<div class="ttnb" data-i="${i}" style="${vcss(v)}">${vmark(v, 'sm')}<b>${head}</b><small>${esc(v.short || v.name)}・${sub}</small></div>`);
+  });
+  box.hidden = !rows.length;
+  box.innerHTML = `<div class="nb-h">NOW PLAYING ${hm(m)}</div>` + rows.join('');
+  box.onclick = e => { const r = e.target.closest('.ttnb'); if (!r) return; const c = document.getElementById('v' + r.dataset.i); if (c) { c.scrollIntoView({ behavior: 'smooth', block: 'start' }); c.classList.add('flash'); setTimeout(() => c.classList.remove('flash'), 1400); } };
 }
 function card(v, i, m) {
   const c = BAND[v.band][1];
   const time = v.start ? `${v.start}〜${v.endLabel || hm(min(v.end))}` : (v.note || '調整中');
   const live = isOpen(v, m);
-  const sets = (v.sets || []).length ? `<div class="sets">${v.sets.map(s => `<div><time>${esc(s.time)}</time><span>${esc(s.artist)}</span></div>`).join('')}</div>` : '';
+  const sets = (v.sets || []).length ? `<div class="sets">${v.sets.map(s => setRow(s, m)).join('')}</div>` : '';
   return `<article class="card" id="v${i}" style="${vcss(v)}">
-    <div class="c-head"><div class="code">${esc(v.code)}</div>
+    <div class="c-head">${vmark(v)}
       <div class="c-title"><h3>${esc(v.name)}${v.loop ? '<span class="badge">NIGHT LOOP</span>' : ''}</h3><p>${esc(v.sub)}・${esc(BAND[v.band][0])}</p></div>
       <span class="open${live ? ' live' : ''}">${live ? '開催中' : esc(time)}</span></div>
     <dl class="c-meta"><dt>時間</dt><dd>${esc(time)}</dd><dt>内容</dt><dd>${esc(v.genre)}</dd>${v.entry ? `<dt>入場</dt><dd>${esc(v.entry)}</dd>` : ''}<dt>場所</dt><dd>${esc(v.address)}</dd></dl>${v.code === 'L' ? `<a class="tkmini${ticketOpen() ? '' : ' off'}" href="${TICKET.url}" target="_blank" rel="noopener">チケットを購入する（ZAIKO）→</a>` : ''}
     ${v.lineup.length ? `<div class="lineup">${v.lineup.map(a => `<a href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp#artists" target="_blank" rel="noopener">${esc(a)}</a>`).join('')}</div><p class="note" style="margin-top:6px">出演者の紹介は<a href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp#artists" target="_blank" rel="noopener">公式サイトのARTISTS</a>で。</p>` : `<p class="note">${esc(v.note || '出演者は発表をお待ちください')}</p>`}
-    ${sets || (v.lineup.length ? '<p class="note">出演時刻は発表後にここに出ます。</p>' : '')}
+    ${sets}
     <div class="c-foot"><a class="btn" href="${mapUrl(v)}" target="_blank" rel="noopener">地図で開く ↗</a></div>
   </article>`;
 }
@@ -1577,7 +1638,7 @@ function renderMap() {
   const seen = {};
   $('#plist').innerHTML = VENUES.filter(v => !seen[v.address] && (seen[v.address] = 1)).map(v =>
     `<a class="prow" href="${mapUrl(v)}" target="_blank" rel="noopener" style="${vcss(v)};text-decoration:none">
-      <span class="code">${esc(v.code)}</span><span class="t">${esc(v.name)}<small>${esc(v.address)}</small></span><span aria-hidden="true">↗</span></a>`).join('');
+      ${vmark(v)}<span class="t">${esc(v.name)}<small>${esc(v.address)}</small></span><span aria-hidden="true">↗</span></a>`).join('');
 }
 
 /* ---------- エリアマップ（v2.3。公式サイトと同じ模式図。data/areamap.svg） ---------- */
