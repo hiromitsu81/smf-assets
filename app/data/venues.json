@@ -2,7 +2,7 @@
  "source": "公式サイト sangenjaya-mf.com／タイムテーブル（2026-10-15時点）",
  "eventDate": "2026-11-07",
  "venues": [
-  {"code": "D1", "name": "NTT SQUARE", "sub": "YAGURA STAGE・SMFメイン会場", "band": "DAY", "color": "#234DA0", "ink": "#FFFFFF", "start": "11:00", "end": "18:30", "genre": "LIVE／DJ／LIVE PAINT", "address": "世田谷区太子堂4-3-16", "entry": "入場無料・年齢制限なし・酒類の販売なし", "loop": false, "lineup": ["JESSE", "RUEED", "Chozen Lee", "DJ LUKE", "Sugar-T", "Teppei", "DA=TI", "焼き王", "鬼頭"], "note": "", "short": "NTT SQUARE", "logo": "img/venue/smf.webp", "sets": [
+  {"code": "D1", "mapUrl": "https://maps.app.goo.gl/ywuCrCiBExSaXMaU8", "name": "NTT SQUARE", "sub": "YAGURA STAGE・SMFメイン会場", "band": "DAY", "color": "#234DA0", "ink": "#FFFFFF", "start": "11:00", "end": "18:30", "genre": "LIVE／DJ／LIVE PAINT", "address": "世田谷区太子堂4-3-16", "entry": "入場無料・年齢制限なし・酒類の販売なし", "loop": false, "lineup": ["JESSE", "RUEED", "Chozen Lee", "DJ LUKE", "Sugar-T", "Teppei", "DA=TI", "焼き王", "鬼頭"], "note": "", "short": "NTT SQUARE", "logo": "img/venue/smf.webp", "sets": [
     {"start": "11:30", "end": "12:30", "artist": "焼き王", "kind": "DJ", "cards": ["d1-yakio"]},
     {"start": "12:30", "end": "13:30", "artist": "DA=TI", "kind": "DJ", "cards": ["d1-da-ti"]},
     {"start": "13:30", "end": "14:30", "artist": "Teppei", "kind": "DJ", "cards": ["d1-teppei"]},
@@ -13,8 +13,8 @@
     {"start": "18:00", "end": "18:30", "artist": "JESSE", "kind": "LIVE", "cards": ["d1-jesse"]},
     {"sep": "18:30 終了・客出し"}
   ]},
-  {"code": "D2", "name": "NTTル・パルク三軒茶屋 第1駐車場", "sub": "企業ブース会場", "band": "DAY", "color": "#8DC21F", "ink": "#0A0A0A", "start": "11:00", "end": "18:00", "genre": "協賛企業のPR・展示・体験・販売", "address": "世田谷区太子堂4-3-4", "entry": "入場無料・年齢制限なし・酒類の販売なし", "loop": false, "lineup": [], "note": "", "short": "NTTル・パルク", "logo": "img/venue/smf.webp", "sets": []},
-  {"code": "D3", "name": "パラカ 三軒茶屋第3", "sub": "SMFオフィシャルBAR", "band": "DAY", "color": "#8DC21F", "ink": "#0A0A0A", "start": "11:00", "end": "18:00", "genre": "オフィシャルBAR・DJ", "address": "世田谷区三軒茶屋2-15-1", "entry": "入場無料・20歳未満は保護者同伴", "loop": false, "lineup": [], "note": "", "short": "オフィシャルBAR", "logo": "img/venue/smf.webp", "sets": []},
+  {"code": "D2", "mapUrl": "https://maps.app.goo.gl/7z26frxJ5JAtrUZA6", "name": "NTTル・パルク三軒茶屋 第1駐車場", "sub": "企業ブース会場", "band": "DAY", "color": "#8DC21F", "ink": "#0A0A0A", "start": "11:00", "end": "18:00", "genre": "協賛企業のPR・展示・体験・販売", "address": "世田谷区太子堂4-3-4", "entry": "入場無料・年齢制限なし・酒類の販売なし", "loop": false, "lineup": [], "note": "", "short": "NTTル・パルク", "logo": "img/venue/smf.webp", "sets": []},
+  {"code": "D3", "mapUrl": "https://maps.app.goo.gl/bhbLPx9g5qgnAUTZ8", "name": "パラカ 三軒茶屋第3", "sub": "SMFオフィシャルBAR", "band": "DAY", "color": "#8DC21F", "ink": "#0A0A0A", "start": "11:00", "end": "18:00", "genre": "オフィシャルBAR・DJ", "address": "世田谷区三軒茶屋2-15-1", "entry": "入場無料・20歳未満は保護者同伴", "loop": false, "lineup": [], "note": "", "short": "オフィシャルBAR", "logo": "img/venue/smf.webp", "sets": []},
   {"code": "D4", "name": "Niwar's SANGENJAYA", "sub": "昼：eゲーム会場", "band": "DAY", "color": "#5DB5E8", "ink": "#0A0A0A", "start": "11:00", "end": "18:00", "genre": "eゲーム", "address": "世田谷区三軒茶屋1-32-6 豊栄ビル1F", "entry": "年齢制限なし", "loop": false, "lineup": [], "note": "", "short": "Niwar's（昼）", "logo": "img/venue/niwars.webp", "sets": []},
   {"code": "N4", "name": "BORRACHOS", "sub": "クロスオーバー会場", "band": "CROSSOVER", "color": "#F89C22", "ink": "#0A0A0A", "start": "13:00", "end": "20:30", "genre": "BAND／TECHNO／HOUSE", "address": "世田谷区三軒茶屋1-36-2 YMAビルB1F", "entry": "", "loop": true, "lineup": ["OSAMU M", "ASTRON", "K.E.G", "Mustache X", "KONBEEF (KON & BLUNT)", "KON", "TOMOTOMO CLUB", "香山", "三千世界", "Copa Salvo", "SIS/死生"], "note": "", "short": "BORRACHOS", "logo": "img/venue/borrachos.webp", "sets": [
     {"start": "13:00", "end": "14:30", "artist": "香山", "kind": "DJ", "cards": ["n4-kayama"]},
