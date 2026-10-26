@@ -2,7 +2,7 @@
  "source": "公式サイト sangenjaya-mf.com／タイムテーブル（2026-10-15時点）",
  "eventDate": "2026-11-07",
  "venues": [
-  {"code": "D1", "mapUrl": "https://maps.app.goo.gl/ywuCrCiBExSaXMaU8", "name": "NTT SQUARE", "sub": "YAGURA STAGE・SMFメイン会場", "band": "DAY", "color": "#234DA0", "ink": "#FFFFFF", "start": "11:00", "end": "18:30", "genre": "LIVE／DJ／LIVE PAINT", "address": "世田谷区太子堂4-3-16", "entry": "入場無料・年齢制限なし・酒類の販売なし", "loop": false, "lineup": ["JESSE", "RUEED", "Chozen Lee", "DJ LUKE", "Sugar-T", "Teppei", "DA=TI", "焼き王", "鬼頭"], "note": "", "short": "NTT SQUARE", "logo": "img/venue/smf.webp", "sets": [
+  {"code": "D1", "mapUrl": "https://maps.app.goo.gl/ywuCrCiBExSaXMaU8", "name": "NTT SQUARE", "sub": "YAGURA STAGE・SMFメイン会場", "band": "DAY", "color": "#234DA0", "ink": "#FFFFFF", "start": "11:00", "end": "18:30", "genre": "LIVE／DJ／LIVE PAINT", "address": "世田谷区太子堂4-3-16", "entry": "入場無料・年齢制限なし・酒類の販売なし", "loop": false, "lineup": ["JESSE", "RUEED", "Chozen Lee", "DJ LUKE", "Sugar-T", "Teppei", "DA=TI", "焼き王", "鬼頭"], "note": "", "short": "NTT SQUARE", "logo": "img/smf.webp", "sets": [
     {"start": "11:30", "end": "12:30", "artist": "焼き王", "kind": "DJ", "cards": ["d1-yakio"]},
     {"start": "12:30", "end": "13:30", "artist": "DA=TI", "kind": "DJ", "cards": ["d1-da-ti"]},
     {"start": "13:30", "end": "14:30", "artist": "Teppei", "kind": "DJ", "cards": ["d1-teppei"]},
@@ -13,10 +13,10 @@
     {"start": "18:00", "end": "18:30", "artist": "JESSE", "kind": "LIVE", "cards": ["d1-jesse"]},
     {"sep": "18:30 終了・客出し"}
   ]},
-  {"code": "D2", "mapUrl": "https://maps.app.goo.gl/7z26frxJ5JAtrUZA6", "name": "NTTル・パルク三軒茶屋 第1駐車場", "sub": "企業ブース会場", "band": "DAY", "color": "#8DC21F", "ink": "#0A0A0A", "start": "11:00", "end": "18:00", "genre": "協賛企業のPR・展示・体験・販売", "address": "世田谷区太子堂4-3-4", "entry": "入場無料・年齢制限なし・酒類の販売なし", "loop": false, "lineup": [], "note": "", "short": "NTTル・パルク", "logo": "img/venue/smf.webp", "sets": []},
-  {"code": "D3", "mapUrl": "https://maps.app.goo.gl/bhbLPx9g5qgnAUTZ8", "name": "パラカ 三軒茶屋第3", "sub": "SMFオフィシャルBAR", "band": "DAY", "color": "#8DC21F", "ink": "#0A0A0A", "start": "11:00", "end": "18:00", "genre": "オフィシャルBAR・DJ", "address": "世田谷区三軒茶屋2-15-1", "entry": "入場無料・20歳未満は保護者同伴", "loop": false, "lineup": [], "note": "", "short": "オフィシャルBAR", "logo": "img/venue/smf.webp", "sets": []},
-  {"code": "D4", "name": "Niwar's SANGENJAYA", "sub": "昼：eゲーム会場", "band": "DAY", "color": "#5DB5E8", "ink": "#0A0A0A", "start": "11:00", "end": "18:00", "genre": "eゲーム", "address": "世田谷区三軒茶屋1-32-6 豊栄ビル1F", "entry": "年齢制限なし", "loop": false, "lineup": [], "note": "", "short": "Niwar's（昼）", "logo": "img/venue/niwars.webp", "sets": []},
-  {"code": "N4", "name": "BORRACHOS", "sub": "クロスオーバー会場", "band": "CROSSOVER", "color": "#F89C22", "ink": "#0A0A0A", "start": "13:00", "end": "20:30", "genre": "BAND／TECHNO／HOUSE", "address": "世田谷区三軒茶屋1-36-2 YMAビルB1F", "entry": "", "loop": true, "lineup": ["OSAMU M", "ASTRON", "K.E.G", "Mustache X", "KONBEEF (KON & BLUNT)", "KON", "TOMOTOMO CLUB", "香山", "三千世界", "Copa Salvo", "SIS/死生"], "note": "", "short": "BORRACHOS", "logo": "img/venue/borrachos.webp", "sets": [
+  {"code": "D2", "mapUrl": "https://maps.app.goo.gl/7z26frxJ5JAtrUZA6", "name": "NTTル・パルク三軒茶屋 第1駐車場", "sub": "企業ブース会場", "band": "DAY", "color": "#8DC21F", "ink": "#0A0A0A", "start": "11:00", "end": "18:00", "genre": "協賛企業のPR・展示・体験・販売", "address": "世田谷区太子堂4-3-4", "entry": "入場無料・年齢制限なし・酒類の販売なし", "loop": false, "lineup": [], "note": "", "short": "NTTル・パルク", "logo": "img/smf.webp", "sets": []},
+  {"code": "D3", "mapUrl": "https://maps.app.goo.gl/bhbLPx9g5qgnAUTZ8", "name": "パラカ 三軒茶屋第3", "sub": "SMFオフィシャルBAR", "band": "DAY", "color": "#8DC21F", "ink": "#0A0A0A", "start": "11:00", "end": "18:00", "genre": "オフィシャルBAR・DJ", "address": "世田谷区三軒茶屋2-15-1", "entry": "入場無料・20歳未満は保護者同伴", "loop": false, "lineup": [], "note": "", "short": "オフィシャルBAR", "logo": "img/smf.webp", "sets": []},
+  {"code": "D4", "name": "Niwar's SANGENJAYA", "sub": "昼：eゲーム会場", "band": "DAY", "color": "#5DB5E8", "ink": "#0A0A0A", "start": "11:00", "end": "18:00", "genre": "eゲーム", "address": "世田谷区三軒茶屋1-32-6 豊栄ビル1F", "entry": "年齢制限なし", "loop": false, "lineup": [], "note": "", "short": "Niwar's（昼）", "logo": "img/niwars.webp", "sets": []},
+  {"code": "N4", "name": "BORRACHOS", "sub": "クロスオーバー会場", "band": "CROSSOVER", "color": "#F89C22", "ink": "#0A0A0A", "start": "13:00", "end": "20:30", "genre": "BAND／TECHNO／HOUSE", "address": "世田谷区三軒茶屋1-36-2 YMAビルB1F", "entry": "", "loop": true, "lineup": ["OSAMU M", "ASTRON", "K.E.G", "Mustache X", "KONBEEF (KON & BLUNT)", "KON", "TOMOTOMO CLUB", "香山", "三千世界", "Copa Salvo", "SIS/死生"], "note": "", "short": "BORRACHOS", "logo": "img/borrachos.webp", "sets": [
     {"start": "13:00", "end": "14:30", "artist": "香山", "kind": "DJ", "cards": ["n4-kayama"]},
     {"start": "14:30", "end": "15:30", "artist": "三千世界", "kind": "DJ"},
     {"start": "15:30", "end": "17:00", "artist": "KONBEEF", "kind": "DJ", "cards": ["n4-konbeef"]},
@@ -26,7 +26,7 @@
     {"start": "20:00", "end": "20:30", "artist": "TOMO TOMO CLUB", "kind": "LIVE", "cards": ["n4-tomo-tomo-club"]},
     {"sep": "バンドの転換15分は DJ 香山"}
   ]},
-  {"code": "N3", "name": "梅ちゃんbar 32016", "sub": "ナイト会場", "band": "NIGHT", "color": "#32B540", "ink": "#0A0A0A", "start": "17:00", "end": "28:00", "genre": "WORLD MUSIC／BAND", "address": "世田谷区三軒茶屋2-14-12 三元ビル5F", "entry": "入場の条件は確認中です", "loop": true, "lineup": ["内田コーヘイQ and 千賀太郎", "☆マーレーズ☆", "Tropicos", "MASTARICA", "KING-K", "TAITANG", "ADACHIMAN", "YardBeat", "Sugar-T", "君嶋麻里江", "Turbo", "SERU", "FULL-B", "SUZY a.k.a IARA"], "note": "", "short": "梅ちゃんbar", "logo": "img/venue/umechan.webp", "sets": [
+  {"code": "N3", "name": "梅ちゃんbar 32016", "sub": "ナイト会場", "band": "NIGHT", "color": "#32B540", "ink": "#0A0A0A", "start": "17:00", "end": "28:00", "genre": "WORLD MUSIC／BAND", "address": "世田谷区三軒茶屋2-14-12 三元ビル5F", "entry": "入場の条件は確認中です", "loop": true, "lineup": ["内田コーヘイQ and 千賀太郎", "☆マーレーズ☆", "Tropicos", "MASTARICA", "KING-K", "TAITANG", "ADACHIMAN", "YardBeat", "Sugar-T", "君嶋麻里江", "Turbo", "SERU", "FULL-B", "SUZY a.k.a IARA"], "note": "", "short": "梅ちゃんbar", "logo": "img/umechan.webp", "sets": [
     {"start": "17:00", "end": "18:00", "artist": "SUZY a.k.a IARA", "kind": "DJ", "cards": ["n3-suzy"]},
     {"start": "18:00", "end": "18:45", "artist": "☆マーレーズ☆", "kind": "BAND", "cards": ["n3-marleys"]},
     {"start": "18:45", "end": "19:30", "artist": "FULL-B fr. 昭和の輩", "kind": "DJ", "cards": ["n3-full-b"]},
@@ -43,7 +43,7 @@
     {"sep": "3:30〜 BAR BGM（BAR TIME & FREE）"},
     {"sep": "MC は Full-B fr. 昭和の輩"}
   ]},
-  {"code": "N1", "name": "FRIENDS bar & lounge", "sub": "ナイト会場", "band": "NIGHT", "color": "#E24593", "ink": "#0A0A0A", "start": "20:00", "end": "28:00", "genre": "ALL GENRE", "address": "世田谷区三軒茶屋2-14-21 2F", "entry": "20歳未満は入場できません・店内喫煙可", "loop": true, "lineup": ["Vecken", "SMOKY DOGG", "DJ barbar", "BIG F", "DJ 9INTY4", "DJ EastrR", "DJ ILY", "DJ kazu", "DJ TAKUMA", "DJ 凌太", "XUNA"], "note": "", "short": "FRIENDS", "logo": "img/venue/friends.webp", "sets": [
+  {"code": "N1", "name": "FRIENDS bar & lounge", "sub": "ナイト会場", "band": "NIGHT", "color": "#E24593", "ink": "#0A0A0A", "start": "20:00", "end": "28:00", "genre": "ALL GENRE", "address": "世田谷区三軒茶屋2-14-21 2F", "entry": "20歳未満は入場できません・店内喫煙可", "loop": true, "lineup": ["Vecken", "SMOKY DOGG", "DJ barbar", "BIG F", "DJ 9INTY4", "DJ EastrR", "DJ ILY", "DJ kazu", "DJ TAKUMA", "DJ 凌太", "XUNA"], "note": "", "short": "FRIENDS", "logo": "img/friends.webp", "sets": [
     {"start": "20:00", "end": "20:45", "artist": "DJ 9INTY4", "kind": "DJ", "cards": ["n1-dj-9inty4"]},
     {"start": "20:45", "end": "21:30", "artist": "XUNA", "kind": "DJ", "cards": ["n1-xuna"]},
     {"start": "21:30", "end": "22:30", "artist": "DJ kazu", "kind": "DJ", "cards": ["n1-dj-kazu"]},
@@ -57,7 +57,7 @@
     {"start": "27:35", "end": "28:30", "artist": "BIG F", "kind": "DJ", "cards": ["n1-big-f"]},
     {"sep": "4:30 DJ終了"}
   ]},
-  {"code": "N2", "name": "Niwar's SANGENJAYA", "sub": "夜：HIPHOP会場", "band": "NIGHT", "color": "#5DB5E8", "ink": "#0A0A0A", "start": "18:00", "end": "28:00", "genre": "HIPHOP", "address": "世田谷区三軒茶屋1-32-6 豊栄ビル1F", "entry": "20歳未満は入場できません", "loop": true, "lineup": ["BLACK GOLD SOUND", "Rino Latina II", "UZI", "DJ TANAKEN", "DJ OZIKILLER", "KROW", "SHOT LUV", "YOSUKE.M", "ARON BEATZ", "L/K", "DJ ROYCE", "Pondo198"], "note": "", "short": "Niwar's（夜）", "logo": "img/venue/niwars.webp", "sets": [
+  {"code": "N2", "name": "Niwar's SANGENJAYA", "sub": "夜：HIPHOP会場", "band": "NIGHT", "color": "#5DB5E8", "ink": "#0A0A0A", "start": "18:00", "end": "28:00", "genre": "HIPHOP", "address": "世田谷区三軒茶屋1-32-6 豊栄ビル1F", "entry": "20歳未満は入場できません", "loop": true, "lineup": ["BLACK GOLD SOUND", "Rino Latina II", "UZI", "DJ TANAKEN", "DJ OZIKILLER", "KROW", "SHOT LUV", "YOSUKE.M", "ARON BEATZ", "L/K", "DJ ROYCE", "Pondo198"], "note": "", "short": "Niwar's（夜）", "logo": "img/niwars.webp", "sets": [
     {"start": "18:00", "end": "19:00", "artist": "ARON BEATZ", "kind": "DJ", "cards": ["n2-aron-beatz"]},
     {"start": "19:00", "end": "19:50", "artist": "Pondo198", "kind": "DJ", "cards": ["n2-pondo198"]},
     {"start": "19:50", "end": "20:40", "artist": "DJ ROYCE", "kind": "DJ", "cards": ["n2-dj-royce"]},
@@ -72,7 +72,7 @@
     {"start": "27:00", "end": "28:00", "artist": "L/K", "kind": "DJ", "cards": ["n2-l-k"]},
     {"sep": "4:00 DJ終了"}
   ]},
-  {"code": "N5", "name": "DJ BAR 天狗食堂", "sub": "ナイト会場・246号の北側", "band": "NIGHT", "color": "#6C58B1", "ink": "#FFFFFF", "start": "19:00", "end": "29:00", "endLabel": "Last", "genre": "HOUSE／DISCO／SOUL／JAZZ／FUNK", "address": "世田谷区太子堂5-15-11 ケーテー三軒茶屋3F", "entry": "", "loop": true, "lineup": ["KING-K", "MIYA", "ITOTEEE", "走る犬 (Sawaken & Ayumu)", "ToA", "塩尻寄生", "TERU-O", "MITOchang", "DA=TI"], "note": "", "short": "天狗食堂", "logo": "img/venue/tengu.webp", "sets": [
+  {"code": "N5", "name": "DJ BAR 天狗食堂", "sub": "ナイト会場・246号の北側", "band": "NIGHT", "color": "#6C58B1", "ink": "#FFFFFF", "start": "19:00", "end": "29:00", "endLabel": "Last", "genre": "HOUSE／DISCO／SOUL／JAZZ／FUNK", "address": "世田谷区太子堂5-15-11 ケーテー三軒茶屋3F", "entry": "", "loop": true, "lineup": ["KING-K", "MIYA", "ITOTEEE", "走る犬 (Sawaken & Ayumu)", "ToA", "塩尻寄生", "TERU-O", "MITOchang", "DA=TI"], "note": "", "short": "天狗食堂", "logo": "img/tengu.webp", "sets": [
     {"start": "19:00", "end": "21:00", "artist": "MITOchang", "kind": "DJ", "floor": "天狗食堂", "cards": ["n5-mitochang"]},
     {"start": "21:00", "end": "23:00", "artist": "ToA", "kind": "DJ", "floor": "天狗食堂", "cards": ["n5-toa"]},
     {"start": "22:00", "end": "24:00", "artist": "塩尻寄生", "kind": "DJ", "floor": "RAWMEN RECORDS", "cards": ["n5-shiojiri-kisei"]},
@@ -84,13 +84,13 @@
     {"start": "29:00", "end": "29:30", "artist": "KING-K", "kind": "LIVE", "floor": "天狗食堂", "cards": ["n5-king-k"]},
     {"start": "29:30", "end": "29:59", "artist": "B2B／Last まで", "kind": "DJ", "floor": "天狗食堂"}
   ]},
-  {"code": "N4", "name": "BORRACHOS", "sub": "AFTER PARTY", "band": "NIGHT", "color": "#F89C22", "ink": "#0A0A0A", "start": "21:00", "end": "27:00", "genre": "AFTER PARTY", "address": "世田谷区三軒茶屋1-36-2 YMAビルB1F", "entry": "抽選入場・20歳未満は入場できません", "loop": false, "lineup": [], "note": "AFTER PARTY は SANCHA NIGHT LOOP の対象外です（三茶ハイの無料提供はありません）。", "short": "BORRACHOS AFTER", "logo": "img/venue/borrachos.webp", "sets": [
+  {"code": "N4", "name": "BORRACHOS", "sub": "AFTER PARTY", "band": "NIGHT", "color": "#F89C22", "ink": "#0A0A0A", "start": "21:00", "end": "27:00", "genre": "AFTER PARTY", "address": "世田谷区三軒茶屋1-36-2 YMAビルB1F", "entry": "抽選入場・20歳未満は入場できません", "loop": false, "lineup": [], "note": "AFTER PARTY は SANCHA NIGHT LOOP の対象外です（三茶ハイの無料提供はありません）。", "short": "BORRACHOS AFTER", "logo": "img/borrachos.webp", "sets": [
     {"start": "21:00", "end": "22:30", "artist": "K.E.G", "kind": "DJ", "cards": ["n4-keg"]},
     {"start": "22:30", "end": "24:00", "artist": "KON & K.E.G（B2B）", "kind": "DJ", "cards": ["n4-kon", "n4-keg"]},
     {"start": "24:00", "end": "25:30", "artist": "Mustache X", "kind": "DJ", "cards": ["n4-mustache-x"]},
     {"start": "25:30", "end": "27:00", "artist": "OSAMU M", "kind": "DJ", "cards": ["n4-osamu-m"]}
   ]},
-  {"code": "L", "name": "三軒茶屋HEAVEN'S DOOR", "sub": "SPECIAL LIVE", "band": "SPECIAL", "color": "#E60025", "ink": "#FFFFFF", "start": "13:30", "end": "21:55", "genre": "SPECIAL LIVE（入替2部制：1部 13:30〜17:00／2部 18:40〜21:55）", "address": "世田谷区三軒茶屋1-33-19 ケイオーハロービルB1F", "entry": "有料・事前購入（ZAIKO、11/6 23:59まで）。1部券・2部券 各¥6,000／通し券 ¥10,000。別途ドリンク代 各部¥500。途中退席不可。NIGHT LOOP のパス付き", "loop": false, "lineup": ["神", "山嵐", "DABO", "SUIKEN", "BARK", "BAKU & BLAHRMY", "MASARU", "Reichi", "t-Ace", "SLANG BOOGIE", "ZEUS"], "note": "", "short": "HEAVEN'S", "logo": "img/venue/heavensdoor.webp", "sets": [
+  {"code": "L", "name": "三軒茶屋HEAVEN'S DOOR", "sub": "SPECIAL LIVE", "band": "SPECIAL", "color": "#E60025", "ink": "#FFFFFF", "start": "13:30", "end": "21:55", "genre": "SPECIAL LIVE（入替2部制：1部 13:30〜17:00／2部 18:40〜21:55）", "address": "世田谷区三軒茶屋1-33-19 ケイオーハロービルB1F", "entry": "有料・事前購入（ZAIKO、11/6 23:59まで）。1部券・2部券 各¥6,000／通し券 ¥10,000。別途ドリンク代 各部¥500。途中退席不可。NIGHT LOOP のパス付き", "loop": false, "lineup": ["神", "山嵐", "DABO", "SUIKEN", "BARK", "BAKU & BLAHRMY", "MASARU", "Reichi", "t-Ace", "SLANG BOOGIE", "ZEUS"], "note": "", "short": "HEAVEN'S", "logo": "img/heavensdoor.webp", "sets": [
     {"sep": "1部 OPEN"},
     {"start": "13:30", "end": "14:00", "artist": "Reichi", "kind": "LIVE", "cards": ["l-reichi"]},
     {"start": "14:00", "end": "14:30", "artist": "MASARU", "kind": "LIVE", "cards": ["l-masaru"]},
