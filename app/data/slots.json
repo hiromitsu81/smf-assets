@@ -1,0 +1,512 @@
+{
+ "source": "パンフレットのタイムテーブル（2026-10-15時点）から起こした出演枠。HEAVEN'S DOOR 2部の神は ZAIKO（2026-10-31確認）に合わせて 21:45〜22:10。NTT SQUARE は運営タイムテーブル（2026-10-31）に合わせた。時刻は11/7の0時からの「時:分」で、24:00以降は翌日（25:30＝翌1:30）。おひねりを、投げた会場と時刻でこの表に照らして、その時間の出演者に紐づける。当日の押しは、運営がシートで直す",
+ "grace_min": 10,
+ "venues": {
+  "D1": {
+   "label": "A NTT SQUARE",
+   "slots": [
+    {
+     "name": "焼き王",
+     "start": "11:20",
+     "end": "12:10",
+     "type": "DJ"
+    },
+    {
+     "name": "DA=TI",
+     "start": "12:10",
+     "end": "13:00",
+     "type": "DJ"
+    },
+    {
+     "name": "Teppei",
+     "start": "13:00",
+     "end": "13:50",
+     "type": "DJ"
+    },
+    {
+     "name": "Sugar-T",
+     "start": "13:50",
+     "end": "14:40",
+     "type": "DJ"
+    },
+    {
+     "name": "DJ LUKE",
+     "start": "14:40",
+     "end": "15:30",
+     "type": "DJ"
+    },
+    {
+     "name": "Chozen Lee",
+     "start": "16:15",
+     "end": "16:45",
+     "type": "LIVE"
+    },
+    {
+     "name": "RUEED",
+     "start": "17:20",
+     "end": "17:50",
+     "type": "DJ"
+    },
+    {
+     "name": "JESSE",
+     "start": "18:00",
+     "end": "18:30",
+     "type": "LIVE"
+    }
+   ]
+  },
+  "L": {
+   "label": "B HEAVEN'S DOOR",
+   "slots": [
+    {
+     "name": "Reichi",
+     "start": "13:30",
+     "end": "14:00",
+     "type": "LIVE"
+    },
+    {
+     "name": "MASARU",
+     "start": "14:00",
+     "end": "14:30",
+     "type": "LIVE"
+    },
+    {
+     "name": "SLANG BOOGIE",
+     "start": "14:45",
+     "end": "15:25",
+     "type": "LIVE"
+    },
+    {
+     "name": "BAKU & BLAHRMY",
+     "start": "15:35",
+     "end": "16:25",
+     "type": "LIVE"
+    },
+    {
+     "name": "t-Ace",
+     "start": "16:25",
+     "end": "17:00",
+     "type": "LIVE"
+    },
+    {
+     "name": "ZEUS",
+     "start": "18:40",
+     "end": "19:10",
+     "type": "LIVE"
+    },
+    {
+     "name": "SUIKEN",
+     "start": "19:10",
+     "end": "19:40",
+     "type": "LIVE"
+    },
+    {
+     "name": "DABO",
+     "start": "19:40",
+     "end": "20:10",
+     "type": "LIVE"
+    },
+    {
+     "name": "BARK",
+     "start": "20:10",
+     "end": "20:40",
+     "type": "LIVE"
+    },
+    {
+     "name": "山嵐",
+     "start": "20:55",
+     "end": "21:35",
+     "type": "LIVE"
+    },
+    {
+     "name": "神",
+     "start": "21:45",
+     "end": "22:10",
+     "type": "LIVE"
+    }
+   ]
+  },
+  "N4": {
+   "label": "C BORRACHOS",
+   "slots": [
+    {
+     "name": "香山",
+     "start": "13:00",
+     "end": "14:30",
+     "type": "DJ"
+    },
+    {
+     "name": "三千世界",
+     "start": "14:30",
+     "end": "15:30",
+     "type": "DJ"
+    },
+    {
+     "name": "KONBEEF",
+     "start": "15:30",
+     "end": "17:00",
+     "type": "DJ"
+    },
+    {
+     "name": "COPA SALVO",
+     "start": "17:15",
+     "end": "18:00",
+     "type": "LIVE"
+    },
+    {
+     "name": "SIS",
+     "start": "18:15",
+     "end": "18:45",
+     "type": "LIVE"
+    },
+    {
+     "name": "ASTRON",
+     "start": "19:00",
+     "end": "19:45",
+     "type": "LIVE"
+    },
+    {
+     "name": "TOMO TOMO CLUB",
+     "start": "20:00",
+     "end": "20:30",
+     "type": "LIVE"
+    },
+    {
+     "name": "K.E.G",
+     "start": "21:00",
+     "end": "22:30",
+     "type": "DJ"
+    },
+    {
+     "name": "KON & K.E.G（B2B）",
+     "start": "22:30",
+     "end": "24:00",
+     "type": "DJ"
+    },
+    {
+     "name": "Mustache X",
+     "start": "24:00",
+     "end": "25:30",
+     "type": "DJ"
+    },
+    {
+     "name": "OSAMU M",
+     "start": "25:30",
+     "end": "27:00",
+     "type": "DJ"
+    }
+   ],
+   "gap": "香山"
+  },
+  "N2": {
+   "label": "D Niwar's（夜）",
+   "slots": [
+    {
+     "name": "ARON BEATZ",
+     "start": "18:00",
+     "end": "19:00",
+     "type": "DJ"
+    },
+    {
+     "name": "Pondo198",
+     "start": "19:00",
+     "end": "19:50",
+     "type": "DJ"
+    },
+    {
+     "name": "DJ ROYCE",
+     "start": "19:50",
+     "end": "20:40",
+     "type": "DJ"
+    },
+    {
+     "name": "YOSUKE.M",
+     "start": "20:40",
+     "end": "21:30",
+     "type": "DJ"
+    },
+    {
+     "name": "SHOT LUV",
+     "start": "21:30",
+     "end": "22:20",
+     "type": "DJ"
+    },
+    {
+     "name": "DJ OZIKILLER",
+     "start": "22:20",
+     "end": "23:10",
+     "type": "DJ"
+    },
+    {
+     "name": "BLACK GOLD SOUND",
+     "start": "23:10",
+     "end": "24:00",
+     "type": "DJ"
+    },
+    {
+     "name": "DJ TANAKEN",
+     "start": "24:00",
+     "end": "25:00",
+     "type": "DJ"
+    },
+    {
+     "name": "UZI",
+     "start": "25:00",
+     "end": "25:10",
+     "type": "LIVE"
+    },
+    {
+     "name": "Rino Latina II",
+     "start": "25:10",
+     "end": "25:20",
+     "type": "LIVE",
+     "note": "時刻はパンフに記載なし（UZIのあと・KROWの前）。要確認"
+    },
+    {
+     "name": "KROW",
+     "start": "25:20",
+     "end": "26:10",
+     "type": "DJ"
+    },
+    {
+     "name": "SHOT LUV",
+     "start": "26:10",
+     "end": "27:00",
+     "type": "DJ"
+    },
+    {
+     "name": "L/K",
+     "start": "27:00",
+     "end": "28:00",
+     "type": "DJ"
+    }
+   ]
+  },
+  "N1": {
+   "label": "E FRIENDS",
+   "slots": [
+    {
+     "name": "DJ 9INTY4",
+     "start": "20:00",
+     "end": "20:45",
+     "type": "DJ"
+    },
+    {
+     "name": "XUNA",
+     "start": "20:45",
+     "end": "21:30",
+     "type": "DJ"
+    },
+    {
+     "name": "DJ kazu",
+     "start": "21:30",
+     "end": "22:30",
+     "type": "DJ"
+    },
+    {
+     "name": "DJ ILY",
+     "start": "22:30",
+     "end": "23:30",
+     "type": "DJ"
+    },
+    {
+     "name": "DJ barbar",
+     "start": "23:30",
+     "end": "24:30",
+     "type": "DJ"
+    },
+    {
+     "name": "Vecken",
+     "start": "24:30",
+     "end": "24:45",
+     "type": "LIVE"
+    },
+    {
+     "name": "SMOKY DOGG",
+     "start": "24:45",
+     "end": "25:00",
+     "type": "LIVE"
+    },
+    {
+     "name": "DJ EastrR",
+     "start": "25:00",
+     "end": "25:45",
+     "type": "DJ"
+    },
+    {
+     "name": "DJ 凌太",
+     "start": "25:45",
+     "end": "26:40",
+     "type": "DJ"
+    },
+    {
+     "name": "DJ TAKUMA",
+     "start": "26:40",
+     "end": "27:35",
+     "type": "DJ"
+    },
+    {
+     "name": "BIG F",
+     "start": "27:35",
+     "end": "28:30",
+     "type": "DJ"
+    }
+   ]
+  },
+  "N3": {
+   "label": "F 32016",
+   "slots": [
+    {
+     "name": "SUZY a.k.a IARA",
+     "start": "17:00",
+     "end": "18:00",
+     "type": "DJ"
+    },
+    {
+     "name": "☆マーレーズ☆",
+     "start": "18:00",
+     "end": "18:45",
+     "type": "BAND"
+    },
+    {
+     "name": "Full-B fr. 昭和の輩",
+     "start": "18:45",
+     "end": "19:30",
+     "type": "DJ"
+    },
+    {
+     "name": "MASTARICA",
+     "start": "19:30",
+     "end": "20:15",
+     "type": "BAND"
+    },
+    {
+     "name": "SERU fr. 昭和の輩",
+     "start": "20:15",
+     "end": "21:00",
+     "type": "DJ"
+    },
+    {
+     "name": "Tropicos",
+     "start": "21:00",
+     "end": "21:45",
+     "type": "BAND"
+    },
+    {
+     "name": "君嶋麻里江",
+     "start": "21:45",
+     "end": "22:30",
+     "type": "DJ"
+    },
+    {
+     "name": "内田コーヘイQ and 千賀太郎",
+     "start": "22:30",
+     "end": "23:15",
+     "type": "BAND"
+    },
+    {
+     "name": "YardBeat",
+     "start": "23:15",
+     "end": "24:15",
+     "type": "DJ"
+    },
+    {
+     "name": "MANITA UP CITY",
+     "start": "24:15",
+     "end": "25:00",
+     "type": "LIVE"
+    },
+    {
+     "name": "Turbo fr.BothWings",
+     "start": "25:00",
+     "end": "26:00",
+     "type": "DJ"
+    },
+    {
+     "name": "SERU fr. 昭和の輩",
+     "start": "26:00",
+     "end": "26:30",
+     "type": "DJ"
+    },
+    {
+     "name": "Sugar-T fr. SugarBar",
+     "start": "26:30",
+     "end": "27:30",
+     "type": "DJ",
+     "key": "Sugar-T"
+    }
+   ],
+   "mc": "Full-B fr. 昭和の輩"
+  },
+  "N5": {
+   "label": "G 天狗食堂",
+   "slots": [
+    {
+     "name": "MITOchang",
+     "start": "19:00",
+     "end": "21:00",
+     "type": "DJ"
+    },
+    {
+     "name": "ToA",
+     "start": "21:00",
+     "end": "23:00",
+     "type": "DJ"
+    },
+    {
+     "name": "ITOTEEE",
+     "start": "23:00",
+     "end": "25:00",
+     "type": "DJ"
+    },
+    {
+     "name": "TERU-O",
+     "start": "25:00",
+     "end": "27:00",
+     "type": "DJ"
+    },
+    {
+     "name": "DA=TI",
+     "start": "27:00",
+     "end": "29:00",
+     "type": "DJ"
+    },
+    {
+     "name": "KING-K",
+     "start": "29:00",
+     "end": "29:30",
+     "type": "LIVE"
+    },
+    {
+     "name": "B2B／Lastまで",
+     "start": "29:30",
+     "end": "29:59",
+     "type": "DJ"
+    }
+   ]
+  },
+  "N5R": {
+   "label": "G RAWMEN RECORDS",
+   "slots": [
+    {
+     "name": "塩尻寄生",
+     "start": "22:00",
+     "end": "24:00",
+     "type": "DJ"
+    },
+    {
+     "name": "MIYA",
+     "start": "24:00",
+     "end": "26:00",
+     "type": "DJ"
+    },
+    {
+     "name": "走る犬（Sawaken & Ayumu）",
+     "start": "26:00",
+     "end": "28:00",
+     "type": "DJ"
+    }
+   ]
+  }
+ }
+}
