@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SMFアプリ</title>
-<meta name="description" content="SANGENJAYA ART MUSIC FESTIVAL 2026 の公式アプリ。LINEでできることの入口・タイムテーブル・会場・おひねりクエスト。">
+<meta name="description" content="SANGENJAYA ART MUSIC FESTIVAL 2026 の公式アプリ。LINEでできることの入口・タイムテーブル・会場・昼の3会場ブースマップ。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap">
@@ -131,6 +131,37 @@ h2 .en{color:var(--text);font-size:15px;margin-right:8px}
 .prow .t{flex:1;min-width:0;font-size:13px;line-height:1.35}
 .prow .t small{display:block;color:var(--dim);font-size:11px}
 
+/* 昼の3会場 ブースマップ（v3.24） */
+.bm-tabs{display:flex;gap:6px;margin:0 0 12px}
+.bm-tabs button{flex:1;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:10px;padding:7px 4px;font:inherit;font-size:11px;line-height:1.25}
+.bm-tabs button b{display:block;font-family:Oswald,sans-serif;font-size:15px;letter-spacing:.05em}
+.bm-tabs button[aria-selected=true]{border-color:var(--c);box-shadow:inset 0 -3px 0 var(--c)}
+.bm-head{display:flex;align-items:center;gap:10px;margin:2px 0 10px}
+.bm-code{font-family:Oswald,sans-serif;font-weight:700;font-size:17px;border-radius:8px;padding:3px 9px}
+.bm-head h3{margin:0;font-size:16px;line-height:1.3}
+.bm-head small{display:block;color:var(--dim);font-size:12px;font-weight:400}
+.bm-sign{margin:0 0 10px}.bm-sign img{width:100%;display:block;border-radius:10px}.bm-sign figcaption{font-size:11px;color:var(--faint);margin-top:4px}
+.bm-facts{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px;font-size:12px;color:var(--dim)}
+.bm-facts span,.bm-facts a{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--dim);text-decoration:none}
+.bm-facts a{border-color:var(--pink);color:var(--text)}
+.bm-map{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:8px;overflow-x:auto}
+.bm-map svg{display:block;width:100%;height:auto}.bm-map.wide svg{min-width:560px}
+.bm-g{cursor:pointer}.bm-g.on rect{stroke:#fff;stroke-width:.35}
+.bm-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.bm-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;scroll-margin-top:80px}
+.bm-card.on{border-color:var(--c);box-shadow:0 0 0 2px var(--c)}
+.bm-logo{aspect-ratio:3/2;background:#fff;display:flex;align-items:center;justify-content:center;position:relative}
+.bm-logo img{width:100%;height:100%;object-fit:contain}
+.bm-logo .t{color:#111;font-family:Oswald,sans-serif;font-size:22px}
+.bm-logo.dim{background:var(--panel2)}.bm-logo.dim .t{color:var(--dim);font-family:inherit;font-size:13px}
+.bm-no{position:absolute;left:6px;top:6px;font-family:Oswald,sans-serif;font-weight:700;font-size:13px;border-radius:6px;padding:2px 7px;min-width:26px;text-align:center}
+.bm-meta{padding:8px 10px 10px;display:flex;flex-direction:column;gap:3px;flex:1}
+.bm-meta b{font-size:13px;line-height:1.35}.bm-meta small{color:var(--dim);font-size:11px;line-height:1.45}
+.bm-meta>a{padding-top:6px;color:var(--text);font-size:12px;text-decoration:none;opacity:.85}.bm-meta>a:first-of-type{margin-top:auto}
+.bm-with{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:11px;color:var(--dim)}
+.bm-with img{width:54px;height:36px;object-fit:contain;background:#fff;border-radius:4px}.bm-with a{color:var(--text)}
+.bm-notes{margin:14px 0 0;padding:10px 12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;font-size:12px;color:var(--dim);line-height:1.7}
+.bm-notes ul{margin:0;padding-left:18px}
 /* おひねりクエスト */
 .quest{background:linear-gradient(180deg,#1B1012,#141414 60%);border:1px solid #3A2226;border-radius:var(--r);padding:16px}
 .q-k{font:500 12px Oswald,sans-serif;letter-spacing:.24em;color:var(--pink)}
@@ -515,7 +546,7 @@ gtag('js', new Date());
 gtag('config', 'G-6QRZMM8YNV', { app_name: 'SMFアプリ', in_line: /Line\//i.test(navigator.userAgent) ? 'yes' : 'no' });
 function ga(ev, p) { try { gtag('event', ev, p || {}); } catch (e) { /* 計測できなくても動きは変えない */ } }
 /* v3.18：見た画面とコンテンツを GA4 で数える。content_type＝種類、content_name＝名前、content_id＝ID */
-const TAB_NAME = { home: 'ホーム', time: '時間と会場', loop: 'NIGHT LOOP', ennichi: '縁日・三ガ茶', quest: 'おひねり' };
+const TAB_NAME = { home: 'ホーム', time: '時間と会場', loop: 'NIGHT LOOP', ennichi: '縁日・三ガ茶', booth: 'ブース' };
 function cv(type, name, id) { ga('content_view', { content_type: type, content_name: String(name || '').slice(0, 90), content_id: String(id == null ? '' : id).slice(0, 90) }); }
 </script>
 </head>
@@ -548,7 +579,7 @@ function cv(type, name, id) { ga('content_view', { content_type: type, content_n
         <a href="#" id="actScan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M4 12h16"/></svg>相手のQRを<br>読む</a>
         <a href="#" id="actCard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><circle cx="15.5" cy="10" r="1.6"/><circle cx="8.5" cy="15" r="1.6"/><circle cx="15.5" cy="15" r="1.6"/></svg>台紙<br>（ラリー）</a>
         <a href="#" id="actBook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 4.5h10a3 3 0 0 1 3 3v12H8a3 3 0 0 1-3-3z"/><path d="M5 16.5a3 3 0 0 1 3-3h10"/></svg>My<br>コレクション</a>
-        <a href="#quest" id="actQuest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M8 4h8l-1 3H9z"/><path d="M7 7h10a4 4 0 0 1 0 8H7a4 4 0 0 1 0-8z"/><path d="M9 15l-1 5h8l-1-5"/></svg>おひねり<br>クエスト</a>
+        <a href="#booth" id="actBooth"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="4" width="7" height="7" rx="1"/><rect x="13.5" y="4" width="7" height="7" rx="1"/><rect x="3.5" y="14" width="7" height="6" rx="1"/><path d="M17 13.5v7M13.5 17h7"/></svg>昼の<br>ブース</a>
       </nav>
     </div>
     <button class="sgbn" type="button" data-sgbn="home" hidden aria-label="SMF 第三回記念 三ガ茶 10連無料。いますぐ引く"><img loading="lazy" src="img/sangacha-10ren.jpg" alt="" width="1200" height="800"></button>
@@ -746,24 +777,19 @@ function cv(type, name, id) { ga('content_view', { content_type: type, content_n
     <p class="note">QRを読み合うのは、おたがいがOKのときだけにしてください。三ガ茶は 11月8日（日）まで。</p>
   </section>
 
-  <!-- おひねりクエスト -->
-  <section class="tab" id="tab-quest" aria-labelledby="t-quest">
-    <h2><span class="en">QUEST</span>おひねりクエスト<span class="sample" id="sampleTag" hidden>サンプル表示</span></h2>
-    <p class="note" id="qLead" style="margin:0 0 10px;color:var(--text);font-size:13.5px"><b style="color:var(--pink)">未来募金</b>｜来年の開催に向けて、みんなでおひねりを。会場の「未来募金箱」と同じ、SMFを続けていくための応援です。</p>
-    <div class="quest" id="quest"></div>
-    <h2><span class="en">THROW</span>おひねりを投げる</h2>
-    <div id="dnBox"></div>
-    <h2><span class="en">RANKING</span>男気女気ランキング</h2>
-    <ol class="rank" id="rank"></ol>
-    <p class="note" id="rankNote">ランキングは 11月8日（日）まで。おひねりは、そのあとも通年で受け付けます。順位は、運営が入金を確かめた応援の合計で決まります。金額は表示しません。ランキングに載せないことも選べます。</p>
-    <div class="upd" id="upd"></div>
-    <button class="share" type="button" data-share="quest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg>ボス戦に仲間を呼ぶ</button>
+  <!-- 昼の3会場 ブースマップ（v3.24。おひねりクエストと入れ替え） -->
+  <section class="tab" id="tab-booth" aria-labelledby="t-booth">
+    <h2 id="sec-booth"><span class="en">DAY BOOTHS</span>昼の3会場 ブースマップ</h2>
+    <p class="note" style="margin:0 0 10px">11/7（土）11:00–18:00・入場無料。地図の番号を押すと、そのお店が出ます。</p>
+    <div class="bm-tabs" id="bmTabs" role="tablist"></div>
+    <div id="bmVenue"><p class="note">読み込んでいます…</p></div>
+    <p class="note" id="bmFoot" style="margin-top:12px"></p>
   </section>
 
   <footer>
     最新のお知らせは <a href="https://www.instagram.com/smf_sangenjaya_musicfestival/" target="_blank" rel="noopener">Instagram</a> と <a href="https://sangenjaya-mf.com/?utm_source=smf_app&utm_medium=app&utm_campaign=miniapp" target="_blank" rel="noopener">公式サイト</a> で。夜の会場は20歳未満の方は入場できません。
     <br><small style="opacity:.7">利用状況を知るために Google Analytics を使っています（名前などの個人情報は送りません）。</small>
-    <br><span id="ver">SMFアプリ v3.23</span>
+    <br><span id="ver">SMFアプリ v3.24</span>
   </footer>
 </main>
 
@@ -773,7 +799,7 @@ function cv(type, name, id) { ga('content_view', { content_type: type, content_n
     <button role="tab" id="t-time" aria-selected="false" data-tab="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>時間・会場</button>
     <button role="tab" id="t-loop" aria-selected="false" data-tab="loop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l-.6 3H9.6z"/><path d="M8 6h8c1.7 0 3 1.3 3 3v6c0 1.7-1.3 3-3 3H8c-1.7 0-3-1.3-3-3V9c0-1.7 1.3-3 3-3z"/><path d="M5 12h14"/><path d="M12 18v3"/></svg>NIGHT LOOP</button>
     <button role="tab" id="t-ennichi" aria-selected="false" data-tab="ennichi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/><path d="M14 4h6v6"/><path d="M4 14v6h6"/></svg>縁日</button>
-    <button role="tab" id="t-quest" aria-selected="false" data-tab="quest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M8 4h8l-1 3H9z"/><path d="M7 7h10a4 4 0 0 1 0 8H7a4 4 0 0 1 0-8z"/><path d="M9 15l-1 5h8l-1-5"/></svg>おひねり</button>
+    <button role="tab" id="t-booth" aria-selected="false" data-tab="booth"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="4" width="7" height="7" rx="1"/><rect x="13.5" y="4" width="7" height="7" rx="1"/><rect x="3.5" y="14" width="7" height="6" rx="1"/><path d="M17 13.5v7M13.5 17h7"/></svg>ブース</button>
   </div>
 </nav>
 
@@ -823,7 +849,7 @@ const SITE_SEC = { 'sec-howto': 'ticket', 'sec-sponsor': 'sponsor', 'sec-shops':
 const GO = { qr: ['home', 'wallet'], ticket: ['home', 'ticket'], howto: ['home', 'sec-howto'], archive: ['home', 'sec-archive'], sponsor: ['home', 'sec-sponsor'], shops: ['home', 'sec-shops'], areamap: ['time', 'sec-map'], voice: ['home', 'voice'],
   timetable: ['time', 'sec-timetable'], venues: ['time', 'sec-venues'], map: ['time', 'sec-map'],
   daishi: ['loop', 'daishi'], entry: ['loop', 'daishi'], drink: ['loop', 'sec-drink'], loopvenues: ['loop', 'sec-loopvenues'], sanchahigh: ['loop', 'sanchahigh'],
-  gacha: ['ennichi', 'gacha'], collection: ['ennichi', 'zukanTop'], quest: ['quest', ''] };
+  gacha: ['ennichi', 'gacha'], collection: ['ennichi', 'zukanTop'], booth: ['booth', ''], quest: ['booth', ''] };
 function renderSiteLinks() {
   Object.keys(SITE_SEC).forEach(id => { const h = document.getElementById(id); if (!h || h.querySelector('.sitelk')) return;
     const a = document.createElement('a'); a.className = 'sitelk'; a.href = SITE + '#' + SITE_SEC[id]; a.target = '_blank'; a.rel = 'noopener'; a.textContent = '公式サイト'; h.appendChild(a); });
@@ -868,7 +894,6 @@ document.addEventListener('click', e => {
 const FEATS = [
   { c: '--pink', t: 'SANCHA NIGHT LOOP', d: '夜の協力店をめぐるスタンプラリー。台紙と「わたしのQR」を出します', cmd: '#ラリー', go: '台紙を開く' },
   { c: '--green', t: '三ガ茶（さんがちゃ）', d: '出演者・協力店・協賛とのご縁をカードで引くガチャ。はじめは10連、次の日から毎日3回', cmd: '#ご縁', go: 'ご縁を開く' },
-  { c: '--pink', t: 'おひねりクエスト', d: 'SMFへの応援（おひねり）。みんなの合計でボスを倒していきます', cmd: '#おひねり', go: 'おひねりを投げる' },
   { c: '--blue', t: 'SMF選手権', d: 'SMFと三茶のクイズ。何問答えられるか挑戦', cmd: '#SMF選手権', go: 'クイズを始める' },
   { c: '--green', t: '参加グループ', d: 'オープンチャット（SMF全体・一緒にまわろう）と、入っているグループ', cmd: '#参加グループ', go: 'LINEで見る' },
   { c: '--blue', t: '友だちをSMFに招待', d: 'あなた専用の紹介リンクを出します。LINEで友だちに送れます', cmd: '#友だちをSMFに招待', go: '招待リンクを出す' },
@@ -1430,7 +1455,7 @@ function bindWallet() {
   on('#actScan', scanQr);
   on('#actCard', () => { showTab('loop'); loadMe(true); });
   on('#actBook', () => { showTab('ennichi'); const z = $('#zukanTop'); if (z) setTimeout(() => z.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60); });
-  on('#actQuest', () => showTab('quest'));
+  on('#actBooth', () => showTab('booth'));
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') loadMe(); });
   setInterval(() => { if (document.visibilityState === 'visible' && $('#tab-home').classList.contains('on')) loadMe(); }, 60000);
   loadMe(true);
@@ -1670,7 +1695,52 @@ function renderHowto() {
   ];
   el.innerHTML = Q.map((q, i) => `<div><div class="ph" style="background-image:url(img/howto/${i + 1}.webp)"></div><div class="in"><div class="qq"><b>${q[0]}</b><span>${q[1]}</span></div><div class="qa">${q[2]}</div><p>${esc(q[3])}</p></div></div>`).join('');
 }
-/* ---------- おひねりクエスト ---------- */
+/* ---------- 昼の3会場 ブースマップ（v3.24。data/booths.json・img/booths/） ---------- */
+let BM = null, BM_I = 0;
+async function loadBooths() {
+  if (!BM) { try { BM = await (await fetch('data/booths.json', { cache: 'no-store' })).json(); } catch (e) { $('#bmVenue').innerHTML = '<p class="note">いま読み込めません。少し待って開き直してください。</p>'; return; }
+    $('#bmTabs').innerHTML = BM.venues.map((v, i) => `<button role="tab" type="button" style="--c:${v.color}" data-bm="${i}"><b>${esc(v.code)}</b>${esc(v.name)}</button>`).join('');
+    $('#bmFoot').textContent = BM.note; }
+  bmShow(BM_I);
+}
+function bmSvg(v) {
+  const m = v.map, fsM = Math.min(1.15, Math.max(.6, m.w * .02));
+  let s = `<svg viewBox="${m.x0} ${m.z0} ${m.w} ${m.h}" role="img" aria-label="${esc(v.name)} の配置図">`;
+  m.areas.forEach(a => { const fill = a.k === 'floor' ? '#2B2F36' : a.k === 'bldg' ? '#1A1B1E' : '#3A342C'; s += `<rect x="${a.x}" y="${a.z}" width="${a.w}" height="${a.d}" fill="${fill}" rx=".2"/>`;
+    if (a.t) { const cx = a.x + a.w / 2, cy = a.z + a.d / 2; s += `<text x="${cx}" y="${cy}" font-size="${fsM * .9}" fill="#8a8a8a" text-anchor="middle" dominant-baseline="middle"${a.rot ? ` transform="rotate(${a.rot} ${cx} ${cy})"` : ''}>${esc(a.t)}</text>`; } });
+  (m.marks || []).forEach(k => { const g = k.k === 'gate'; if (g) s += `<circle cx="${k.x}" cy="${k.z}" r="${fsM * .55}" fill="#EC7D8F"/>`;
+    s += `<text x="${k.x + (g ? fsM * .8 : 0)}" y="${k.z}" font-size="${fsM}" fill="${g ? '#EC7D8F' : '#CFCFCF'}" text-anchor="${g ? 'start' : 'middle'}" dominant-baseline="middle" font-weight="${g ? 700 : 400}">${esc(k.t)}</text>`; });
+  m.pins.forEach(p => { const b = v.booths.find(x => x.no === p.no) || {}, w = p.w || p.s, d = p.s;
+    const plain = p.k === 'stage' || p.k === 'svc' || b.soon || b.svc, fill = p.k === 'stage' ? '#3a3a3a' : plain ? '#4a4d53' : v.color, ink = plain ? '#fff' : v.ink;
+    const fs = Math.min(1.35, d * .42) * (p.no.length > 2 ? .8 : 1);
+    s += `<g class="bm-g" data-bmno="${esc(p.no)}" role="button" aria-label="${esc(p.no)} ${esc(b.name || '')}"><rect x="${p.x - w / 2 + .12}" y="${p.z - d / 2 + .12}" width="${w - .24}" height="${d - .24}" rx=".25" fill="${fill}"/><text x="${p.x}" y="${p.z}" font-size="${fs}" fill="${ink}" text-anchor="middle" dominant-baseline="central" font-family="Oswald,sans-serif" font-weight="700">${esc(p.no)}</text></g>`; });
+  return s + '</svg>';
+}
+function bmCard(v, b) {
+  const dim = b.soon || b.svc, link = u => `<a href="${esc(u)}" target="_blank" rel="noopener">${/instagram\.com/.test(u) ? 'Instagram' : 'サイト'} ↗</a>`;
+  return `<div class="bm-card" id="bm-${esc(v.code)}-${esc(b.no)}" style="--c:${v.color}"><div class="bm-logo${dim ? ' dim' : ''}">${b.logo ? `<img src="${esc(b.logo)}" alt="${esc(b.name)}" loading="lazy">` : `<span class="t">${esc(b.soon ? '近日発表' : b.name)}</span>`}<span class="bm-no" style="background:${v.color};color:${v.ink}">${esc(b.no)}</span></div>
+    <div class="bm-meta"><b>${esc(b.name)}</b>${b.note ? `<small>${esc(b.note)}</small>` : ''}${b.url ? link(b.url) : ''}${b.with ? `<div class="bm-with"><img src="${esc(b.with.logo)}" alt="${esc(b.with.name)}"><span>取り扱い：${esc(b.with.name)}${b.with.url ? ` <a href="${esc(b.with.url)}" target="_blank" rel="noopener">↗</a>` : ''}</span></div>` : ''}</div></div>`;
+}
+function bmShow(i) {
+  BM_I = i; const v = BM.venues[i]; ga('booth_venue', { venue: v.code });
+  document.querySelectorAll('#bmTabs button').forEach((t, k) => t.setAttribute('aria-selected', String(k === i)));
+  const wide = v.map.w > 40;
+  $('#bmVenue').innerHTML = `<div class="bm-head"><span class="bm-code" style="background:${v.color};color:${v.ink}">${esc(v.code)}</span><h3>${esc(v.name)}<small>${esc(v.sub)}</small>${v.presented ? `<small style="color:var(--pink)">${esc(v.presented)}</small>` : ''}</h3></div>
+    ${v.sign ? `<figure class="bm-sign"><img src="${esc(v.sign)}" alt="${esc(v.signAlt || '')}" loading="lazy"><figcaption>${esc(v.signAlt || '')}</figcaption></figure>` : ''}
+    <div class="bm-facts"><span>${esc(v.time)}</span><a href="${esc(v.gmap)}" target="_blank" rel="noopener">${esc(v.addr)}・地図 ↗</a><span>入場無料</span></div>
+    <div class="bm-map${wide ? ' wide' : ''}">${bmSvg(v)}</div>${wide ? '<p class="note" style="margin:6px 2px 0">地図は横に動かせます（左へ動かすと出店 1〜12）</p>' : ''}
+    <div class="bm-list">${v.booths.map(b => bmCard(v, b)).join('')}</div>
+    <div class="bm-notes"><ul>${v.notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul></div>`;
+  const mp = document.querySelector('.bm-map.wide'); if (mp) mp.scrollLeft = mp.scrollWidth;
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-bm]'); if (t) { bmShow(Number(t.dataset.bm)); return; }
+  const g = e.target.closest('.bm-g'); if (!g) return; const v = BM.venues[BM_I], no = g.dataset.bmno;
+  document.querySelectorAll('.bm-g').forEach(x => x.classList.toggle('on', x === g)); document.querySelectorAll('.bm-card').forEach(c => c.classList.remove('on'));
+  const c = document.getElementById(`bm-${v.code}-${no}`); if (c) { c.classList.add('on'); c.scrollIntoView({ behavior: 'smooth', block: 'center' }); ga('booth_pick', { venue: v.code, no: no }); }
+});
+
+/* ---------- おひねりクエスト（v3.24 で画面から外した。GAS とのやりとりは残す） ---------- */
 let OA = CONFIG.OA_ID, QUEST = null;
 async function loadQuest() {
   let d = null, sample = false;
@@ -1731,8 +1801,8 @@ function showTab(name) {
   document.querySelectorAll('section.tab').forEach(s => s.classList.toggle('on', s.id === 'tab-' + name));
   document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
   window.scrollTo(0, 0);
-  if (name === 'quest') loadQuest();
-  if (name === 'loop' || name === 'home' || name === 'quest' || name === 'ennichi') loadMe();
+  if (name === 'booth') loadBooths();
+  if (name === 'loop' || name === 'home' || name === 'ennichi') loadMe();
   // v2.7.1：URL（#タブ名）を書き換えるのは、LIFF の初期化が終わってから。先に書き換えると、LINE が付けたログインの情報が消えて、台紙が出ないことがある
   CUR_TAB = name;
   loadLiff().then(() => { try { history.replaceState(null, '', location.pathname + location.search + '#' + CUR_TAB); } catch (e) { /* 表示は変わる */ } });
@@ -1754,10 +1824,9 @@ async function boot() {
   if (goKey && goTo(goKey)) { /* 公式サイトなどから、場所を指定して開いた（v3.7） */ }
   else {
     if (first === 'loop') WANT_ENTRY = true;
-    if (['home', 'time', 'loop', 'ennichi', 'quest'].indexOf(first) >= 0) showTab(first); else if (first === 'map') showTab('time');
+    if (['home', 'time', 'loop', 'ennichi', 'booth'].indexOf(first) >= 0) showTab(first); else if (first === 'map') showTab('time'); else if (first === 'quest') showTab('booth');
   }
   setInterval(() => { renderStatus(); renderTimetable(); renderLoop(); }, 60000);
-  setInterval(() => { if ($('#tab-quest').classList.contains('on')) loadQuest(); }, 30000);
   bindWallet(); bindVoice(); bindGoen(); bindEntry(); renderTicket();
   const ak = qs.get('after') || (st ? new URLSearchParams(st.replace(/^[^?]*\?/, '')).get('after') : '');
   if (ak) { showTab('loop'); runAfter(ak); } // 入口のQRから

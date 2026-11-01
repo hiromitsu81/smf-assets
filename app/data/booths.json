@@ -1,0 +1,588 @@
+{
+ "version": "2026-11-01",
+ "note": "出店内容・配置は変わる場合があります（現場判断を優先して配置を変更する場合がございます）",
+ "venues": [
+  {
+   "code": "D1",
+   "name": "NTT SQUARE",
+   "sub": "YAGURA STAGE・本部",
+   "addr": "世田谷区太子堂4-3-16",
+   "gmap": "https://www.google.com/maps/search/?api=1&query=東京都世田谷区太子堂4-3-16 NTT世田谷ビル",
+   "time": "11:00–18:00",
+   "color": "#234DA0",
+   "ink": "#FFFFFF",
+   "sign": "img/booths/sign-d1.webp",
+   "signAlt": "歩道側のスポンサーバナー（この看板が目印）",
+   "map": {
+    "x0": -51,
+    "z0": -2,
+    "w": 54,
+    "h": 48,
+    "areas": [
+     {
+      "x": -51,
+      "z": 0,
+      "w": 52,
+      "d": 7.7,
+      "k": "floor"
+     },
+     {
+      "x": -13.4,
+      "z": 7.7,
+      "w": 13.4,
+      "d": 36.8,
+      "k": "floor"
+     },
+     {
+      "x": -51,
+      "z": 7.7,
+      "w": 37.6,
+      "d": 37,
+      "k": "bldg",
+      "t": "NTT 世田谷ビル"
+     },
+     {
+      "x": 0.4,
+      "z": -2,
+      "w": 2.6,
+      "d": 48,
+      "k": "walk",
+      "t": "歩道（世田谷通り）",
+      "rot": 90
+     }
+    ],
+    "pins": [
+     {
+      "no": "12",
+      "x": -48.0,
+      "z": 2.15,
+      "s": 3
+     },
+     {
+      "no": "11",
+      "x": -44.9,
+      "z": 2.15,
+      "s": 3
+     },
+     {
+      "no": "10",
+      "x": -41.8,
+      "z": 2.15,
+      "s": 3
+     },
+     {
+      "no": "9",
+      "x": -38.7,
+      "z": 2.15,
+      "s": 3
+     },
+     {
+      "no": "8",
+      "x": -35.6,
+      "z": 2.15,
+      "s": 3
+     },
+     {
+      "no": "7",
+      "x": -32.5,
+      "z": 2.15,
+      "s": 3
+     },
+     {
+      "no": "6",
+      "x": -29.4,
+      "z": 2.15,
+      "s": 3
+     },
+     {
+      "no": "5",
+      "x": -26.3,
+      "z": 2.15,
+      "s": 3
+     },
+     {
+      "no": "4",
+      "x": -23.2,
+      "z": 2.15,
+      "s": 3
+     },
+     {
+      "no": "3",
+      "x": -20.099999999999998,
+      "z": 2.15,
+      "s": 3
+     },
+     {
+      "no": "2",
+      "x": -17.0,
+      "z": 2.15,
+      "s": 3
+     },
+     {
+      "no": "1",
+      "x": -13.899999999999999,
+      "z": 2.15,
+      "s": 3
+     },
+     {
+      "no": "13",
+      "x": -5.1,
+      "z": 2.15,
+      "s": 3
+     },
+     {
+      "no": "H",
+      "x": -1.8,
+      "z": 2.15,
+      "s": 3,
+      "k": "svc"
+     },
+     {
+      "no": "F",
+      "x": -8.4,
+      "z": 40.2,
+      "s": 3,
+      "w": 9.3,
+      "k": "food"
+     },
+     {
+      "no": "Y",
+      "x": -10.6,
+      "z": 26.2,
+      "s": 5,
+      "k": "stage"
+     }
+    ],
+    "marks": [
+     {
+      "t": "ヤグラ（ステージ）",
+      "x": -10.6,
+      "z": 30.4
+     },
+     {
+      "t": "飲食スペース",
+      "x": -9.5,
+      "z": 5.0
+     },
+     {
+      "t": "ゴミ",
+      "x": -12.2,
+      "z": 8.9,
+      "k": "gomi"
+     },
+     {
+      "t": "フォトブース",
+      "x": -2.4,
+      "z": 38.0
+     },
+     {
+      "t": "喫煙所",
+      "x": -2.4,
+      "z": 43.4,
+      "k": "smoke"
+     },
+     {
+      "t": "入口",
+      "x": -0.6,
+      "z": 35.4,
+      "k": "gate"
+     }
+    ]
+   },
+   "notes": [
+    "トイレは会場にありません。キャロットタワー（B1F 三茶パティオほか）をご利用ください",
+    "喫煙は入口の喫煙所で。会場内は禁煙です",
+    "お酒の持ち込みはご遠慮ください"
+   ],
+   "booths": [
+    {
+     "no": "1",
+     "name": "OGISHI",
+     "logo": "img/booths/ogishi.webp",
+     "url": "https://ogishi.co.jp/"
+    },
+    {
+     "no": "2",
+     "name": "BROTURES",
+     "logo": "img/booths/brotures.webp",
+     "url": "https://brotures.com/"
+    },
+    {
+     "no": "3",
+     "name": "MATE.",
+     "logo": "img/booths/mate.webp",
+     "url": "https://mate-bike.jp/"
+    },
+    {
+     "no": "4",
+     "name": "言の葉 kotonoha",
+     "logo": "img/booths/kotonoha.webp"
+    },
+    {
+     "no": "5",
+     "name": "ty",
+     "logo": "img/booths/ty.webp",
+     "note": "ぬり絵"
+    },
+    {
+     "no": "6",
+     "name": "日和 hiyori",
+     "logo": "img/booths/hiyori.webp"
+    },
+    {
+     "no": "7",
+     "name": "AKANBO",
+     "logo": "img/booths/akanbo.webp"
+    },
+    {
+     "no": "8",
+     "name": "BUFFALO HUNTER BLOOD TOKYO",
+     "logo": "img/booths/buffalo-hunter.webp",
+     "url": "https://www.instagram.com/buffalohunter_tokyo/",
+     "note": "STEAK and HAMBURG"
+    },
+    {
+     "no": "9",
+     "name": "三軒茶屋 とこしえ",
+     "logo": "img/booths/tokoshie.webp",
+     "note": "TEPPANYAKI"
+    },
+    {
+     "no": "10",
+     "name": "HELLBENDERS & CO",
+     "logo": "img/booths/hellbenders.webp",
+     "url": "https://hellbenders.shop/"
+    },
+    {
+     "no": "11",
+     "name": "RESULT WORKS",
+     "logo": "img/booths/result-works.webp",
+     "note": "SUPPORT YOUR LOCAL PRINTED"
+    },
+    {
+     "no": "12",
+     "name": "近日発表",
+     "soon": true
+    },
+    {
+     "no": "13",
+     "name": "SMF OFFICIAL SHOP",
+     "logo": "img/booths/official-shop.webp",
+     "note": "SMF2026 公式グッズ（本部の隣）",
+     "url": "https://www.instagram.com/smf_sangenjaya_musicfestival/"
+    },
+    {
+     "no": "F",
+     "name": "飲食ブース（3店）",
+     "soon": true,
+     "note": "入口の横。出店者は近日発表"
+    },
+    {
+     "no": "H",
+     "name": "本部・インフォメーション",
+     "svc": true,
+     "note": "総合案内・落とし物・SANCHA NIGHT LOOP パスの販売"
+    }
+   ]
+  },
+  {
+   "code": "D2",
+   "name": "企業ブース会場",
+   "sub": "NTTル・パルク三軒茶屋 第1駐車場",
+   "presented": "Presented by Mimona co.,ltd",
+   "sign": "img/booths/sign-d2.webp",
+   "signAlt": "入口の看板（SPONSOR BOOTH AREA）",
+   "addr": "世田谷区太子堂4-3-4",
+   "gmap": "https://www.google.com/maps/search/?api=1&query=東京都世田谷区太子堂4-3-4 NTTル・パルク三軒茶屋",
+   "time": "11:00–18:00",
+   "color": "#8DC21F",
+   "ink": "#0A0A0A",
+   "map": {
+    "x0": -10,
+    "z0": -13,
+    "w": 20,
+    "h": 29,
+    "areas": [
+     {
+      "x": -8,
+      "z": -12,
+      "w": 16,
+      "d": 24,
+      "k": "floor"
+     },
+     {
+      "x": -10,
+      "z": 12,
+      "w": 20,
+      "d": 3,
+      "k": "walk",
+      "t": "歩道（世田谷通り）"
+     }
+    ],
+    "pins": [
+     {
+      "no": "A1",
+      "x": -6.5,
+      "z": 7.5,
+      "s": 3
+     },
+     {
+      "no": "A2",
+      "x": -6.5,
+      "z": 4.5,
+      "s": 3
+     },
+     {
+      "no": "A3",
+      "x": -6.5,
+      "z": 1.5,
+      "s": 3
+     },
+     {
+      "no": "A4",
+      "x": -6.5,
+      "z": -1.5,
+      "s": 3
+     },
+     {
+      "no": "A5",
+      "x": -6.5,
+      "z": -4.5,
+      "s": 3
+     },
+     {
+      "no": "PA",
+      "x": -6.5,
+      "z": -7.5,
+      "s": 3,
+      "k": "svc"
+     },
+     {
+      "no": "B2",
+      "x": 6.5,
+      "z": -1.5,
+      "s": 3
+     },
+     {
+      "no": "B3",
+      "x": 6.5,
+      "z": -4.5,
+      "s": 3
+     },
+     {
+      "no": "DJ",
+      "x": 0,
+      "z": -9.3,
+      "s": 3,
+      "k": "stage"
+     }
+    ],
+    "marks": [
+     {
+      "t": "入口",
+      "x": 5.6,
+      "z": 11.3,
+      "k": "gate"
+     },
+     {
+      "t": "フリースペース",
+      "x": 0,
+      "z": 1
+     }
+    ]
+   },
+   "notes": [
+    "トイレはキャロットタワー（B1F 三茶パティオほか）をご利用ください",
+    "会場内は禁煙です。喫煙は D1 NTT SQUARE 入口の喫煙所で"
+   ],
+   "booths": [
+    {
+     "no": "A1",
+     "name": "ほりにし",
+     "logo": "img/booths/horinishi.webp",
+     "url": "https://horinishi.jp/",
+     "note": "アウトドアスパイス"
+    },
+    {
+     "no": "A2",
+     "name": "Orange OUTDOOR LIFE STYLE",
+     "logo": "img/booths/orange.webp",
+     "url": "https://shop-orange.jp/"
+    },
+    {
+     "no": "A3",
+     "name": "YOSHIDA'S FINE SAUCES",
+     "logo": "img/booths/yoshidas.webp",
+     "url": "https://yoshidasauce.co.jp/"
+    },
+    {
+     "no": "A4",
+     "name": "NEWTRAL",
+     "logo": "img/booths/newtral.webp",
+     "url": "https://newtralwear.com/"
+    },
+    {
+     "no": "A5",
+     "name": "NANGA",
+     "logo": "img/booths/nanga.webp",
+     "url": "https://nanga.jp/"
+    },
+    {
+     "no": "B2",
+     "name": "近日発表",
+     "soon": true
+    },
+    {
+     "no": "B3",
+     "name": "Megu",
+     "logo": ""
+    },
+    {
+     "no": "DJ",
+     "name": "DJブース",
+     "svc": true
+    }
+   ]
+  },
+  {
+   "code": "D3",
+   "name": "SMF OFFICIAL BAR",
+   "sub": "パラカ 三軒茶屋第3",
+   "sign": "img/booths/sign-d3.webp",
+   "signAlt": "十方の歩道側の看板（SMF OFFICIAL BAR）",
+   "addr": "世田谷区三軒茶屋2-15-1",
+   "gmap": "https://www.google.com/maps/search/?api=1&query=東京都世田谷区三軒茶屋2-15-1",
+   "time": "11:00–18:00",
+   "color": "#8DC21F",
+   "ink": "#0A0A0A",
+   "map": {
+    "x0": -7,
+    "z0": -9,
+    "w": 14,
+    "h": 20,
+    "areas": [
+     {
+      "x": -5,
+      "z": -8,
+      "w": 10,
+      "d": 16,
+      "k": "floor"
+     },
+     {
+      "x": -7,
+      "z": 8,
+      "w": 14,
+      "d": 2.6,
+      "k": "walk",
+      "t": "歩道"
+     }
+    ],
+    "pins": [
+     {
+      "no": "2",
+      "x": -3.5,
+      "z": 4.5,
+      "s": 3
+     },
+     {
+      "no": "3",
+      "x": -3.5,
+      "z": 1.5,
+      "s": 3
+     },
+     {
+      "no": "4",
+      "x": -3.5,
+      "z": -1.5,
+      "s": 3
+     },
+     {
+      "no": "5",
+      "x": -3.5,
+      "z": -4.5,
+      "s": 3
+     },
+     {
+      "no": "1",
+      "x": 3.5,
+      "z": 4.5,
+      "s": 3
+     },
+     {
+      "no": "6",
+      "x": 3.5,
+      "z": 1.5,
+      "s": 3
+     },
+     {
+      "no": "DJ",
+      "x": 2.75,
+      "z": -5.4,
+      "s": 2.5,
+      "k": "stage"
+     }
+    ],
+    "marks": [
+     {
+      "t": "入口",
+      "x": 0,
+      "z": 7.4,
+      "k": "gate"
+     }
+    ]
+   },
+   "notes": [
+    "お酒を買うときは年齢確認があります（20歳未満の方は保護者同伴で入場できます。お酒は販売できません）",
+    "トイレはキャロットタワー（B1F 三茶パティオほか）をご利用ください",
+    "会場内は禁煙です。お酒の持ち込みはご遠慮ください"
+   ],
+   "booths": [
+    {
+     "no": "1",
+     "name": "Pabst Blue Ribbon",
+     "logo": "img/booths/pabst.webp",
+     "url": "https://pabstblueribbon.jp/"
+    },
+    {
+     "no": "2",
+     "name": "JIPPO 十方",
+     "logo": "img/booths/jippo.webp"
+    },
+    {
+     "no": "3",
+     "name": "罪人 ZAININ",
+     "logo": "img/booths/zainin.webp",
+     "url": "https://zainin.jp/"
+    },
+    {
+     "no": "4",
+     "name": "BACARDÍ",
+     "logo": "img/booths/bacardi.webp",
+     "url": "https://bacardi-rum.jp/"
+    },
+    {
+     "no": "5",
+     "name": "ほりにし × SMF OFFICIAL BAR",
+     "logo": "img/booths/horinishi.webp",
+     "url": "https://horinishi.jp/",
+     "with": {
+      "name": "Rooibos Wine AUDACIA 1810",
+      "logo": "img/booths/audacia.webp",
+      "url": "https://www.rooiboswine.jp/"
+     }
+    },
+    {
+     "no": "6",
+     "name": "ほりにし × TEALIFE",
+     "logo": "img/booths/horinishi.webp",
+     "url": "https://horinishi.jp/"
+    },
+    {
+     "no": "DJ",
+     "name": "DJブース",
+     "svc": true
+    }
+   ]
+  }
+ ]
+}
