@@ -138,14 +138,6 @@
       "k": "svc"
      },
      {
-      "no": "F",
-      "x": -8.4,
-      "z": 40.2,
-      "s": 3,
-      "w": 9.3,
-      "k": "food"
-     },
-     {
       "no": "Y",
       "x": -10.6,
       "z": 26.2,
@@ -270,12 +262,6 @@
      "logo": "img/booths/official-shop.webp",
      "note": "SMF2026 公式グッズ（本部の隣）",
      "url": "https://www.instagram.com/smf_sangenjaya_musicfestival/"
-    },
-    {
-     "no": "F",
-     "name": "飲食ブース（3店）",
-     "soon": true,
-     "note": "入口の横。出店者は近日発表"
     },
     {
      "no": "H",
