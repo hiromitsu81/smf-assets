@@ -143,6 +143,13 @@
       "z": 26.2,
       "s": 5,
       "k": "stage"
+     },
+     {
+      "no": "ART",
+      "x": -8.4,
+      "z": 40.2,
+      "s": 3,
+      "w": 9.3
      }
     ],
     "marks": [
@@ -262,6 +269,11 @@
      "logo": "img/booths/official-shop.webp",
      "note": "SMF2026 公式グッズ（本部の隣）",
      "url": "https://www.instagram.com/smf_sangenjaya_musicfestival/"
+    },
+    {
+     "no": "ART",
+     "name": "アートスペース",
+     "note": "アートキャンパス（入口の横）"
     },
     {
      "no": "H",
