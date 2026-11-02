@@ -79,7 +79,7 @@
     {
      "start": "15:30",
      "end": "16:15",
-     "artist": "餅まき（JESSE・藤井まな）",
+     "artist": "餅まき 15:45〜（JESSE・DJ MASTERKEY・DJ Tak Umezawa・藤井まな ほか）",
      "kind": "EVENT"
     },
     {
@@ -124,15 +124,31 @@
    "ink": "#0A0A0A",
    "start": "11:00",
    "end": "18:00",
-   "genre": "協賛企業のPR・展示・体験・販売",
+   "genre": "協賛企業のPR・展示・体験・販売／DJブース・DANCE WORKSHOP",
    "address": "世田谷区太子堂4-3-4",
    "entry": "入場無料・年齢制限なし・酒類の販売なし",
    "loop": false,
-   "lineup": [],
-   "note": "",
+   "lineup": [
+    "Dj Yacheemi",
+    "MARIKO（CHAOS）"
+   ],
+   "note": "DJブース前で、だれでも参加できるダンスワークショップ。入場無料・予約なし。",
    "short": "NTTル・パルク",
    "logo": "img/smf.webp",
-   "sets": []
+   "sets": [
+    {
+     "start": "14:00",
+     "end": "14:30",
+     "artist": "DANCE WORKSHOP（MARIKO／DJ：Dj Yacheemi）",
+     "kind": "DANCE"
+    },
+    {
+     "start": "15:00",
+     "end": "15:30",
+     "artist": "DANCE WORKSHOP（MARIKO／DJ：Dj Yacheemi）",
+     "kind": "DANCE"
+    }
+   ]
   },
   {
    "code": "D3",
@@ -148,11 +164,21 @@
    "address": "世田谷区三軒茶屋2-15-1",
    "entry": "入場無料・20歳未満は保護者同伴",
    "loop": false,
-   "lineup": [],
+   "lineup": [
+    "DJ MASTERKEY",
+    "DJ Tak Umezawa"
+   ],
    "note": "",
    "short": "オフィシャルBAR",
    "logo": "img/smf.webp",
-   "sets": []
+   "sets": [
+    {
+     "start": "17:05",
+     "end": "18:00",
+     "artist": "SPECIAL GUEST DJ：DJ MASTERKEY（BUDDHA BRAND）・DJ Tak Umezawa",
+     "kind": "DJ"
+    }
+   ]
   },
   {
    "code": "D4",
