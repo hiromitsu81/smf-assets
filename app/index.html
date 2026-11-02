@@ -561,6 +561,8 @@ function cv(type, name, id) { ga('content_view', { content_type: type, content_n
 
 <main class="wrap">
   <div class="status" id="status"><span class="dot off"></span><span>読み込み中…</span></div>
+  <!-- v3.18：アプリを開いたとき、まだ公式LINEの友だちでない人にだけ出す（どのタブでも見える） -->
+  <div class="oanudge" id="oaTop" hidden><a href="#" id="oaTopAdd"><b>公式LINEを友だち追加</b><span>11/7の当日券・タイムテーブルの変更・NIGHT LOOPのお知らせが、LINEのトークに届きます</span></a><button type="button" id="oaTopX" aria-label="閉じる">×</button></div>
 
   <!-- ホーム：LINEでできることの入口（押すと公式アカウントのトークが開き、いまのカードが出る） -->
   <section class="tab on" id="tab-home" aria-labelledby="t-home">
@@ -1479,6 +1481,17 @@ function bindOa() {
   $('#oaAdd').onclick = e => { e.preventDefault(); ga('oa_add_click', { label: 'gacha' }); box.hidden = true; OA_FRIEND = null; oaLS('smf_oa_snooze', String(Date.now() + 864e5)); openLine(`https://line.me/R/ti/p/${encodeURIComponent(oaId())}`); };
   $('#oaX').onclick = () => { box.hidden = true; ga('oa_nudge_close', {}); oaLS('smf_oa_snooze', String(Date.now() + 3 * 864e5)); };
 }
+/* v3.18：アプリを開いたらすぐ、まだ友だちでない人にだけ上に出す。押したら12時間・閉じたら1日は出さない */
+async function oaTop() {
+  const box = $('#oaTop'); if (!box) return;
+  if (!(await loadLiff()) || !inLine() || !liff.getFriendship) return;
+  if (Date.now() < Number(oaLS('smf_oa_top_snooze') || 0)) return;
+  if (OA_FRIEND === null) { try { const r = await liff.getFriendship(); OA_FRIEND = !!(r && r.friendFlag); } catch (e) { return; } }
+  if (OA_FRIEND) return;
+  box.hidden = false; ga('oa_nudge_view', { label: 'top' });
+  $('#oaTopAdd').onclick = e => { e.preventDefault(); ga('oa_add_click', { label: 'top' }); box.hidden = true; OA_FRIEND = null; oaLS('smf_oa_top_snooze', String(Date.now() + 432e5)); openLine(`https://line.me/R/ti/p/${encodeURIComponent(oaId())}`); };
+  $('#oaTopX').onclick = () => { box.hidden = true; ga('oa_nudge_close', { label: 'top' }); oaLS('smf_oa_top_snooze', String(Date.now() + 864e5)); };
+}
 function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2600); }
 function flexCard(alt, o) {
   const T = (text, x) => Object.assign({ type: 'text', text: text, wrap: true, color: '#F5F5F5', size: 'sm' }, x || {});
@@ -1830,6 +1843,7 @@ async function boot() {
   bindWallet(); bindVoice(); bindGoen(); bindEntry(); renderTicket();
   const ak = qs.get('after') || (st ? new URLSearchParams(st.replace(/^[^?]*\?/, '')).get('after') : '');
   if (ak) { showTab('loop'); runAfter(ak); } // 入口のQRから
+  oaTop(); // v3.18：公式LINEの友だち追加の案内（待たない）
 }
 boot();
 </script>
