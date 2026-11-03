@@ -137,6 +137,12 @@
    "logo": "img/smf.webp",
    "sets": [
     {
+     "start": "11:00",
+     "end": "18:00",
+     "artist": "DJ（飛び入りOPEN STAGE）",
+     "kind": "DJ"
+    },
+    {
      "start": "14:00",
      "end": "14:30",
      "artist": "DANCE WORKSHOP（MARIKO／DJ：Dj Yacheemi）",
@@ -172,6 +178,12 @@
    "short": "オフィシャルBAR",
    "logo": "img/smf.webp",
    "sets": [
+    {
+     "start": "11:00",
+     "end": "16:15",
+     "artist": "DJ（飛び入りOPEN STAGE）",
+     "kind": "DJ"
+    },
     {
      "start": "16:15",
      "end": "17:05",
