@@ -79,7 +79,7 @@
     {
      "start": "15:30",
      "end": "16:15",
-     "artist": "餅まき 15:45〜（JESSE・DJ MASTERKEY・DJ Tak Umezawa・藤井まな ほか）",
+     "artist": "餅まき 15:45〜（ほりにし 堀西・JESSE・DJ MASTERKEY・DJ Tak Umezawa・藤井まな）",
      "kind": "EVENT"
     },
     {
@@ -173,9 +173,15 @@
    "logo": "img/smf.webp",
    "sets": [
     {
+     "start": "16:15",
+     "end": "17:05",
+     "artist": "SPECIAL GUEST DJ：DJ Tak Umezawa（梅澤高明）",
+     "kind": "DJ"
+    },
+    {
      "start": "17:05",
      "end": "18:00",
-     "artist": "SPECIAL GUEST DJ：DJ MASTERKEY（BUDDHA BRAND）・DJ Tak Umezawa",
+     "artist": "SPECIAL GUEST DJ：DJ MASTERKEY（BUDDHA BRAND）",
      "kind": "DJ"
     }
    ]
