@@ -507,6 +507,23 @@
      "type": "DJ"
     }
    ]
+  },
+  "D3": {
+   "label": "SMFオフィシャルBAR",
+   "slots": [
+    {
+     "name": "DJ Tak Umezawa",
+     "start": "16:15",
+     "end": "17:05",
+     "type": "DJ"
+    },
+    {
+     "name": "DJ MASTERKEY",
+     "start": "17:05",
+     "end": "18:00",
+     "type": "DJ"
+    }
+   ]
   }
  }
 }
