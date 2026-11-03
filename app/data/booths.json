@@ -1,5 +1,5 @@
 {
- "version": "2026-11-01",
+ "version": "2026-11-03",
  "note": "出店内容・配置は変わる場合があります（現場判断を優先して配置を変更する場合がございます）",
  "venues": [
   {
@@ -260,8 +260,9 @@
     },
     {
      "no": "12",
-     "name": "近日発表",
-     "soon": true
+     "name": "BORRACHOS TOKYO / MI VARRIO × ガミカリー",
+     "logo": "img/booths/borrachos-gami.webp",
+     "note": "GAMI CURRY"
     },
     {
      "no": "13",
