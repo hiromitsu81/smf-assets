@@ -132,7 +132,7 @@
     "Dj Yacheemi",
     "MARIKO（CHAOS）"
    ],
-   "note": "DJブース前で、だれでも参加できるダンスワークショップ。入場無料・予約なし。",
+   "note": "DJブースのタイムテーブルは BGS（NEWTRAL）ひとし君が担当。その中でダンスワークショップを2回（14:00〜／15:00〜・各約20分）。だれでも参加でき、入場無料・予約なし。",
    "short": "NTTル・パルク",
    "logo": "img/smf.webp",
    "sets": [
@@ -144,14 +144,14 @@
     },
     {
      "start": "14:00",
-     "end": "14:30",
-     "artist": "DANCE WORKSHOP（MARIKO／DJ：Dj Yacheemi）",
+     "end": "14:20",
+     "artist": "DANCE WORKSHOP（MARIKO／DJ：Dj Yacheemi）約20分",
      "kind": "DANCE"
     },
     {
      "start": "15:00",
-     "end": "15:30",
-     "artist": "DANCE WORKSHOP（MARIKO／DJ：Dj Yacheemi）",
+     "end": "15:20",
+     "artist": "DANCE WORKSHOP（MARIKO／DJ：Dj Yacheemi）約20分",
      "kind": "DANCE"
     }
    ]
