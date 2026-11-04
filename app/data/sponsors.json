@@ -27,10 +27,10 @@
   {"name": "BROTURES", "logo": "https://sangenjaya-mf.com/2026/sponsors/23-brotures.webp", "url": "https://brotures.com/"},
   {"name": "SUNKAK", "logo": "https://sangenjaya-mf.com/2026/sponsors/24-sunkak.webp", "url": "https://www.sunkak.com/"},
   {"name": "Rooibos Wine AUDACIA 1810", "logo": "https://sangenjaya-mf.com/2026/sponsors/25-rooibos-wine-audacia-1810.webp", "url": "https://www.rooiboswine.jp/"},
-  {"name": "e☆イヤホン", "logo": "https://sangenjaya-mf.com/2026/sponsors/e-earphone.webp"},
-  {"name": "new era", "logo": "https://sangenjaya-mf.com/2026/sponsors/new-era.webp"},
+  {"name": "e☆イヤホン", "logo": "https://sangenjaya-mf.com/2026/sponsors/e-earphone.webp", "url": "https://www.e-earphone.jp/"},
+  {"name": "new era", "logo": "https://sangenjaya-mf.com/2026/sponsors/new-era.webp", "url": "https://www.neweracap.jp/"},
   {"name": "DJ KROW", "logo": "https://sangenjaya-mf.com/2026/sponsors/26-dj-krow.webp"},
-  {"name": "HATAZO", "logo": "https://sangenjaya-mf.com/2026/sponsors/27-hatazo.webp"},
+  {"name": "HATAZO", "logo": "https://sangenjaya-mf.com/2026/sponsors/27-hatazo.webp", "url": "https://tomac-kuramae.co.jp/hatazo/"},
   {"name": "TPLUS LLC.", "logo": "https://sangenjaya-mf.com/2026/sponsors/28-tplus-llc.webp"},
   {"name": "Kings Sea Road", "logo": "https://sangenjaya-mf.com/2026/sponsors/29-kings-sea-road.webp", "url": "https://kings-sea-road.com/"},
   {"name": "Shisa Art Labo", "logo": "https://sangenjaya-mf.com/2026/sponsors/30-shisa-art-labo.webp", "url": "https://shisaartlabo.com/"},
@@ -42,13 +42,13 @@
   {"name": "一隆建築株式会社", "logo": "https://sangenjaya-mf.com/2026/sponsors/36-ichiryu-kenchiku.webp"},
   {"name": "THE USED", "logo": "https://sangenjaya-mf.com/2026/sponsors/35-the-used.webp", "url": "https://theused.jp/"},
   {"name": "TENGA", "logo": "https://sangenjaya-mf.com/2026/sponsors/34-tenga.webp", "url": "https://www.tenga.co.jp/"},
-  {"name": "mottox", "logo": "https://sangenjaya-mf.com/2026/sponsors/mottox.webp"},
+  {"name": "mottox", "logo": "https://sangenjaya-mf.com/2026/sponsors/mottox.webp", "url": "https://www.mottox.co.jp/"},
   {"name": "REJECT", "logo": "https://sangenjaya-mf.com/2026/sponsors/39-reject.webp", "url": "https://reject.jp/"},
   {"name": "FENNEL", "logo": "https://sangenjaya-mf.com/2026/sponsors/40-fennel.webp", "url": "https://fennel-esports.com/"},
   {"name": "利将", "logo": "https://sangenjaya-mf.com/2026/sponsors/risho.webp"},
-  {"name": "Santo", "logo": "https://sangenjaya-mf.com/2026/sponsors/santo.webp"},
-  {"name": "GOOD KARMA", "logo": "https://sangenjaya-mf.com/2026/sponsors/42-good-karma.webp"},
+  {"name": "Santo", "logo": "https://sangenjaya-mf.com/2026/sponsors/santo.webp", "url": "https://cucinaitalianaswell.com/"},
+  {"name": "GOOD KARMA", "logo": "https://sangenjaya-mf.com/2026/sponsors/42-good-karma.webp", "url": "https://goodkarma.jp/"},
   {"name": "RESTAR", "logo": "https://sangenjaya-mf.com/2026/sponsors/restar.webp"},
-  {"name": "麻布十番 しも井", "logo": "https://sangenjaya-mf.com/2026/sponsors/shimoi.webp"}
+  {"name": "麻布十番 しも井", "logo": "https://sangenjaya-mf.com/2026/sponsors/shimoi.webp", "url": "https://gag8404.gorp.jp/"}
  ]
 }
