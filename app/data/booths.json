@@ -248,9 +248,8 @@
     },
     {
      "no": "10",
-     "name": "HELLBENDERS & CO",
-     "logo": "img/booths/hellbenders.webp",
-     "url": "https://hellbenders.shop/"
+     "name": "Megu",
+     "logo": ""
     },
     {
      "no": "11",
@@ -359,7 +358,8 @@
       "no": "B3",
       "x": 6.5,
       "z": -4.5,
-      "s": 3
+      "s": 3,
+      "k": "svc"
      },
      {
       "no": "DJ",
@@ -426,8 +426,9 @@
     },
     {
      "no": "B3",
-     "name": "Megu",
-     "logo": ""
+     "name": "アーティスト控え室",
+     "svc": true,
+     "note": "出演者・関係者のみ（幕で囲う）"
     },
     {
      "no": "DJ",
