@@ -1,5 +1,5 @@
 {
- "source": "公式サイト sangenjaya-mf.com／タイムテーブル（2026-10-15時点）。HEAVEN'S DOOR 2部は ZAIKO（2026-10-31確認）に合わせて神 21:45〜／終演 22:10。NTT SQUARE は運営タイムテーブル（2026-10-31）に合わせた",
+ "source": "公式サイト sangenjaya-mf.com／タイムテーブル（2026-10-15時点）。HEAVEN'S DOOR 2部は ZAIKO（2026-10-31確認）に合わせて神 21:45〜／終演 22:10。NTT SQUARE は運営タイムテーブル（2026-11-06）に合わせた（餅まきは JESSE→RUEED、JESSE のライブはなし）",
  "eventDate": "2026-11-07",
  "venues": [
   {
@@ -11,13 +11,12 @@
    "color": "#234DA0",
    "ink": "#FFFFFF",
    "start": "11:00",
-   "end": "18:30",
+   "end": "18:00",
    "genre": "LIVE／DJ／LIVE PAINT",
    "address": "世田谷区太子堂4-3-16",
    "entry": "入場無料・年齢制限なし・酒類の販売なし",
    "loop": false,
    "lineup": [
-    "JESSE",
     "RUEED",
     "Chozen Lee",
     "DJ LUKE",
@@ -78,13 +77,25 @@
     },
     {
      "start": "15:30",
+     "end": "15:45",
+     "artist": "藤井まな（世田谷区議会議員）ごあいさつ",
+     "kind": "EVENT"
+    },
+    {
+     "start": "15:45",
      "end": "16:15",
-     "artist": "餅まき 15:45〜（ほりにし 堀西・JESSE・DJ MASTERKEY・DJ Tak Umezawa・藤井まな）",
+     "artist": "餅まき（アウトドアスパイス ほりにし・RUEED・DJ MASTERKEY・DJ Tak Umezawa・藤井まな・三成一登）",
      "kind": "EVENT"
     },
     {
      "start": "16:15",
-     "end": "16:45",
+     "end": "16:25",
+     "artist": "スポンサー紹介",
+     "kind": "EVENT"
+    },
+    {
+     "start": "16:25",
+     "end": "17:05",
      "artist": "Chozen Lee",
      "kind": "acoustic LIVE",
      "cards": [
@@ -92,8 +103,8 @@
      ]
     },
     {
-     "start": "17:20",
-     "end": "17:50",
+     "start": "17:15",
+     "end": "18:00",
      "artist": "RUEED",
      "kind": "DJ+MIC",
      "cards": [
@@ -101,16 +112,7 @@
      ]
     },
     {
-     "start": "18:00",
-     "end": "18:30",
-     "artist": "JESSE",
-     "kind": "acoustic LIVE",
-     "cards": [
-      "d1-jesse"
-     ]
-    },
-    {
-     "sep": "18:30 終了・客出し"
+     "sep": "18:00 終了・客出し"
     }
    ]
   },
