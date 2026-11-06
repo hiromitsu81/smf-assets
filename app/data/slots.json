@@ -502,8 +502,8 @@
     }
    ]
   },
-  "D3": {
-   "label": "SMFオフィシャルBAR",
+  "D2": {
+   "label": "企業ブース会場",
    "slots": [
     {
      "name": "DJ Tak Umezawa",
@@ -518,6 +518,10 @@
      "type": "DJ"
     }
    ]
+  },
+  "D3": {
+   "label": "SMFオフィシャルBAR",
+   "slots": []
   }
  }
 }

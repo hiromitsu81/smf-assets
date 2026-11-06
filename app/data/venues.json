@@ -131,6 +131,8 @@
    "entry": "入場無料・年齢制限なし・酒類の販売なし",
    "loop": false,
    "lineup": [
+    "DJ MASTERKEY",
+    "DJ Tak Umezawa",
     "Dj Yacheemi",
     "MARIKO（CHAOS）"
    ],
@@ -140,7 +142,7 @@
    "sets": [
     {
      "start": "11:00",
-     "end": "18:00",
+     "end": "16:15",
      "artist": "DJ（飛び入りOPEN STAGE）",
      "kind": "DJ"
     },
@@ -155,6 +157,18 @@
      "end": "15:20",
      "artist": "DANCE WORKSHOP（MARIKO／DJ：Dj Yacheemi）約20分",
      "kind": "DANCE"
+    },
+    {
+     "start": "16:15",
+     "end": "17:05",
+     "artist": "SPECIAL GUEST DJ：DJ Tak Umezawa（梅澤高明）",
+     "kind": "DJ"
+    },
+    {
+     "start": "17:05",
+     "end": "18:00",
+     "artist": "SPECIAL GUEST DJ：DJ MASTERKEY（BUDDHA BRAND）",
+     "kind": "DJ"
     }
    ]
   },
@@ -172,30 +186,15 @@
    "address": "世田谷区三軒茶屋2-15-1",
    "entry": "入場無料・20歳未満は保護者同伴",
    "loop": false,
-   "lineup": [
-    "DJ MASTERKEY",
-    "DJ Tak Umezawa"
-   ],
+   "lineup": [],
    "note": "",
    "short": "オフィシャルBAR",
    "logo": "img/smf.webp",
    "sets": [
     {
      "start": "11:00",
-     "end": "16:15",
-     "artist": "DJ（飛び入りOPEN STAGE）",
-     "kind": "DJ"
-    },
-    {
-     "start": "16:15",
-     "end": "17:05",
-     "artist": "SPECIAL GUEST DJ：DJ Tak Umezawa（梅澤高明）",
-     "kind": "DJ"
-    },
-    {
-     "start": "17:05",
      "end": "18:00",
-     "artist": "SPECIAL GUEST DJ：DJ MASTERKEY（BUDDHA BRAND）",
+     "artist": "DJ（飛び入りOPEN STAGE）",
      "kind": "DJ"
     }
    ]
